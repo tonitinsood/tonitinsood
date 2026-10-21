@@ -12,7 +12,7 @@ import {
 } from "./sheets.js";
 import { extractPitchesHeuristic } from "./extract-heuristic.js";
 import { ingestAllSources } from "./ingest/sources.js";
-import { dedupeKey, KV, kvGet, kvPut, metricCacheKey } from "./kv.js";
+import { canonicalSourceUrl, dedupeKey, KV, kvGet, kvPut, metricCacheKey } from "./kv.js";
 import { rowsEligibleForPurge } from "./purge.js";
 import { rewriteUnreadablePitchText } from "./rewrite-text.js";
 import { enrichTickerMetrics } from "./metrics.js";
@@ -53,13 +53,14 @@ export async function runDailyScreenPipeline(
       const rewrite = await rewriteUnreadablePitchText(spreadsheetId);
       rewritten = rewrite.rewritten;
       for (const u of rewrite.urlsSeen) {
-        existingSourceUrls.add(u.trim().toLowerCase());
+        const key = canonicalSourceUrl(u);
+        if (key) existingSourceUrls.add(key);
       }
     }
     const { rows: existingRows } = await readAllPitchRows(spreadsheetId);
     for (const row of existingRows) {
       if (row.source_url?.trim()) {
-        existingSourceUrls.add(row.source_url.trim().toLowerCase());
+        existingSourceUrls.add(canonicalSourceUrl(row.source_url));
       }
       if (!row.ticker?.trim() || !row.source_url?.trim()) continue;
       dedupeSet[dedupeKey(row.source_url, row.ticker)] = true;
@@ -78,7 +79,7 @@ export async function runDailyScreenPipeline(
     const extracted = extractPitchesHeuristic(doc);
     for (const pitch of extracted) {
       if (!pitch.ticker) continue;
-      const urlKey = pitch.source_url.trim().toLowerCase();
+      const urlKey = canonicalSourceUrl(pitch.source_url);
       if (existingSourceUrls.has(urlKey)) {
         skippedDedupe += 1;
         continue;

@@ -26,8 +26,23 @@ export async function kvPut(
   await ctx.host.kv.put(key, value);
 }
 
+/** Strip www, trailing slash, and hash so redirect variants still match. */
+export function canonicalSourceUrl(url: string): string {
+  const raw = url.trim();
+  if (!raw) return "";
+  try {
+    const u = new URL(raw);
+    const host = u.hostname.replace(/^www\./i, "").toLowerCase();
+    const path = (u.pathname.replace(/\/+$/, "") || "/").toLowerCase();
+    const search = u.search.toLowerCase();
+    return `${u.protocol}//${host}${path}${search}`;
+  } catch {
+    return raw.toLowerCase().replace(/\/+$/, "");
+  }
+}
+
 export function dedupeKey(sourceUrl: string, ticker: string): string {
-  return `${sourceUrl.trim().toLowerCase()}|${ticker.trim().toUpperCase()}`;
+  return `${canonicalSourceUrl(sourceUrl)}|${ticker.trim().toUpperCase()}`;
 }
 
 export function metricCacheKey(ticker: string, dayIso: string): string {
