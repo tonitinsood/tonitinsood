@@ -7,6 +7,13 @@ import {
   PITCH_HEADERS,
   SHEET_TITLE,
 } from "./columns.js";
+import {
+  SHEETS_CELL_CHAR_MAX,
+  splitTextForSheetCells,
+  truncateToSheetCell,
+  TRUNCATED_SEE_FULLTEXT_SUFFIX,
+  TRUNCATED_SEE_SOURCE_SUFFIX,
+} from "./sheet-cells.js";
 import { sheetsClient } from "./google-auth.js";
 import { KV, kvGet, kvPut } from "./kv.js";
 import type { PitchRow } from "./types.js";
@@ -46,7 +53,14 @@ function rowToValues(row: PitchRow): string[] {
   return PITCH_HEADERS.map((key) => {
     const v = row[key];
     if (typeof v === "boolean") return v ? "TRUE" : "FALSE";
-    return v ?? "";
+    const s = v ?? "";
+    if (typeof s === "string") {
+      if (key === "full_pitch" && s.length > SHEETS_CELL_CHAR_MAX) {
+        return truncateToSheetCell(s, TRUNCATED_SEE_SOURCE_SUFFIX);
+      }
+      return truncateToSheetCell(s);
+    }
+    return String(s);
   });
 }
 
@@ -200,7 +214,10 @@ export async function appendPitchRows(
         row_id: copy.row_id,
         full_pitch: copy.full_pitch,
       });
-      copy.full_pitch = copy.full_pitch.slice(0, FULL_PITCH_CELL_MAX - 20) + "… [see FullText tab]";
+      copy.full_pitch = truncateToSheetCell(
+        copy.full_pitch.slice(0, FULL_PITCH_CELL_MAX),
+        TRUNCATED_SEE_FULLTEXT_SUFFIX,
+      );
     }
     return rowToValues(copy);
   });
@@ -218,7 +235,9 @@ export async function appendPitchRows(
       valueInputOption: "RAW",
       insertDataOption: "INSERT_ROWS",
       requestBody: {
-        values: overflow.map((o) => [o.row_id, o.full_pitch]),
+        values: overflow.flatMap((o) =>
+          splitTextForSheetCells(o.full_pitch).map((part) => [o.row_id, part]),
+        ),
       },
     });
   }
