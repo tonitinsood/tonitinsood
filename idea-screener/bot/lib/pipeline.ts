@@ -3,6 +3,7 @@ import type { ToolContext } from "@cursor/bdk";
 import {
   appendPitchRows,
   deleteSheetRows,
+  ensureCheckboxColumns,
   ensureSpreadsheetLayout,
   readAllPitchRows,
   resolveOrCreateSpreadsheetId,
@@ -175,6 +176,8 @@ export async function runDailyScreenPipeline(
         archived: row.archived,
       })),
     );
+    const lastDataRow = rowNumbers.at(-1) ?? 1;
+    await ensureCheckboxColumns(spreadsheetId, lastDataRow);
   }
 
   return {
