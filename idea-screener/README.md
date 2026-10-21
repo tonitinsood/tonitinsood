@@ -4,7 +4,7 @@ Daily **stock idea screener** agent: ingests **named stock pitches** (ticker or 
 
 ## What it does
 
-- **Schedule:** `bot/schedules/daily-ingest.ts` — 08:00 **Asia/Dubai** (cron `0 4 * * *` UTC) calls `runDailyScreen`.
+- **Schedule:** GitHub Actions [`.github/workflows/idea-screener-daily.yml`](../.github/workflows/idea-screener-daily.yml) — 08:00 **Asia/Dubai** (`0 4 * * *` UTC) plus manual **Run workflow**. Needs repo secrets `FMP_API_KEY`, `GOOGLE_SERVICE_ACCOUNT_JSON`, `GOOGLE_SHEET_ID` (no `CURSOR_API_KEY`; extract is server-side). BDK hosting still has `bot/schedules/daily-ingest.ts` with the same cron.
 - **Sheet:** Tab `Pitches` with columns including **`pitched_by`** (person) vs **`source_name`** (org/publication/fund).
 - **Retention:** Deletes rows after 7 days only if both `shortlisted` and `archived` are false.
 - **Playground:** Manual runs and `researchPitch` for deep dives.
