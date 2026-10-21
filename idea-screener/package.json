@@ -1,0 +1,23 @@
+{
+  "name": "idea-screener",
+  "private": true,
+  "type": "module",
+  "description": "agent project: idea-screener",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "dev": "bdk dev",
+    "postinstall": "node -e \"console.log('Install Python deps: pip install -r requirements.txt')\"",
+    "validate": "npx --yes @cursor/bdk@0.2.27 validate",
+    "call:smoke": "npx --yes @cursor/bdk@0.2.27 call validateExtractionFixture --input '{}'"
+  },
+  "dependencies": {
+    "@cursor/bdk": "^0.2.27",
+    "googleapis": "^187.0.0",
+    "rss-parser": "^3.13.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "typescript": "6.0.3"
+  }
+}

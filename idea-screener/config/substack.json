@@ -1,0 +1,14 @@
+{
+  "substacks": [
+    {
+      "name": "Net Interest",
+      "feed_url": "https://www.netinterest.co/feed",
+      "pitched_by": "Marc Rubinstein"
+    },
+    {
+      "name": "SemiAnalysis",
+      "feed_url": "https://www.semianalysis.com/feed",
+      "pitched_by": "SemiAnalysis team"
+    }
+  ]
+}

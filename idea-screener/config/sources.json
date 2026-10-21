@@ -1,0 +1,8 @@
+{
+  "description": "Seed source registry for idea-screener v1",
+  "letters": "config/letters.json",
+  "substack": "config/substack.json",
+  "sec": "config/sec.json",
+  "x": "config/x-watchlist.json",
+  "notes": "Expand these JSON files with your own feeds. pitched_by on letters/substack seeds the person; X uses display_name when syndication works."
+}

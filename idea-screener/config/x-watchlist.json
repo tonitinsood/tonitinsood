@@ -1,0 +1,14 @@
+{
+  "accounts": [
+    {
+      "handle": "@FundamentEdge",
+      "display_name": "Fundament Edge",
+      "syndication_url": ""
+    },
+    {
+      "handle": "@valueinvesting",
+      "display_name": "Value Investing",
+      "syndication_url": ""
+    }
+  ]
+}
