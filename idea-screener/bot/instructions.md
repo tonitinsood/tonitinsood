@@ -61,7 +61,7 @@ Or `{ "pitches": [ ... ] }` for multiple ideas in one document.
 
 ## Secrets (environment)
 
-- `GOOGLE_SERVICE_ACCOUNT_JSON` — service account JSON string or path; share the sheet with the service account email.
+- Google credentials (first match wins): **`Google_Account_Json`**, **`GOOGLE_SERVICE_ACCOUNT_JSON`** (JSON string or file path), or **`GOOGLE_APPLICATION_CREDENTIALS`** (file path). Share the sheet with the service account `client_email`.
 - `FMP_API_KEY` — Financial Modeling Prep (US-first; international may fall back to yfinance).
 
 See project docs: **`docs/setup-google-sheets-fmp.md`** (in the Idea Screener project store).

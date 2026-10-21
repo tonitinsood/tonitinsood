@@ -13,7 +13,9 @@ Daily **stock idea screener** agent: ingests investor letters, SEC 13D/13G/8-K, 
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `GOOGLE_SERVICE_ACCOUNT_JSON` | Yes (live Sheet writes) | GCP service account JSON **string** or **file path** |
+| `Google_Account_Json` | Yes (live Sheet writes) | Full service account JSON (Cursor env; preferred name) |
+| `GOOGLE_SERVICE_ACCOUNT_JSON` | Alt | Same JSON **string** or **file path** |
+| `GOOGLE_APPLICATION_CREDENTIALS` | Alt | Path to service account key file |
 | `FMP_API_KEY` | Recommended | US metrics primary (free tier) |
 | `CURSOR_API_KEY` | For model turns / evals | Cursor agent credential |
 
