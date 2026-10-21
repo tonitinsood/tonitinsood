@@ -3,15 +3,17 @@ import type { ToolContext } from "@cursor/bdk";
 import {
   appendPitchRows,
   deleteSheetRows,
-  ensurePitchHeaders,
+  ensureSpreadsheetLayout,
   readAllPitchRows,
   resolveOrCreateSpreadsheetId,
   updateMetricCells,
+  writeCheckboxValues,
 } from "./sheets.js";
 import { extractPitchesHeuristic } from "./extract-heuristic.js";
 import { ingestAllSources } from "./ingest/sources.js";
 import { dedupeKey, KV, kvGet, kvPut, metricCacheKey } from "./kv.js";
 import { rowsEligibleForPurge } from "./purge.js";
+import { rewriteUnreadablePitchText } from "./rewrite-text.js";
 import { enrichTickerMetrics } from "./metrics.js";
 import type { MetricSnapshot, PitchRow } from "./types.js";
 
@@ -21,6 +23,7 @@ export type DailyScreenResult = {
   purged: number;
   metricsUpdated: number;
   skippedDedupe: number;
+  rewritten: number;
   dryRun: boolean;
 };
 
@@ -33,7 +36,7 @@ export async function runDailyScreenPipeline(
   if (!spreadsheetId) {
     spreadsheetId = "dry-run-no-sheet";
   } else if (!dryRun) {
-    await ensurePitchHeaders(spreadsheetId);
+    await ensureSpreadsheetLayout(spreadsheetId);
   }
 
   const dedupeSet =
@@ -41,9 +44,22 @@ export async function runDailyScreenPipeline(
   const metricCache =
     (await kvGet<Record<string, MetricSnapshot>>(ctx, KV.metricCache)) ?? {};
 
+  let rewritten = 0;
+  const existingSourceUrls = new Set<string>();
+
   if (spreadsheetId !== "dry-run-no-sheet") {
+    if (!dryRun) {
+      const rewrite = await rewriteUnreadablePitchText(spreadsheetId);
+      rewritten = rewrite.rewritten;
+      for (const u of rewrite.urlsSeen) {
+        existingSourceUrls.add(u.trim().toLowerCase());
+      }
+    }
     const { rows: existingRows } = await readAllPitchRows(spreadsheetId);
     for (const row of existingRows) {
+      if (row.source_url?.trim()) {
+        existingSourceUrls.add(row.source_url.trim().toLowerCase());
+      }
       if (!row.ticker?.trim() || !row.source_url?.trim()) continue;
       dedupeSet[dedupeKey(row.source_url, row.ticker)] = true;
     }
@@ -61,6 +77,11 @@ export async function runDailyScreenPipeline(
     const extracted = extractPitchesHeuristic(doc);
     for (const pitch of extracted) {
       if (!pitch.ticker) continue;
+      const urlKey = pitch.source_url.trim().toLowerCase();
+      if (existingSourceUrls.has(urlKey)) {
+        skippedDedupe += 1;
+        continue;
+      }
       const dKey = dedupeKey(pitch.source_url, pitch.ticker);
       if (dedupeSet[dKey]) {
         skippedDedupe += 1;
@@ -108,12 +129,20 @@ export async function runDailyScreenPipeline(
     await kvPut(ctx, KV.dedupe, dedupeSet);
     await kvPut(ctx, KV.metricCache, metricCache);
 
-    const { rows, rowNumbers } = await readAllPitchRows(spreadsheetId);
-    const toDelete = rowsEligibleForPurge(rows, rowNumbers, new Date());
+    const snapshot = await readAllPitchRows(spreadsheetId);
+    const toDelete = rowsEligibleForPurge(
+      snapshot.rows,
+      snapshot.rowNumbers,
+      new Date(),
+    );
     if (toDelete.length) {
       await deleteSheetRows(spreadsheetId, toDelete);
       purged = toDelete.length;
     }
+
+    const { rows, rowNumbers } = toDelete.length
+      ? await readAllPitchRows(spreadsheetId)
+      : snapshot;
 
     const refreshUpdates: { rowNumber: number; metrics: Partial<PitchRow> }[] =
       [];
@@ -138,6 +167,14 @@ export async function runDailyScreenPipeline(
     });
     await updateMetricCells(spreadsheetId, refreshUpdates);
     metricsUpdated = refreshUpdates.length;
+    await writeCheckboxValues(
+      spreadsheetId,
+      rows.map((row, idx) => ({
+        rowNumber: rowNumbers[idx]!,
+        shortlisted: row.shortlisted,
+        archived: row.archived,
+      })),
+    );
   }
 
   return {
@@ -146,6 +183,7 @@ export async function runDailyScreenPipeline(
     purged,
     metricsUpdated,
     skippedDedupe,
+    rewritten,
     dryRun,
   };
 }
