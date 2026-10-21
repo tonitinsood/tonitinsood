@@ -12,7 +12,15 @@ import {
 } from "./sheets.js";
 import { extractPitchesHeuristic } from "./extract-heuristic.js";
 import { ingestAllSources } from "./ingest/sources.js";
-import { canonicalSourceUrl, dedupeKey, KV, kvGet, kvPut, metricCacheKey } from "./kv.js";
+import {
+  canonicalSourceUrl,
+  dedupeKey,
+  KV,
+  kvGet,
+  kvPut,
+  metricCacheKey,
+  sourceUrlSlug,
+} from "./kv.js";
 import { rowsEligibleForPurge } from "./purge.js";
 import { rewriteUnreadablePitchText } from "./rewrite-text.js";
 import { enrichTickerMetrics } from "./metrics.js";
@@ -47,21 +55,24 @@ export async function runDailyScreenPipeline(
 
   let rewritten = 0;
   const existingSourceUrls = new Set<string>();
+  const existingSlugs = new Set<string>();
+
+  const rememberUrl = (url: string) => {
+    const key = canonicalSourceUrl(url);
+    if (key) existingSourceUrls.add(key);
+    const slug = sourceUrlSlug(url);
+    if (slug.includes("-") || slug.length >= 16) existingSlugs.add(slug);
+  };
 
   if (spreadsheetId !== "dry-run-no-sheet") {
     if (!dryRun) {
       const rewrite = await rewriteUnreadablePitchText(spreadsheetId);
       rewritten = rewrite.rewritten;
-      for (const u of rewrite.urlsSeen) {
-        const key = canonicalSourceUrl(u);
-        if (key) existingSourceUrls.add(key);
-      }
+      for (const u of rewrite.urlsSeen) rememberUrl(u);
     }
     const { rows: existingRows } = await readAllPitchRows(spreadsheetId);
     for (const row of existingRows) {
-      if (row.source_url?.trim()) {
-        existingSourceUrls.add(canonicalSourceUrl(row.source_url));
-      }
+      if (row.source_url?.trim()) rememberUrl(row.source_url);
       if (!row.ticker?.trim() || !row.source_url?.trim()) continue;
       dedupeSet[dedupeKey(row.source_url, row.ticker)] = true;
     }
@@ -80,7 +91,11 @@ export async function runDailyScreenPipeline(
     for (const pitch of extracted) {
       if (!pitch.ticker) continue;
       const urlKey = canonicalSourceUrl(pitch.source_url);
-      if (existingSourceUrls.has(urlKey)) {
+      const slug = sourceUrlSlug(pitch.source_url);
+      if (
+        existingSourceUrls.has(urlKey) ||
+        (slug && existingSlugs.has(slug))
+      ) {
         skippedDedupe += 1;
         continue;
       }
