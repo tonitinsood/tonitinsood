@@ -4,7 +4,7 @@ import { runDailyScreenPipeline } from "../lib/pipeline.js";
 
 export default defineTool({
   description:
-    "Run the daily ingest pipeline: fetch sources, extract pitches, dedupe, enrich metrics (FMP then yfinance), append to Google Sheet, purge rows older than 7 days unless shortlisted/archived.",
+    "Run the daily ingest pipeline: fetch sources, extract human-readable pitches (PDF/HTML), rewrite unreadable full_pitch cells in place, apply shortlisted/archived checkboxes, dedupe, enrich metrics (FMP then yfinance), append new rows only, purge rows older than 7 days unless shortlisted/archived.",
   effect: "write",
   inputSchema: z.object({
     dryRun: z

@@ -28,7 +28,7 @@ Setup steps (FMP + Google): see the Idea Screener project store doc **`docs/setu
 ```bash
 cd idea-screener
 npm install
-pip install -r requirements.txt   # yfinance for scripts/metrics.py
+pip install -r requirements.txt   # yfinance + pypdf for scripts/metrics.py and scripts/pdf_text.py
 
 npx --yes "@cursor/bdk@0.2.27" validate
 npm run check

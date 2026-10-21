@@ -49,6 +49,12 @@ export async function resolveOrCreateSpreadsheetId(
   return created;
 }
 
+/** Prevent USER_ENTERED from treating pitch text as a formula. */
+function safeCell(s: string): string {
+  if (/^[=+\-@\t\r]/.test(s)) return `'${s}`;
+  return s;
+}
+
 function rowToValues(row: PitchRow): string[] {
   return PITCH_HEADERS.map((key) => {
     const v = row[key];
@@ -56,18 +62,18 @@ function rowToValues(row: PitchRow): string[] {
     const s = v ?? "";
     if (typeof s === "string") {
       if (key === "full_pitch" && s.length > SHEETS_CELL_CHAR_MAX) {
-        return truncateToSheetCell(s, TRUNCATED_SEE_SOURCE_SUFFIX);
+        return safeCell(truncateToSheetCell(s, TRUNCATED_SEE_SOURCE_SUFFIX));
       }
-      return truncateToSheetCell(s);
+      return safeCell(truncateToSheetCell(s));
     }
-    return String(s);
+    return safeCell(String(s));
   });
 }
 
 function parseBool(cell: string | undefined): boolean {
   if (!cell) return false;
   const s = cell.trim().toUpperCase();
-  return s === "TRUE" || s === "1" || s === "YES";
+  return s === "TRUE" || s === "1" || s === "YES" || s === "CHECKED";
 }
 
 function valuesToRow(values: string[]): PitchRow {
@@ -127,7 +133,7 @@ export async function createMasterSpreadsheet(): Promise<string> {
   });
   const id = created.data.spreadsheetId;
   if (!id) throw new Error("Failed to create spreadsheet");
-  await ensurePitchHeaders(id);
+  await ensureSpreadsheetLayout(id);
   return id;
 }
 
@@ -167,6 +173,151 @@ export async function ensurePitchHeaders(spreadsheetId: string): Promise<void> {
       `Pitches tab row 1 must match the screener headers (or be blank for auto-setup). ${mismatches.slice(0, 4).join("; ")}${mismatches.length > 4 ? "…" : ""}`,
     );
   }
+}
+
+async function pitchSheetId(spreadsheetId: string): Promise<number | undefined> {
+  const sheets = await sheetsClient();
+  const meta = await sheets.spreadsheets.get({ spreadsheetId });
+  return meta.data.sheets?.find((s) => s.properties?.title === PITCHES_TAB)
+    ?.properties?.sheetId ?? undefined;
+}
+
+async function fullTextSheetMeta(
+  spreadsheetId: string,
+): Promise<{ sheetId: number | undefined; exists: boolean }> {
+  const sheets = await sheetsClient();
+  const meta = await sheets.spreadsheets.get({ spreadsheetId });
+  const tab = meta.data.sheets?.find((s) => s.properties?.title === FULL_TEXT_TAB);
+  const rawId = tab?.properties?.sheetId;
+  return { sheetId: rawId ?? undefined, exists: Boolean(tab) };
+}
+
+export async function ensureFullTextTab(spreadsheetId: string): Promise<void> {
+  const sheets = await sheetsClient();
+  const { exists } = await fullTextSheetMeta(spreadsheetId);
+  if (!exists) {
+    await sheets.spreadsheets.batchUpdate({
+      spreadsheetId,
+      requestBody: {
+        requests: [{ addSheet: { properties: { title: FULL_TEXT_TAB } } }],
+      },
+    });
+  }
+  const header = await sheets.spreadsheets.values.get({
+    spreadsheetId,
+    range: `${FULL_TEXT_TAB}!A1:B1`,
+  });
+  const row = (header.data.values?.[0] ?? []) as string[];
+  if (!row[0] || !row[1]) {
+    await sheets.spreadsheets.values.update({
+      spreadsheetId,
+      range: `${FULL_TEXT_TAB}!A1:B1`,
+      valueInputOption: "RAW",
+      requestBody: { values: [["row_id", "full_pitch"]] },
+    });
+  }
+}
+
+/**
+ * Real Google Sheets checkboxes (BOOLEAN + showCustomUi) on shortlisted / archived.
+ * Existing TRUE/FALSE text is rewritten as boolean values so they render as ticks.
+ */
+export async function ensureCheckboxColumns(spreadsheetId: string): Promise<void> {
+  const sheets = await sheetsClient();
+  const sheetId = await pitchSheetId(spreadsheetId);
+  if (sheetId === undefined) return;
+  const shortlistedCol = PITCH_HEADERS.indexOf("shortlisted");
+  const archivedCol = PITCH_HEADERS.indexOf("archived");
+  const endRow = 2000;
+  const boolRule = {
+    condition: { type: "BOOLEAN" as const },
+    strict: true,
+    showCustomUi: true,
+  };
+  await sheets.spreadsheets.batchUpdate({
+    spreadsheetId,
+    requestBody: {
+      requests: [
+        {
+          setDataValidation: {
+            range: {
+              sheetId,
+              startRowIndex: 1,
+              endRowIndex: endRow,
+              startColumnIndex: shortlistedCol,
+              endColumnIndex: shortlistedCol + 1,
+            },
+            rule: boolRule,
+          },
+        },
+        {
+          setDataValidation: {
+            range: {
+              sheetId,
+              startRowIndex: 1,
+              endRowIndex: endRow,
+              startColumnIndex: archivedCol,
+              endColumnIndex: archivedCol + 1,
+            },
+            rule: boolRule,
+          },
+        },
+      ],
+    },
+  });
+}
+
+export async function writeCheckboxValues(
+  spreadsheetId: string,
+  flags: { rowNumber: number; shortlisted: boolean; archived: boolean }[],
+): Promise<void> {
+  if (flags.length === 0) return;
+  const sheets = await sheetsClient();
+  const sheetId = await pitchSheetId(spreadsheetId);
+  if (sheetId === undefined) return;
+  const shortlistedCol = PITCH_HEADERS.indexOf("shortlisted");
+  const requests: sheets_v4.Schema$Request[] = flags.map((f) => ({
+    updateCells: {
+      range: {
+        sheetId,
+        startRowIndex: f.rowNumber - 1,
+        endRowIndex: f.rowNumber,
+        startColumnIndex: shortlistedCol,
+        endColumnIndex: shortlistedCol + 2,
+      },
+      rows: [
+        {
+          values: [
+            { userEnteredValue: { boolValue: f.shortlisted } },
+            { userEnteredValue: { boolValue: f.archived } },
+          ],
+        },
+      ],
+      fields: "userEnteredValue",
+    },
+  }));
+  const CHUNK = 50;
+  for (let i = 0; i < requests.length; i += CHUNK) {
+    await sheets.spreadsheets.batchUpdate({
+      spreadsheetId,
+      requestBody: { requests: requests.slice(i, i + CHUNK) },
+    });
+  }
+}
+
+export async function ensureSpreadsheetLayout(spreadsheetId: string): Promise<void> {
+  await ensurePitchHeaders(spreadsheetId);
+  await ensureFullTextTab(spreadsheetId);
+  await ensureCheckboxColumns(spreadsheetId);
+  const { rows, rowNumbers } = await readAllPitchRows(spreadsheetId);
+  await writeCheckboxValues(
+    spreadsheetId,
+    rows.map((row, i) => ({
+      rowNumber: rowNumbers[i]!,
+      shortlisted: row.shortlisted,
+      archived: row.archived,
+    })),
+  );
 }
 
 function colLetter(n: number): string {
@@ -224,7 +375,7 @@ export async function appendPitchRows(
   await sheets.spreadsheets.values.append({
     spreadsheetId,
     range: `${PITCHES_TAB}!A:A`,
-    valueInputOption: "RAW",
+    valueInputOption: "USER_ENTERED",
     insertDataOption: "INSERT_ROWS",
     requestBody: { values },
   });
@@ -242,6 +393,150 @@ export async function appendPitchRows(
     });
   }
   return rows.length;
+}
+
+export type NarrativeUpdate = {
+  row_id: string;
+  rowNumber: number;
+  thesis_short: string;
+  full_pitch: string;
+  source_url?: string;
+  ticker?: string;
+  exchange_country?: string;
+  company?: string;
+};
+
+async function batchValueRanges(
+  spreadsheetId: string,
+  data: sheets_v4.Schema$ValueRange[],
+  valueInputOption: "RAW" | "USER_ENTERED" = "RAW",
+): Promise<void> {
+  if (data.length === 0) return;
+  const sheets = await sheetsClient();
+  const CHUNK = 40;
+  for (let i = 0; i < data.length; i += CHUNK) {
+    await sheets.spreadsheets.values.batchUpdate({
+      spreadsheetId,
+      requestBody: { valueInputOption, data: data.slice(i, i + CHUNK) },
+    });
+  }
+}
+
+function cellRange(header: keyof PitchRow, rowNumber: number): string {
+  const col = PITCH_HEADERS.indexOf(header) + 1;
+  return `${PITCHES_TAB}!${colLetter(col)}${rowNumber}`;
+}
+
+/** In-place rewrite of thesis / full_pitch (and optional URL/ticker). Does not insert rows. */
+export async function updatePitchNarratives(
+  spreadsheetId: string,
+  updates: NarrativeUpdate[],
+  overflow: { row_id: string; full_pitch: string }[],
+): Promise<void> {
+  if (updates.length === 0) return;
+  const data: sheets_v4.Schema$ValueRange[] = [];
+  const overflowIds: string[] = [];
+  for (const u of updates) {
+    let pitch = u.full_pitch;
+    if (pitch.length > FULL_PITCH_CELL_MAX) {
+      overflow.push({ row_id: u.row_id, full_pitch: pitch });
+      overflowIds.push(u.row_id);
+      pitch = truncateToSheetCell(
+        pitch.slice(0, FULL_PITCH_CELL_MAX),
+        TRUNCATED_SEE_FULLTEXT_SUFFIX,
+      );
+    }
+    data.push({
+      range: cellRange("thesis_short", u.rowNumber),
+      values: [[safeCell(truncateToSheetCell(u.thesis_short))]],
+    });
+    data.push({
+      range: cellRange("full_pitch", u.rowNumber),
+      values: [[safeCell(truncateToSheetCell(pitch))]],
+    });
+    if (u.source_url !== undefined) {
+      data.push({
+        range: cellRange("source_url", u.rowNumber),
+        values: [[safeCell(truncateToSheetCell(u.source_url))]],
+      });
+    }
+    if (u.ticker !== undefined) {
+      data.push({
+        range: cellRange("ticker", u.rowNumber),
+        values: [[safeCell(u.ticker)]],
+      });
+    }
+    if (u.exchange_country !== undefined) {
+      data.push({
+        range: cellRange("exchange_country", u.rowNumber),
+        values: [[safeCell(u.exchange_country)]],
+      });
+    }
+    if (u.company !== undefined) {
+      data.push({
+        range: cellRange("company", u.rowNumber),
+        values: [[safeCell(u.company)]],
+      });
+    }
+  }
+  await batchValueRanges(spreadsheetId, data, "RAW");
+  if (overflowIds.length > 0) {
+    await replaceFullTextRows(
+      spreadsheetId,
+      overflow.filter((o) => overflowIds.includes(o.row_id)),
+    );
+  }
+}
+
+export async function replaceFullTextRows(
+  spreadsheetId: string,
+  items: { row_id: string; full_pitch: string }[],
+): Promise<void> {
+  if (items.length === 0) return;
+  await ensureFullTextTab(spreadsheetId);
+  const sheets = await sheetsClient();
+  const { sheetId } = await fullTextSheetMeta(spreadsheetId);
+  const existing = await sheets.spreadsheets.values.get({
+    spreadsheetId,
+    range: `${FULL_TEXT_TAB}!A:B`,
+  });
+  const lines = existing.data.values ?? [];
+  const ids = new Set(items.map((i) => i.row_id));
+  const deleteRows: number[] = [];
+  lines.forEach((line, idx) => {
+    if (idx === 0) return;
+    const rid = String(line[0] ?? "");
+    if (ids.has(rid)) deleteRows.push(idx + 1);
+  });
+  if (sheetId !== undefined && deleteRows.length > 0) {
+    const sorted = [...deleteRows].sort((a, b) => b - a);
+    await sheets.spreadsheets.batchUpdate({
+      spreadsheetId,
+      requestBody: {
+        requests: sorted.map((rowNumber) => ({
+          deleteDimension: {
+            range: {
+              sheetId,
+              dimension: "ROWS",
+              startIndex: rowNumber - 1,
+              endIndex: rowNumber,
+            },
+          },
+        })),
+      },
+    });
+  }
+  await sheets.spreadsheets.values.append({
+    spreadsheetId,
+    range: `${FULL_TEXT_TAB}!A:A`,
+    valueInputOption: "RAW",
+    insertDataOption: "INSERT_ROWS",
+    requestBody: {
+      values: items.flatMap((o) =>
+        splitTextForSheetCells(o.full_pitch).map((part) => [o.row_id, part]),
+      ),
+    },
+  });
 }
 
 export async function updateMetricCells(

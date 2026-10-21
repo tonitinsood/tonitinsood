@@ -29,9 +29,12 @@ When extracting pitches (JSON), **always populate `pitched_by`** when the author
 
 ### Shortlist and archive
 
-- **`shortlisted`** (checkbox): research queue — row is **not** purged after 7 days.
-- **`archived`** (checkbox): done/dismissed — row is **kept** but out of the active queue; also exempt from purge.
-- Purge applies only when **both** checkboxes are false and the row is older than 7 days by `discovered_at`.
+- **`shortlisted`** and **`archived`** are real **Google Sheets checkboxes** (tick marks you can click). The daily job applies checkbox data validation; `TRUE`/`FALSE` text is converted to ticks.
+- Tick **`shortlisted`** to put a row in the research queue — it is **not** purged after 7 days.
+- Tick **`archived`** when you are done/dismissed — the row is **kept** but out of the active queue; also exempt from purge.
+- Purge applies only when **both** boxes are unticked and the row is older than 7 days by `discovered_at`.
+
+`full_pitch` must be human-readable article/letter/filing text (never raw PDF bytes). If a PDF is scanned, the cell is a short note plus `source_url`.
 
 Long `full_pitch` text may overflow to the **`FullText`** tab keyed by `row_id`.
 

@@ -3,7 +3,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import Parser from "rss-parser";
 import type { IngestDocument, SourceType } from "../types.js";
-import { fetchText, stripHtml } from "./fetch.js";
+import { readableDocsFromUrl } from "./fetch.js";
+import { extractArticleText } from "./html.js";
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../");
 
@@ -33,18 +34,21 @@ export async function ingestLetters(): Promise<IngestDocument[]> {
   const out: IngestDocument[] = [];
   for (const letter of cfg.letters) {
     try {
-      const raw = await fetchText(letter.url);
-      const body =
-        letter.type === "html" ? stripHtml(raw).slice(0, 80_000) : raw.slice(0, 80_000);
-      out.push({
-        source_type: "letter",
-        source_name: letter.name,
-        pitched_by: letter.pitched_by ?? letter.name,
-        source_url: letter.url,
-        date: new Date().toISOString().slice(0, 10),
-        title: letter.name,
-        body,
+      const docs = await readableDocsFromUrl(letter.url, {
+        followHub: true,
+        titleHint: letter.name,
       });
+      for (const doc of docs) {
+        out.push({
+          source_type: "letter",
+          source_name: letter.name,
+          pitched_by: letter.pitched_by ?? letter.name,
+          source_url: doc.source_url,
+          date: new Date().toISOString().slice(0, 10),
+          title: doc.title || letter.name,
+          body: doc.body.slice(0, 80_000),
+        });
+      }
     } catch {
       /* skip */
     }
@@ -63,13 +67,14 @@ export async function ingestSubstack(): Promise<IngestDocument[]> {
         let body = item.contentSnippet ?? item.content ?? item.summary ?? "";
         if (link) {
           try {
-            const html = await fetchText(link);
-            body = stripHtml(html).slice(0, 60_000) || body;
+            const docs = await readableDocsFromUrl(link, { titleHint: item.title ?? pub.name });
+            body = docs[0]?.body.slice(0, 60_000) || body;
           } catch {
             /* keep snippet */
           }
         }
         const author = item.creator ?? item.author ?? pub.pitched_by ?? pub.name;
+        const snippet = extractArticleText(String(body));
         out.push({
           source_type: "substack",
           source_name: pub.name,
@@ -77,7 +82,7 @@ export async function ingestSubstack(): Promise<IngestDocument[]> {
           source_url: link,
           date: item.isoDate ?? new Date().toISOString(),
           title: item.title ?? pub.name,
-          body: `${item.title ?? ""}\n\n${body}`.trim(),
+          body: `${item.title ?? ""}\n\n${snippet}`.trim(),
         });
       }
     } catch {
@@ -112,8 +117,8 @@ export async function ingestSec(): Promise<IngestDocument[]> {
       let body = item.contentSnippet ?? item.summary ?? title;
       try {
         if (link) {
-          const html = await fetchText(link);
-          body = stripHtml(html).slice(0, 60_000) || body;
+          const docs = await readableDocsFromUrl(link, { titleHint: title });
+          body = docs[0]?.body.slice(0, 60_000) || body;
         }
       } catch {
         /* keep snippet */
@@ -154,7 +159,9 @@ export async function ingestX(): Promise<IngestDocument[]> {
           source_url: link,
           date: item.isoDate ?? new Date().toISOString(),
           title: item.title ?? display,
-          body: item.contentSnippet ?? item.content ?? item.title ?? "",
+          body: extractArticleText(
+            String(item.contentSnippet ?? item.content ?? item.title ?? ""),
+          ),
         });
       }
     } catch {
