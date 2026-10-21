@@ -148,22 +148,37 @@ export function discoverChildUrls(html: string, baseUrl: string): string[] {
   return found.slice(0, 8);
 }
 
-/** SEC index pages: prefer the actual filing .htm/.txt over the wrapper. */
-export function discoverSecFilingUrl(
-  html: string,
-  baseUrl: string,
-): string | undefined {
+function secDocHrefs(html: string, baseUrl: string): string[] {
   const hrefs = [...html.matchAll(/href=["']([^"']+)["']/gi)].map(
     (m) => m[1] ?? "",
   );
+  const out: string[] = [];
+  const seen = new Set<string>();
   for (const href of hrefs) {
     if (!/\.(htm|html|txt)(?:$|\?)/i.test(href)) continue;
     if (/index\.|header\.|xslF/i.test(href)) continue;
     if (!/\/Archives\/edgar\//i.test(href) && !/\.txt$/i.test(href)) continue;
     const abs = absUrl(href, baseUrl);
-    if (abs) return abs;
+    if (!abs || seen.has(abs)) continue;
+    seen.add(abs);
+    out.push(abs);
   }
-  return undefined;
+  return out;
+}
+
+/** SEC index pages: prefer the actual filing .htm/.txt over the wrapper. */
+export function discoverSecFilingUrl(
+  html: string,
+  baseUrl: string,
+): string | undefined {
+  return secDocHrefs(html, baseUrl)[0];
+}
+
+/** Exhibit letters (EX-99) often carry the activist thesis. */
+export function discoverSecExhibitUrls(html: string, baseUrl: string): string[] {
+  return secDocHrefs(html, baseUrl).filter((u) =>
+    /ex[-_]?99|ex99|exhibit/i.test(u),
+  );
 }
 
 export function isHubPage(html: string, articleText: string): boolean {

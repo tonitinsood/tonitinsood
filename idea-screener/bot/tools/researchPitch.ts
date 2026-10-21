@@ -1,7 +1,7 @@
 import { defineTool } from "@cursor/bdk/tools";
 import * as z from "zod/v4";
 import { KV, kvGet } from "../lib/kv.js";
-import { getRowById, spreadsheetIdFromEnv } from "../lib/sheets.js";
+import { getRowById, readFullTextForRow, spreadsheetIdFromEnv } from "../lib/sheets.js";
 
 export default defineTool({
   description:
@@ -24,6 +24,8 @@ export default defineTool({
     if (!row) {
       return { error: "not_found", row_id };
     }
+    const overflow = await readFullTextForRow(spreadsheetId, row_id);
+    const fullPitch = overflow.trim() || row.full_pitch;
     return {
       row_id: row.row_id,
       ticker: row.ticker,
@@ -33,7 +35,7 @@ export default defineTool({
       source_name: row.source_name,
       pitched_by: row.pitched_by,
       thesis_short: row.thesis_short,
-      full_pitch: row.full_pitch.slice(0, 12_000),
+      full_pitch: fullPitch,
       metrics: {
         pe: row.pe,
         ev_ebit: row.ev_ebit,

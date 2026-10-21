@@ -1,18 +1,15 @@
 import type { ToolContext } from "@cursor/bdk";
 import type { sheets_v4 } from "googleapis";
 import {
-  FULL_PITCH_CELL_MAX,
   FULL_TEXT_TAB,
   PITCHES_TAB,
   PITCH_HEADERS,
   SHEET_TITLE,
 } from "./columns.js";
 import {
-  SHEETS_CELL_CHAR_MAX,
+  pitchesTabFullPitchCell,
   splitTextForSheetCells,
   truncateToSheetCell,
-  TRUNCATED_SEE_FULLTEXT_SUFFIX,
-  TRUNCATED_SEE_SOURCE_SUFFIX,
 } from "./sheet-cells.js";
 import { sheetsClient } from "./google-auth.js";
 import { KV, kvGet, kvPut } from "./kv.js";
@@ -61,9 +58,6 @@ function rowToValues(row: PitchRow): string[] {
     if (typeof v === "boolean") return v ? "TRUE" : "FALSE";
     const s = v ?? "";
     if (typeof s === "string") {
-      if (key === "full_pitch" && s.length > SHEETS_CELL_CHAR_MAX) {
-        return safeCell(truncateToSheetCell(s, TRUNCATED_SEE_SOURCE_SUFFIX));
-      }
       return safeCell(truncateToSheetCell(s));
     }
     return safeCell(String(s));
@@ -416,15 +410,13 @@ export async function appendPitchRows(
   const sheets = await sheetsClient();
   const values = rows.map((r) => {
     const copy = { ...r };
-    if (copy.full_pitch.length > FULL_PITCH_CELL_MAX) {
+    const formatted = pitchesTabFullPitchCell(copy.full_pitch, copy.row_id);
+    copy.full_pitch = formatted.cell;
+    if (formatted.parts.length > 0) {
       overflow.push({
         row_id: copy.row_id,
-        full_pitch: copy.full_pitch,
+        full_pitch: r.full_pitch,
       });
-      copy.full_pitch = truncateToSheetCell(
-        copy.full_pitch.slice(0, FULL_PITCH_CELL_MAX),
-        TRUNCATED_SEE_FULLTEXT_SUFFIX,
-      );
     }
     return rowToValues(copy);
   });
@@ -493,14 +485,11 @@ export async function updatePitchNarratives(
   const data: sheets_v4.Schema$ValueRange[] = [];
   const overflowIds: string[] = [];
   for (const u of updates) {
-    let pitch = u.full_pitch;
-    if (pitch.length > FULL_PITCH_CELL_MAX) {
-      overflow.push({ row_id: u.row_id, full_pitch: pitch });
+    const formatted = pitchesTabFullPitchCell(u.full_pitch, u.row_id);
+    let pitch = formatted.cell;
+    if (formatted.parts.length > 0) {
+      overflow.push({ row_id: u.row_id, full_pitch: u.full_pitch });
       overflowIds.push(u.row_id);
-      pitch = truncateToSheetCell(
-        pitch.slice(0, FULL_PITCH_CELL_MAX),
-        TRUNCATED_SEE_FULLTEXT_SUFFIX,
-      );
     }
     data.push({
       range: cellRange("thesis_short", u.rowNumber),
@@ -675,4 +664,70 @@ export async function getRowById(
 ): Promise<PitchRow | undefined> {
   const { rows } = await readAllPitchRows(spreadsheetId);
   return rows.find((r) => r.row_id === rowId);
+}
+
+/** Concatenate FullText parts for a row; empty string if none. */
+export async function readFullTextForRow(
+  spreadsheetId: string,
+  rowId: string,
+): Promise<string> {
+  try {
+    const sheets = await sheetsClient();
+    const existing = await sheets.spreadsheets.values.get({
+      spreadsheetId,
+      range: `${FULL_TEXT_TAB}!A:B`,
+    });
+    const lines = existing.data.values ?? [];
+    const chunks: string[] = [];
+    for (let i = 1; i < lines.length; i++) {
+      const rid = String(lines[i]?.[0] ?? "");
+      if (rid !== rowId) continue;
+      const part = String(lines[i]?.[1] ?? "").replace(/^\[part \d+\/\d+\]\n/, "");
+      chunks.push(part);
+    }
+    return chunks.join("");
+  } catch {
+    return "";
+  }
+}
+
+export async function deleteFullTextForRowIds(
+  spreadsheetId: string,
+  rowIds: string[],
+): Promise<number> {
+  if (rowIds.length === 0) return 0;
+  await ensureFullTextTab(spreadsheetId);
+  const sheets = await sheetsClient();
+  const { sheetId } = await fullTextSheetMeta(spreadsheetId);
+  if (sheetId === undefined) return 0;
+  const existing = await sheets.spreadsheets.values.get({
+    spreadsheetId,
+    range: `${FULL_TEXT_TAB}!A:B`,
+  });
+  const lines = existing.data.values ?? [];
+  const ids = new Set(rowIds);
+  const deleteRows: number[] = [];
+  lines.forEach((line, idx) => {
+    if (idx === 0) return;
+    const rid = String(line[0] ?? "");
+    if (ids.has(rid)) deleteRows.push(idx + 1);
+  });
+  if (deleteRows.length === 0) return 0;
+  const sorted = [...deleteRows].sort((a, b) => b - a);
+  await sheets.spreadsheets.batchUpdate({
+    spreadsheetId,
+    requestBody: {
+      requests: sorted.map((rowNumber) => ({
+        deleteDimension: {
+          range: {
+            sheetId,
+            dimension: "ROWS",
+            startIndex: rowNumber - 1,
+            endIndex: rowNumber,
+          },
+        },
+      })),
+    },
+  });
+  return deleteRows.length;
 }

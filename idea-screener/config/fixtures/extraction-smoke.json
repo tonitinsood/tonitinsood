@@ -1,16 +1,16 @@
 {
   "pitches": [
     {
-      "date": "2026-01-15",
+      "date": "2026-10-21",
       "source_type": "substack",
-      "source_name": "Net Interest",
-      "pitched_by": "Marc Rubinstein",
-      "ticker": "AAPL",
-      "exchange_country": "US",
-      "company": "Apple Inc.",
-      "thesis_short": "Example fixture pitch for eval smoke tests.",
-      "full_pitch": "Full narrative text would appear here in production extraction.",
-      "source_url": "https://example.com/net-interest/aapl-note"
+      "source_name": "8% Value Activist",
+      "pitched_by": "8percentpa",
+      "ticker": "4704.T",
+      "exchange_country": "Japan",
+      "company": "Trend Micro",
+      "thesis_short": "Activist-catalyzed take-private optionality with a high free-cash-flow yield.",
+      "full_pitch": "Trend Micro remains undervalued after last year's activist-catalyzed take-private attempt. Buybacks and a second bid are the catalysts.",
+      "source_url": "https://example.com/8percentpa/trend-micro"
     }
   ]
 }

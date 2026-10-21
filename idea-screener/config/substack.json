@@ -1,14 +1,46 @@
 {
   "substacks": [
     {
-      "name": "Net Interest",
-      "feed_url": "https://www.netinterest.co/feed",
-      "pitched_by": "Marc Rubinstein"
+      "name": "8% Value Activist",
+      "feed_url": "https://8percentpa.substack.com/feed",
+      "pitched_by": "8percentpa",
+      "default_country": "Japan",
+      "max_items": 6
     },
     {
-      "name": "SemiAnalysis",
-      "feed_url": "https://www.semianalysis.com/feed",
-      "pitched_by": "SemiAnalysis team"
+      "name": "The 13D Report",
+      "feed_url": "https://the13dreport.substack.com/feed",
+      "pitched_by": "Raghuraman",
+      "default_country": "US",
+      "max_items": 3
+    },
+    {
+      "name": "Motley Fool UK",
+      "feed_url": "https://www.fool.co.uk/feed/",
+      "pitched_by": "Motley Fool UK",
+      "default_country": "UK",
+      "max_items": 5
+    },
+    {
+      "name": "Motley Fool Australia",
+      "feed_url": "https://www.fool.com.au/feed/",
+      "pitched_by": "Motley Fool Australia",
+      "default_country": "Australia",
+      "max_items": 5
+    },
+    {
+      "name": "SmallCapPower",
+      "feed_url": "https://www.smallcappower.com/feed/",
+      "pitched_by": "SmallCapPower",
+      "default_country": "Canada",
+      "max_items": 4
+    },
+    {
+      "name": "Capitalmind",
+      "feed_url": "https://www.capitalmind.in/feed",
+      "pitched_by": "Capitalmind",
+      "default_country": "India",
+      "max_items": 5
     }
   ]
 }

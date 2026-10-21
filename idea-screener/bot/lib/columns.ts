@@ -28,5 +28,4 @@ export const PITCHES_TAB = "Pitches";
 export const FULL_TEXT_TAB = "FullText";
 export const SHEET_TITLE = "Stock Idea Screener";
 
-/** Google Sheets cell limit (~50k); overflow longer text to `FullText`. */
-export const FULL_PITCH_CELL_MAX = 45000;
+export { FULL_PITCH_CELL_MAX } from "./sheet-cells.js";
