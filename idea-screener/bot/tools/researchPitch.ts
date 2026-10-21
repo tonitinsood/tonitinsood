@@ -1,7 +1,7 @@
 import { defineTool } from "@cursor/bdk/tools";
 import * as z from "zod/v4";
 import { KV, kvGet } from "../lib/kv.js";
-import { getRowById } from "../lib/sheets.js";
+import { getRowById, spreadsheetIdFromEnv } from "../lib/sheets.js";
 
 export default defineTool({
   description:
@@ -11,12 +11,13 @@ export default defineTool({
     row_id: z.string().uuid().describe("Stable row_id from the Pitches sheet"),
   }),
   async execute({ row_id }, ctx) {
-    const spreadsheetId = await kvGet<string>(ctx, KV.sheetId);
+    const spreadsheetId =
+      spreadsheetIdFromEnv() ?? (await kvGet<string>(ctx, KV.sheetId));
     if (!spreadsheetId) {
       return {
         error: "no_sheet",
         message:
-          "SHEET_ID is not in host.kv yet. Run runDailyScreen once after Google credentials are configured.",
+          "Set Google_Sheet_Id (or GOOGLE_SHEET_ID) to your shared spreadsheet, or run runDailyScreen once so host.kv stores screener:sheet_id.",
       };
     }
     const row = await getRowById(spreadsheetId, row_id);

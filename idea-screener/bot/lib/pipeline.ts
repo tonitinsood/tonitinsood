@@ -2,10 +2,10 @@ import { randomUUID } from "node:crypto";
 import type { ToolContext } from "@cursor/bdk";
 import {
   appendPitchRows,
-  createMasterSpreadsheet,
   deleteSheetRows,
   ensurePitchHeaders,
   readAllPitchRows,
+  resolveOrCreateSpreadsheetId,
   updateMetricCells,
 } from "./sheets.js";
 import { extractPitchesHeuristic } from "./extract-heuristic.js";
@@ -29,11 +29,7 @@ export async function runDailyScreenPipeline(
   opts: { dryRun?: boolean } = {},
 ): Promise<DailyScreenResult> {
   const dryRun = opts.dryRun ?? false;
-  let spreadsheetId = await kvGet<string>(ctx, KV.sheetId);
-  if (!spreadsheetId && !dryRun) {
-    spreadsheetId = await createMasterSpreadsheet();
-    await kvPut(ctx, KV.sheetId, spreadsheetId);
-  }
+  let spreadsheetId = await resolveOrCreateSpreadsheetId(ctx, dryRun);
   if (!spreadsheetId) {
     spreadsheetId = "dry-run-no-sheet";
   } else if (!dryRun) {

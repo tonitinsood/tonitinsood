@@ -1,3 +1,4 @@
+import type { ToolContext } from "@cursor/bdk";
 import type { sheets_v4 } from "googleapis";
 import {
   FULL_PITCH_CELL_MAX,
@@ -7,7 +8,39 @@ import {
   SHEET_TITLE,
 } from "./columns.js";
 import { sheetsClient } from "./google-auth.js";
+import { KV, kvGet, kvPut } from "./kv.js";
 import type { PitchRow } from "./types.js";
+
+/** Spreadsheet ID from env (`Google_Sheet_Id` or `GOOGLE_SHEET_ID`). Accepts raw ID or a Sheets URL. */
+export function spreadsheetIdFromEnv(): string | undefined {
+  const raw =
+    process.env.Google_Sheet_Id?.trim() ||
+    process.env.GOOGLE_SHEET_ID?.trim();
+  if (!raw) return undefined;
+  const fromUrl = raw.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+  return (fromUrl?.[1] ?? raw).trim() || undefined;
+}
+
+/**
+ * Resolve spreadsheet: env → KV → create (live only).
+ * Persists env/KV-discovered id into KV for later tools and hosted runs.
+ */
+export async function resolveOrCreateSpreadsheetId(
+  ctx: Pick<ToolContext, "host">,
+  dryRun: boolean,
+): Promise<string | undefined> {
+  const fromEnv = spreadsheetIdFromEnv();
+  if (fromEnv) {
+    await kvPut(ctx, KV.sheetId, fromEnv);
+    return fromEnv;
+  }
+  const fromKv = await kvGet<string>(ctx, KV.sheetId);
+  if (fromKv) return fromKv;
+  if (dryRun) return undefined;
+  const created = await createMasterSpreadsheet();
+  await kvPut(ctx, KV.sheetId, created);
+  return created;
+}
 
 function rowToValues(row: PitchRow): string[] {
   return PITCH_HEADERS.map((key) => {
@@ -87,12 +120,39 @@ export async function createMasterSpreadsheet(): Promise<string> {
 export async function ensurePitchHeaders(spreadsheetId: string): Promise<void> {
   const sheets = await sheetsClient();
   const headerRange = `${PITCHES_TAB}!A1:${colLetter(PITCH_HEADERS.length)}1`;
-  await sheets.spreadsheets.values.update({
+  const res = await sheets.spreadsheets.values.get({
     spreadsheetId,
     range: headerRange,
-    valueInputOption: "RAW",
-    requestBody: { values: [PITCH_HEADERS as string[]] },
   });
+  const row = (res.data.values?.[0] ?? []) as string[];
+  const isEmpty =
+    row.length === 0 || row.every((c) => !String(c ?? "").trim());
+  const expected = PITCH_HEADERS as string[];
+
+  if (isEmpty) {
+    await sheets.spreadsheets.values.update({
+      spreadsheetId,
+      range: headerRange,
+      valueInputOption: "RAW",
+      requestBody: { values: [expected] },
+    });
+    return;
+  }
+
+  const mismatches: string[] = [];
+  expected.forEach((h, i) => {
+    const got = String(row[i] ?? "").trim();
+    if (got !== h) {
+      mismatches.push(
+        `column ${i + 1}: expected "${h}", got "${got || "(empty)"}"`,
+      );
+    }
+  });
+  if (mismatches.length > 0) {
+    throw new Error(
+      `Pitches tab row 1 must match the screener headers (or be blank for auto-setup). ${mismatches.slice(0, 4).join("; ")}${mismatches.length > 4 ? "…" : ""}`,
+    );
+  }
 }
 
 function colLetter(n: number): string {
