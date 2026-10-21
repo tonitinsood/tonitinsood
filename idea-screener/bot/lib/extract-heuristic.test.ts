@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { findTickers, isJunkTicker } from "./extract-heuristic.js";
-import { canonicalSourceUrl, dedupeKey } from "./kv.js";
+import { canonicalSourceUrl, dedupeKey, sourceUrlSlug } from "./kv.js";
 
 test("junk PDF tokens are not tickers", () => {
   const blob = "%PDF-1.6 86 0 obj /Type /Catalog endobj startxref %%EOF ID GB US";
@@ -20,6 +20,14 @@ test("canonicalSourceUrl treats www and trailing slash as the same page", () => 
   );
   assert.equal(a, b);
   assert.equal(dedupeKey(a, "AMD"), dedupeKey(b, "amd"));
+  assert.equal(
+    sourceUrlSlug(
+      "https://newsletter.semianalysis.com/p/xais-colossus-2-first-gigawatt-datacenter",
+    ),
+    sourceUrlSlug(
+      "https://semianalysis.com/2025/09/16/xais-colossus-2-first-gigawatt-datacenter/",
+    ),
+  );
 });
 
 test("real tickers are kept; two-letter junk is not", () => {

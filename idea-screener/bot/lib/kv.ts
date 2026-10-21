@@ -45,6 +45,21 @@ export function dedupeKey(sourceUrl: string, ticker: string): string {
   return `${canonicalSourceUrl(sourceUrl)}|${ticker.trim().toUpperCase()}`;
 }
 
+/**
+ * Last path segment, so Substack `/p/slug` and the redirected
+ * `semianalysis.com/2025/09/16/slug` count as the same document.
+ */
+export function sourceUrlSlug(url: string): string {
+  const c = canonicalSourceUrl(url);
+  try {
+    const u = new URL(c);
+    const parts = u.pathname.split("/").filter(Boolean);
+    return (parts.at(-1) ?? "").toLowerCase();
+  } catch {
+    return "";
+  }
+}
+
 export function metricCacheKey(ticker: string, dayIso: string): string {
   return `${ticker.toUpperCase()}|${dayIso.slice(0, 10)}`;
 }
