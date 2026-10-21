@@ -1,0 +1,51 @@
+import { defineTool } from "@cursor/bdk/tools";
+import * as z from "zod/v4";
+import { KV, kvGet } from "../lib/kv.js";
+import { getRowById } from "../lib/sheets.js";
+
+export default defineTool({
+  description:
+    "Load a pitch row from the master Google Sheet by row_id and return a structured brief for deep research (thesis, metrics, source, pitched_by, links).",
+  effect: "read",
+  inputSchema: z.object({
+    row_id: z.string().uuid().describe("Stable row_id from the Pitches sheet"),
+  }),
+  async execute({ row_id }, ctx) {
+    const spreadsheetId = await kvGet<string>(ctx, KV.sheetId);
+    if (!spreadsheetId) {
+      return {
+        error: "no_sheet",
+        message:
+          "SHEET_ID is not in host.kv yet. Run runDailyScreen once after Google credentials are configured.",
+      };
+    }
+    const row = await getRowById(spreadsheetId, row_id);
+    if (!row) {
+      return { error: "not_found", row_id };
+    }
+    return {
+      row_id: row.row_id,
+      ticker: row.ticker,
+      company: row.company,
+      date: row.date,
+      source_type: row.source_type,
+      source_name: row.source_name,
+      pitched_by: row.pitched_by,
+      thesis_short: row.thesis_short,
+      full_pitch: row.full_pitch.slice(0, 12_000),
+      metrics: {
+        pe: row.pe,
+        ev_ebit: row.ev_ebit,
+        roic: row.roic,
+        net_debt_ebitda: row.net_debt_ebitda,
+        metrics_source: row.metrics_source,
+      },
+      source_url: row.source_url,
+      shortlisted: row.shortlisted,
+      archived: row.archived,
+      notes: row.notes,
+      research_prompt:
+        "Produce a research brief: business overview, moat, catalysts, bear case, and comps. Use pitched_by as the advocate; source_name as the outlet/fund.",
+    };
+  },
+});

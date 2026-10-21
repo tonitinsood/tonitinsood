@@ -1,0 +1,16 @@
+{
+  "pitches": [
+    {
+      "date": "2026-01-15",
+      "source_type": "substack",
+      "source_name": "Net Interest",
+      "pitched_by": "Marc Rubinstein",
+      "ticker": "AAPL",
+      "exchange_country": "US",
+      "company": "Apple Inc.",
+      "thesis_short": "Example fixture pitch for eval smoke tests.",
+      "full_pitch": "Full narrative text would appear here in production extraction.",
+      "source_url": "https://example.com/net-interest/aapl-note"
+    }
+  ]
+}
