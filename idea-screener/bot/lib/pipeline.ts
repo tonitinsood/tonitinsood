@@ -41,6 +41,14 @@ export async function runDailyScreenPipeline(
   const metricCache =
     (await kvGet<Record<string, MetricSnapshot>>(ctx, KV.metricCache)) ?? {};
 
+  if (spreadsheetId !== "dry-run-no-sheet") {
+    const { rows: existingRows } = await readAllPitchRows(spreadsheetId);
+    for (const row of existingRows) {
+      if (!row.ticker?.trim() || !row.source_url?.trim()) continue;
+      dedupeSet[dedupeKey(row.source_url, row.ticker)] = true;
+    }
+  }
+
   const docs = await ingestAllSources();
   const nowIso = new Date().toISOString();
   const day = nowIso.slice(0, 10);
