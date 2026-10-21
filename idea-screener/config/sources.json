@@ -1,8 +1,8 @@
 {
-  "description": "Seed source registry for idea-screener v1",
+  "description": "Pitch-only source registry. Rows require a named ticker or company plus an investment thesis. Prefer non-US listings.",
   "letters": "config/letters.json",
   "substack": "config/substack.json",
   "sec": "config/sec.json",
   "x": "config/x-watchlist.json",
-  "notes": "Expand these JSON files with your own feeds. pitched_by on letters/substack seeds the person; X uses display_name when syndication works."
+  "notes": "Do not seed whole annual letters (Berkshire, Marks memos). Use feeds that name stocks. pitched_by is the person; source_name is the outlet."
 }

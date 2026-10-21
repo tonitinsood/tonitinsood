@@ -1,10 +1,16 @@
 /** Google Sheets hard limit per cell. */
 export const SHEETS_CELL_CHAR_MAX = 50_000;
 
-export const TRUNCATED_SEE_SOURCE_SUFFIX = "[truncated — see source_url]";
-export const TRUNCATED_SEE_FULLTEXT_SUFFIX = "… [see FullText tab]";
+/** Keep a readable excerpt on Pitches; the rest lives on FullText. */
+export const FULL_PITCH_CELL_MAX = 45_000;
 
-const PART_HEADER_RESERVE = 32;
+const PART_HEADER_RESERVE = 40;
+
+export function fullTextPointer(rowId: string, partCount: number): string {
+  const parts =
+    partCount <= 1 ? "1 part" : `parts 1–${partCount}`;
+  return `\n\n---\nComplete pitch is in the FullText tab (${parts}, row_id ${rowId}). This cell is an excerpt; nothing was dropped.`;
+}
 
 /** Clamp text so the result fits in one Sheets cell (including optional suffix). */
 export function truncateToSheetCell(text: string, suffix = ""): string {
@@ -33,4 +39,42 @@ export function splitTextForSheetCells(text: string): string[] {
     const header = n > 1 ? `[part ${i + 1}/${n}]\n` : "";
     return header + chunk;
   });
+}
+
+export type PitchesPitchCell = {
+  /** Readable excerpt (or the full pitch if it fits). Never "[truncated]" alone. */
+  cell: string;
+  /** Complete pitch, split for FullText. Empty when the Pitches cell holds everything. */
+  parts: string[];
+};
+
+/**
+ * Pitches tab shows a readable excerpt plus a pointer to FullText parts
+ * when the complete pitch is longer than one cell.
+ */
+export function pitchesTabFullPitchCell(
+  fullPitch: string,
+  rowId: string,
+): PitchesPitchCell {
+  const text = fullPitch ?? "";
+  if (!text.trim()) {
+    return { cell: "", parts: [] };
+  }
+  if (text.length <= FULL_PITCH_CELL_MAX) {
+    return { cell: text, parts: [] };
+  }
+  const parts = splitTextForSheetCells(text);
+  const pointer = fullTextPointer(rowId, parts.length);
+  const excerptMax = Math.min(
+    FULL_PITCH_CELL_MAX,
+    SHEETS_CELL_CHAR_MAX - pointer.length,
+  );
+  const excerpt = text.slice(0, Math.max(1, excerptMax));
+  return { cell: excerpt + pointer, parts };
+}
+
+export function cellIsTruncationOnly(text: string): boolean {
+  const t = text.trim();
+  if (!t) return false;
+  return /^\[truncated[^\]]*\]$/i.test(t);
 }

@@ -1,6 +1,6 @@
 # idea-screener (BDK)
 
-Daily **stock idea screener** agent: ingests investor letters, SEC 13D/13G/8-K, Substack RSS, and X (best-effort), writes pitches to a master Google Sheet, enriches **P/E, EV/EBIT, ROIC, Net debt/EBITDA** via FMP + yfinance, and supports deep-research chat on shortlisted rows.
+Daily **stock idea screener** agent: ingests **named stock pitches** (ticker or company + thesis) from public feeds (activist 13Ds, idea Substacks, IR/letter RSS, X best-effort), writes them to a master Google Sheet, enriches **P/E, EV/EBIT, ROIC, Net debt/EBITDA** via FMP + yfinance, and supports deep-research chat on shortlisted rows. Prefers **non-US** listings. Skips general letters and commentary.
 
 ## What it does
 
@@ -47,8 +47,9 @@ npx --yes "@cursor/bdk@0.2.27" call runDailyScreen --dir . --input '{"dryRun":tr
 
 ## Config
 
-- `config/sources.json` — index of seed feeds
+- `config/sources.json` — index of pitch feeds
 - `config/letters.json`, `config/substack.json`, `config/sec.json`, `config/x-watchlist.json`
+- A document becomes a sheet row only if it names a ticker/company **and** states an investment thesis. Non-US names rank first. Long `full_pitch` text is stored in full (FullText parts if a cell would overflow).
 
 ## Evals
 

@@ -65,4 +65,6 @@ export type IngestDocument = {
   date: string;
   title: string;
   body: string;
+  /** Used when the document names a company but not a suffixed ticker. */
+  default_country?: string;
 };

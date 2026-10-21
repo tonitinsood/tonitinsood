@@ -1,4 +1,39 @@
 {
-  "edgar_atom_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&CIK=&type=8-k&company=&dateb=&owner=include&count=40&output=atom",
-  "keywords": ["agreement", "investment", "acquisition", "activist"]
+  "edgar_atom_urls": [
+    "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&CIK=&type=13D&company=&dateb=&owner=include&count=40&output=atom",
+    "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&CIK=&type=13G&company=&dateb=&owner=include&count=40&output=atom",
+    "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&CIK=&type=8-K&company=&dateb=&owner=include&count=40&output=atom"
+  ],
+  "activist_ciks": [
+    {
+      "name": "Pershing Square",
+      "cik": "0001336528",
+      "pitched_by": "Bill Ackman"
+    },
+    {
+      "name": "Elliott",
+      "cik": "0001791786",
+      "pitched_by": "Paul Singer"
+    },
+    {
+      "name": "Starboard Value",
+      "cik": "0001517137",
+      "pitched_by": "Jeff Smith"
+    },
+    {
+      "name": "ValueAct",
+      "cik": "0001135730",
+      "pitched_by": "ValueAct"
+    }
+  ],
+  "keywords_8k": [
+    "activist",
+    "going private",
+    "tender offer",
+    "strategic alternatives",
+    "board representation",
+    "cooperation agreement",
+    "letter to"
+  ],
+  "max_age_days": 14
 }

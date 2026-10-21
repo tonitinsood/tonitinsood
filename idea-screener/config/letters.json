@@ -1,22 +1,12 @@
 {
   "letters": [
     {
-      "name": "Berkshire Hathaway",
-      "url": "https://www.berkshirehathaway.com/letters/2023ltr.pdf",
-      "type": "pdf",
-      "pitched_by": "Warren Buffett"
-    },
-    {
-      "name": "Howard Marks Memos",
-      "url": "https://www.oaktreecapital.com/insights/memo",
-      "type": "html",
-      "pitched_by": "Howard Marks"
-    },
-    {
-      "name": "Baupost Group",
-      "url": "https://www.baupost.com/insights/",
-      "type": "html",
-      "pitched_by": "Seth Klarman"
+      "name": "Value and Opportunity",
+      "url": "https://valueandopportunity.com/feed/",
+      "type": "rss",
+      "pitched_by": "Ali",
+      "default_country": "Europe",
+      "max_items": 6
     }
   ]
 }

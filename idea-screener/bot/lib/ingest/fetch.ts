@@ -2,6 +2,7 @@ import {
   extractArticleText,
   extractTitle,
   discoverChildUrls,
+  discoverSecExhibitUrls,
   discoverSecFilingUrl,
   isHubPage,
 } from "./html.js";
@@ -15,6 +16,19 @@ import {
 const DEFAULT_MAX_BYTES = 8_000_000;
 const UA =
   "Mozilla/5.0 (compatible; idea-screener/1.0; +https://github.com/tonitinsood/tonitinsood)";
+/** SEC requires a descriptive UA with a contact; Mozilla-style UAs get 403. */
+const SEC_UA = "tonitinsood-idea-screener contact@tonitinsood.com";
+const BODY_CHAR_MAX = 400_000;
+
+function userAgentFor(url: string): string {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    if (host.endsWith("sec.gov")) return SEC_UA;
+  } catch {
+    /* keep default */
+  }
+  return UA;
+}
 
 export type FetchedBytes = {
   url: string;
@@ -35,7 +49,7 @@ export async function fetchBytes(
 ): Promise<FetchedBytes> {
   const res = await fetch(url, {
     headers: {
-      "User-Agent": UA,
+      "User-Agent": userAgentFor(url),
       Accept: "text/html,application/xhtml+xml,application/pdf;q=0.9,*/*;q=0.8",
       "Accept-Language": "en-US,en;q=0.9",
     },
@@ -80,7 +94,7 @@ async function pdfDoc(url: string, bytes: Buffer, titleHint: string): Promise<Re
   return {
     source_url: url,
     title: titleHint || extracted.slice(0, 80),
-    body: extracted.slice(0, 100_000),
+    body: extracted.slice(0, BODY_CHAR_MAX),
     kind: "pdf",
   };
 }
@@ -125,16 +139,41 @@ export async function readableDocsFromUrl(
   if (isHtml(fetched)) {
     const html = htmlString(fetched.bytes);
     const title = extractTitle(html) || titleHint;
-    const article = extractArticleText(html, "").slice(0, 100_000);
+    const article = extractArticleText(html, "").slice(0, BODY_CHAR_MAX);
 
     if (depth === 0) {
       const sec = discoverSecFilingUrl(html, fetched.url);
+      const exhibits = discoverSecExhibitUrls(html, fetched.url).slice(0, 3);
       if (sec && sec !== fetched.url) {
-        return readableDocsFromUrl(sec, {
+        const primary = await readableDocsFromUrl(sec, {
           followHub: false,
           titleHint: title,
           depth: 1,
         });
+        const extra: ReadableDoc[] = [];
+        for (const ex of exhibits.filter((u) => u !== sec)) {
+          extra.push(
+            ...(await readableDocsFromUrl(ex, {
+              followHub: false,
+              titleHint: `${title} exhibit`,
+              depth: 1,
+            })),
+          );
+        }
+        const usable = [...primary, ...extra].filter((d) => d.kind !== "unreadable");
+        if (usable.length === 0) return primary;
+        if (usable.length === 1) return usable;
+        return [
+          {
+            source_url: sec,
+            title,
+            body: usable
+              .map((d) => d.body)
+              .join("\n\n")
+              .slice(0, BODY_CHAR_MAX),
+            kind: usable[0]?.kind ?? "html",
+          },
+        ];
       }
     }
 
@@ -199,7 +238,7 @@ export async function readableDocsFromUrl(
     {
       source_url: fetched.url,
       title: titleHint,
-      body: text.slice(0, 100_000),
+      body: text.slice(0, BODY_CHAR_MAX),
       kind: "text",
     },
   ];
