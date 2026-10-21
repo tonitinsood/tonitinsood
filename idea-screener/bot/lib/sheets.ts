@@ -221,14 +221,21 @@ export async function ensureFullTextTab(spreadsheetId: string): Promise<void> {
 /**
  * Real Google Sheets checkboxes (BOOLEAN + showCustomUi) on shortlisted / archived.
  * Existing TRUE/FALSE text is rewritten as boolean values so they render as ticks.
+ *
+ * Apply only to rows that already have data. BOOLEAN validation on empty rows
+ * materializes FALSE checkboxes and inflates the sheet with blank rows.
  */
-export async function ensureCheckboxColumns(spreadsheetId: string): Promise<void> {
+export async function ensureCheckboxColumns(
+  spreadsheetId: string,
+  lastDataRow: number,
+): Promise<void> {
   const sheets = await sheetsClient();
   const sheetId = await pitchSheetId(spreadsheetId);
   if (sheetId === undefined) return;
+  const endRowIndex = Math.max(2, lastDataRow);
+  if (endRowIndex <= 1) return;
   const shortlistedCol = PITCH_HEADERS.indexOf("shortlisted");
   const archivedCol = PITCH_HEADERS.indexOf("archived");
-  const endRow = 2000;
   const boolRule = {
     condition: { type: "BOOLEAN" as const },
     strict: true,
@@ -243,7 +250,7 @@ export async function ensureCheckboxColumns(spreadsheetId: string): Promise<void
             range: {
               sheetId,
               startRowIndex: 1,
-              endRowIndex: endRow,
+              endRowIndex,
               startColumnIndex: shortlistedCol,
               endColumnIndex: shortlistedCol + 1,
             },
@@ -255,7 +262,7 @@ export async function ensureCheckboxColumns(spreadsheetId: string): Promise<void
             range: {
               sheetId,
               startRowIndex: 1,
-              endRowIndex: endRow,
+              endRowIndex,
               startColumnIndex: archivedCol,
               endColumnIndex: archivedCol + 1,
             },
@@ -305,11 +312,59 @@ export async function writeCheckboxValues(
   }
 }
 
+/** Drop trailing rows that have no row_id (usually empty checkbox shells). */
+export async function deleteRowsMissingRowId(spreadsheetId: string): Promise<number> {
+  const sheets = await sheetsClient();
+  const sheetId = await pitchSheetId(spreadsheetId);
+  if (sheetId === undefined) return 0;
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId,
+    range: `${PITCHES_TAB}!A2:A`,
+  });
+  const colA = res.data.values ?? [];
+  let firstEmpty = -1;
+  for (let i = 0; i < colA.length; i++) {
+    const rid = String(colA[i]?.[0] ?? "").trim();
+    if (!rid) {
+      if (firstEmpty < 0) firstEmpty = i;
+    } else if (firstEmpty >= 0) {
+      firstEmpty = -1;
+    }
+  }
+  const meta = await sheets.spreadsheets.get({ spreadsheetId });
+  const rowCount =
+    meta.data.sheets?.find((s) => s.properties?.title === PITCHES_TAB)
+      ?.properties?.gridProperties?.rowCount ?? colA.length + 1;
+  // If A is shorter than the grid, trailing rows are also empty.
+  const firstMissingIndex = firstEmpty >= 0 ? firstEmpty + 1 : colA.length + 1;
+  if (firstMissingIndex >= rowCount) return 0;
+  await sheets.spreadsheets.batchUpdate({
+    spreadsheetId,
+    requestBody: {
+      requests: [
+        {
+          deleteDimension: {
+            range: {
+              sheetId,
+              dimension: "ROWS",
+              startIndex: firstMissingIndex,
+              endIndex: rowCount,
+            },
+          },
+        },
+      ],
+    },
+  });
+  return rowCount - firstMissingIndex;
+}
+
 export async function ensureSpreadsheetLayout(spreadsheetId: string): Promise<void> {
   await ensurePitchHeaders(spreadsheetId);
   await ensureFullTextTab(spreadsheetId);
-  await ensureCheckboxColumns(spreadsheetId);
+  await deleteRowsMissingRowId(spreadsheetId);
   const { rows, rowNumbers } = await readAllPitchRows(spreadsheetId);
+  const lastDataRow = rowNumbers.at(-1) ?? 1;
+  await ensureCheckboxColumns(spreadsheetId, lastDataRow);
   await writeCheckboxValues(
     spreadsheetId,
     rows.map((row, i) => ({
@@ -344,6 +399,7 @@ export async function readAllPitchRows(
   const rowNumbers: number[] = [];
   data.forEach((line, idx) => {
     const cells = line as string[];
+    if (!String(cells[0] ?? "").trim()) return;
     if (!cells.some((c) => String(c).trim())) return;
     rows.push(valuesToRow(cells));
     rowNumbers.push(idx + 2);
