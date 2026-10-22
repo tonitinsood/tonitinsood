@@ -68,3 +68,23 @@ test("writeSite drops Quick take and adds independent Shortlist/Archive columns"
   assert.equal(json.letters[0].tickers[0], "MC.PA");
   fs.rmSync(siteDir, { recursive: true, force: true });
 });
+
+test("writeSite deletes unused PDFs and letter HTML", () => {
+  const siteDir = fs.mkdtempSync(path.join(os.tmpdir(), "letters-desk-"));
+  const staticDir = path.resolve(HERE, "../static");
+  const pdfDir = path.join(siteDir, "pdfs");
+  const lettersDir = path.join(siteDir, "letters");
+  fs.mkdirSync(pdfDir, { recursive: true });
+  fs.mkdirSync(lettersDir, { recursive: true });
+  fs.writeFileSync(path.join(pdfDir, "stale-2025.pdf"), "stale");
+  fs.writeFileSync(path.join(lettersDir, "stale-2025.html"), "<p>stale</p>");
+  writeSite({
+    siteDir,
+    staticDir,
+    letters: [sample],
+    cadence: "test",
+  });
+  assert.equal(fs.existsSync(path.join(pdfDir, "stale-2025.pdf")), false);
+  assert.equal(fs.existsSync(path.join(lettersDir, "stale-2025.html")), false);
+  fs.rmSync(siteDir, { recursive: true, force: true });
+});

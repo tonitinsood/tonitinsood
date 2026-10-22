@@ -1,5 +1,5 @@
 {
-  "comment": "Public IR / memo PDFs only. One row per letter: unique id and unique canonical pdf_url (no query clones). Add a fund by name + letter PDF or index URL. Do not scrape BuySideDigest or other paid archives.",
+  "comment": "Public IR / memo PDFs or HTML letters only. 2026 letters only (not 2025 annuals posted in 2026). One row per letter: unique id and unique canonical pdf_url. priority=true is Nitin's shortlist; priority=false is second-tier. status no_public_pdf / no_2026_letter when there is no 2026 official letter. Do not scrape BuySideDigest or other paid archives.",
   "blocked_hosts": [
     "buysidedigest.com",
     "www.buysidedigest.com",
@@ -11,129 +11,1794 @@
       "name": "Fundsmith Equity Fund",
       "manager": "Terry Smith",
       "region": "UK",
-      "index_url": "https://www.fundsmith.co.uk/documents/",
-      "pdf_url_include": "letter",
+      "letter_url": "https://www.fundsmith.co.uk/media/lfhpxi1x/2026-fef-semi-annual-letter-to-shareholders-web.pdf",
       "letters": [
         {
-          "id": "fundsmith-equity-2025-annual",
-          "title": "Annual Letter to Shareholders 2025",
-          "date": "2026-01-01",
-          "pdf_url": "https://www.fundsmith.co.uk/media/4hcfd1pg/2025-fef-annual-letter-web.pdf"
-        },
-        {
-          "id": "fundsmith-equity-2024-annual",
-          "title": "Annual Letter to Shareholders 2024",
-          "date": "2025-01-01",
-          "pdf_url": "https://www.fundsmith.co.uk/media/pirmvyly/annual-letter-to-shareholders-2024.pdf"
+          "id": "fundsmith-equity-2026-semi",
+          "title": "Semi Annual Letter to Shareholders 2026",
+          "date": "2026-06-30",
+          "pdf_url": "https://www.fundsmith.co.uk/media/lfhpxi1x/2026-fef-semi-annual-letter-to-shareholders-web.pdf",
+          "manager": "Terry Smith"
         }
-      ]
+      ],
+      "index_url": "https://www.fundsmith.co.uk/documents/",
+      "pdf_url_include": "letter"
     },
     {
       "id": "fundsmith-stewardship",
       "name": "Fundsmith Stewardship Fund",
       "manager": "Terry Smith",
       "region": "UK",
-      "index_url": "https://www.fundsmith.co.uk/fsf/documents/",
-      "pdf_url_include": "letter",
+      "letter_url": "https://www.fundsmith.co.uk/media/2zddb3q5/2026-fsf-semi-annual-letter-to-shareholders-web.pdf",
       "letters": [
         {
           "id": "fundsmith-stewardship-2026-semi",
           "title": "Semi Annual Letter to Shareholders 2026",
           "date": "2026-06-30",
-          "pdf_url": "https://www.fundsmith.co.uk/media/2zddb3q5/2026-fsf-semi-annual-letter-to-shareholders-web.pdf"
+          "pdf_url": "https://www.fundsmith.co.uk/media/2zddb3q5/2026-fsf-semi-annual-letter-to-shareholders-web.pdf",
+          "manager": "Terry Smith"
         }
-      ]
+      ],
+      "index_url": "https://www.fundsmith.co.uk/fsf/documents/",
+      "pdf_url_include": "letter"
     },
     {
       "id": "fairfax",
       "name": "Fairfax Financial",
       "manager": "Prem Watsa",
       "region": "Canada",
-      "index_url": "https://www.fairfax.ca/investors/",
-      "pdf_url_include": "Shareholders-Letter",
-      "letters": [
-        {
-          "id": "fairfax-2025-chairman",
-          "title": "Chairman's Letter to Shareholders 2025",
-          "date": "2026-03-01",
-          "pdf_url": "https://www.fairfax.ca/wp-content/uploads/2026/03/FFH_Fairfax-Financials-Shareholders-Letter-2025-with-attachments-092704.pdf"
-        },
-        {
-          "id": "fairfax-2024-chairman",
-          "title": "Chairman's Letter to Shareholders 2024",
-          "date": "2025-03-01",
-          "pdf_url": "https://www.fairfax.ca/wp-content/uploads/2025/03/FFH_Fairfax-Financials-Shareholders-Letter-2024-with-attachments.pdf"
-        }
-      ]
+      "status": "no_2026_letter",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.fairfax.ca/investors/"
     },
     {
       "id": "lindsell-train",
       "name": "Lindsell Train",
       "manager": "James Bullock",
       "region": "UK",
-      "index_url": "https://www.lindselltrain.com/insights-events/investment-insights/",
-      "pdf_url_include": "application/files",
-      "letters": [
-        {
-          "id": "lindsell-train-2024-04-very-long-hill",
-          "title": "A Very Long Hill",
-          "date": "2024-04-29",
-          "pdf_url": "https://www.lindselltrain.com/application/files/7417/5500/9876/A_Very_Long_Hill_-_April_2024.pdf",
-          "manager": "James Bullock"
-        }
-      ]
+      "status": "no_2026_letter",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.lindselltrain.com/insights-events/investment-insights/"
     },
     {
       "id": "gmo",
       "name": "GMO",
       "manager": "Ben Inker",
       "region": "US",
-      "index_url": "https://www.gmo.com/americas/research-library/",
-      "pdf_url_include": "quarterly-letter",
+      "letter_url": "https://www.gmo.com/globalassets/articles/quarterly-letter/2026/gmo-quarterly-letter_3q-2026.pdf",
       "letters": [
         {
-          "id": "gmo-2025-4q",
-          "title": "It's Probably a Bubble (4Q 2025)",
-          "date": "2025-12-31",
-          "pdf_url": "https://www.gmo.com/globalassets/articles/quarterly-letter/2025/gmo-quarterly-letter_4q-2025.pdf",
-          "manager": "Ben Inker"
-        },
-        {
-          "id": "gmo-2025-3q",
-          "title": "American Unexceptionalism (3Q 2025)",
-          "date": "2025-09-30",
-          "pdf_url": "https://www.gmo.com/globalassets/articles/quarterly-letter/2025/gmo-quarterly-letter_3q-2025.pdf",
+          "id": "gmo-2026-3q",
+          "title": "A Catalyst for the AI Bubble Break (3Q 2026)",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.gmo.com/globalassets/articles/quarterly-letter/2026/gmo-quarterly-letter_3q-2026.pdf",
           "manager": "Ben Inker and John Pease"
         }
-      ]
+      ],
+      "index_url": "https://www.gmo.com/americas/research-library/",
+      "pdf_url_include": "quarterly-letter"
     },
     {
       "id": "oaktree",
       "name": "Oaktree Capital",
       "manager": "Howard Marks",
       "region": "US",
-      "index_url": "https://www.oaktreecapital.com/insights",
-      "pdf_url_include": "/memos/",
+      "priority": true,
+      "letter_url": "https://www.oaktreecapital.com/docs/default-source/memos/shall-we-repeal-the-laws-of-economics-part-iii.pdf",
       "letters": [
         {
-          "id": "oaktree-2025-12-bubble",
-          "title": "Is It a Bubble?",
-          "date": "2025-12-09",
-          "pdf_url": "https://www.oaktreecapital.com/docs/default-source/memos/is-it-a-bubble.pdf"
-        },
-        {
-          "id": "oaktree-2025-08-calculus",
-          "title": "The Calculus of Value",
-          "date": "2025-08-13",
-          "pdf_url": "https://www.oaktreecapital.com/docs/default-source/memos/the-calculus-of-value.pdf"
-        },
-        {
-          "id": "oaktree-2025-04-nobody-knows",
-          "title": "Nobody Knows (Yet Again)",
-          "date": "2025-04-09",
-          "pdf_url": "https://www.oaktreecapital.com/docs/default-source/memos/nobody-knows-yet-again.pdf"
+          "id": "oaktree-2026-09-repeal-iii",
+          "title": "Shall We Repeal the Laws of Economics \u2013 Part III",
+          "date": "2026-09-22",
+          "pdf_url": "https://www.oaktreecapital.com/docs/default-source/memos/shall-we-repeal-the-laws-of-economics-part-iii.pdf",
+          "manager": "Howard Marks"
         }
-      ]
+      ],
+      "index_url": "https://www.oaktreecapital.com/insights",
+      "pdf_url_include": "/memos/"
+    },
+    {
+      "id": "one-main-capital",
+      "name": "1 Main Capital",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.1maincapital.com/s/Q226-letter.pdf",
+      "letters": [
+        {
+          "id": "one-main-capital-2026-q2",
+          "title": "Q2 2026 Letter",
+          "date": "2026-06-30",
+          "pdf_url": "https://www.1maincapital.com/s/Q226-letter.pdf"
+        }
+      ],
+      "index_url": "https://www.1maincapital.com/materials"
+    },
+    {
+      "id": "ace-river-capital",
+      "name": "Ace River Capital",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://img1.wsimg.com/blobby/go/c10d5993-4abc-4a97-baea-c72b4e5c6857/Mid-Year%202026.pdf",
+      "letters": [
+        {
+          "id": "ace-river-capital-2026-midyear",
+          "title": "Investor Update (Mid-Year 2026)",
+          "date": "2026-06-30",
+          "pdf_url": "https://img1.wsimg.com/blobby/go/c10d5993-4abc-4a97-baea-c72b4e5c6857/Mid-Year%202026.pdf"
+        }
+      ],
+      "index_url": "https://acerivercapital.com/documents"
+    },
+    {
+      "id": "akre-focus",
+      "name": "Akre Focus Fund",
+      "manager": "John Neff",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.akrefund.com/akre-focus-etf-quarterly-commentary-2026-q3/",
+      "letters": [
+        {
+          "id": "akre-focus-2026-q3",
+          "title": "Akre Focus ETF Third Quarter 2026 Commentary",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.akrefund.com/akre-focus-etf-quarterly-commentary-2026-q3/",
+          "manager": "John Neff"
+        }
+      ],
+      "index_url": "https://www.akrefund.com/documents-and-forms/"
+    },
+    {
+      "id": "alger-spectra",
+      "name": "Alger Spectra Fund",
+      "manager": "Ankur Crawford",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.alger.com/AlgerDocuments/Alger_Spectra_Fund_Commentary.pdf",
+      "letters": [
+        {
+          "id": "alger-spectra-2026-q3",
+          "title": "Alger Spectra Fund Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.alger.com/AlgerDocuments/Alger_Spectra_Fund_Commentary.pdf",
+          "manager": "Ankur Crawford"
+        }
+      ],
+      "index_url": "https://www.alger.com/"
+    },
+    {
+      "id": "alphyn-capital",
+      "name": "Alphyn Capital Management",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.alphyncap.com/"
+    },
+    {
+      "id": "aristotle-funds",
+      "name": "Aristotle Funds",
+      "manager": "Owen Fitzpatrick",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://cdn.prod.website-files.com/642414d0e893bb832996f598/6a73dd457b688a310a496bc2_Aristotle%20Core%20Equity%20Fund%20Commentary.pdf",
+      "letters": [
+        {
+          "id": "aristotle-core-equity-2026-q2",
+          "title": "Aristotle Core Equity Fund Quarterly Commentary 2Q 2026",
+          "date": "2026-06-30",
+          "pdf_url": "https://cdn.prod.website-files.com/642414d0e893bb832996f598/6a73dd457b688a310a496bc2_Aristotle%20Core%20Equity%20Fund%20Commentary.pdf",
+          "manager": "Owen Fitzpatrick"
+        }
+      ],
+      "index_url": "https://www.aristotlefunds.com/resources/fund-literature"
+    },
+    {
+      "id": "artisan-focus",
+      "name": "Artisan Focus Fund",
+      "manager": "Christopher Smith",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.artisanpartners.com/content/dam/documents/quarterly-commentary/vr/2026/2q/ARTTX-APDTX-APHTX-QCommentary-2Q26-vR.pdf",
+      "letters": [
+        {
+          "id": "artisan-focus-2026-q2",
+          "title": "Artisan Focus Fund Quarterly Commentary 2Q 2026",
+          "date": "2026-06-30",
+          "pdf_url": "https://www.artisanpartners.com/content/dam/documents/quarterly-commentary/vr/2026/2q/ARTTX-APDTX-APHTX-QCommentary-2Q26-vR.pdf",
+          "manager": "Christopher Smith"
+        }
+      ],
+      "index_url": "https://www.artisanpartners.com/"
+    },
+    {
+      "id": "asia-frontier-capital",
+      "name": "Asia Frontier Capital",
+      "manager": "Thomas Hugger",
+      "region": "Asia",
+      "priority": true,
+      "letter_url": "https://www.asiafrontiercapital.com/newsletter-2026/september-2026.html",
+      "letters": [
+        {
+          "id": "asia-frontier-capital-2026-09",
+          "title": "Asia Frontier Capital Monthly Newsletter \u2014 September 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.asiafrontiercapital.com/newsletter-2026/september-2026.html",
+          "manager": "Thomas Hugger"
+        }
+      ],
+      "index_url": "https://www.asiafrontiercapital.com/2026.html"
+    },
+    {
+      "id": "bison-interests",
+      "name": "Bison Interests",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://img1.wsimg.com/blobby/go/5ce6d220-2793-4de8-aa9e-8c7aa850eda4/downloads/ddb3c797-dbed-4922-a570-9f500f736be7/Bison%20Q3%202026%20Quarterly%20Letter.pdf",
+      "letters": [
+        {
+          "id": "bison-interests-2026-q3",
+          "title": "Bison Q3 2026 Quarterly Letter",
+          "date": "2026-09-30",
+          "pdf_url": "https://img1.wsimg.com/blobby/go/5ce6d220-2793-4de8-aa9e-8c7aa850eda4/downloads/ddb3c797-dbed-4922-a570-9f500f736be7/Bison%20Q3%202026%20Quarterly%20Letter.pdf"
+        }
+      ],
+      "index_url": "https://bisoninterests.com/"
+    },
+    {
+      "id": "black-bear-value",
+      "name": "Black Bear Value Partners",
+      "manager": "Adam Wyden",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.blackbearfund.com/_files/ugd/6c9cac_6bb079d57e8d415bb87bae19bcb68db9.pdf",
+      "letters": [
+        {
+          "id": "black-bear-value-2026-q2",
+          "title": "Black Bear Value Partners Q2 2026 LP Letter",
+          "date": "2026-07-09",
+          "pdf_url": "https://www.blackbearfund.com/_files/ugd/6c9cac_6bb079d57e8d415bb87bae19bcb68db9.pdf",
+          "manager": "Adam Wyden"
+        }
+      ],
+      "index_url": "https://www.blackbearfund.com/letters-and-presentations"
+    },
+    {
+      "id": "bonhoeffer-fund",
+      "name": "Bonhoeffer Fund",
+      "manager": "Keith D. Smith",
+      "region": "US",
+      "priority": true,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.bonhoeffercapital.com/"
+    },
+    {
+      "id": "bonsai-partners",
+      "name": "Bonsai Partners",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.bonsaipartners.com/letters-and-materials"
+    },
+    {
+      "id": "boyar-value",
+      "name": "Boyar Value Group",
+      "manager": "Jonathan Boyar",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.blog.boyarvaluegroup.com/hubfs/3Q_2026_BVG.pdf",
+      "letters": [
+        {
+          "id": "boyar-value-2026-q3",
+          "title": "3Q 2026: Buy and Hold Is Not a Strategy",
+          "date": "2026-10-21",
+          "pdf_url": "https://www.blog.boyarvaluegroup.com/hubfs/3Q_2026_BVG.pdf",
+          "manager": "Jonathan Boyar"
+        }
+      ],
+      "index_url": "https://www.blog.boyarvaluegroup.com/boyar-value-group-blog/tag/client-letter"
+    },
+    {
+      "id": "broyhill",
+      "name": "Broyhill Asset Management",
+      "manager": "Chris Pavese",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.broyhillasset.com/hubfs/Broyhill%20Letters/The%20Broyhill%20Letter%202026.Q2.pdf",
+      "letters": [
+        {
+          "id": "broyhill-2026-q2",
+          "title": "The Broyhill Letter 2026.Q2",
+          "date": "2026-09-23",
+          "pdf_url": "https://www.broyhillasset.com/hubfs/Broyhill%20Letters/The%20Broyhill%20Letter%202026.Q2.pdf",
+          "manager": "Chris Pavese"
+        }
+      ],
+      "index_url": "https://www.broyhillasset.com/resources"
+    },
+    {
+      "id": "buckley-capital",
+      "name": "Buckley Capital",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "clearbridge",
+      "name": "ClearBridge Investments",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.clearbridge.com/dam/content/uj8btvvw1s/pdf/StrategyCommentary-ClearBridgeSmallCapGrowth3Q26-US-en-US.pdf",
+      "letters": [
+        {
+          "id": "clearbridge-small-cap-growth-2026-q3",
+          "title": "ClearBridge Small Cap Growth Strategy Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.clearbridge.com/dam/content/uj8btvvw1s/pdf/StrategyCommentary-ClearBridgeSmallCapGrowth3Q26-US-en-US.pdf"
+        }
+      ],
+      "index_url": "https://www.clearbridge.com/insights"
+    },
+    {
+      "id": "deep-sail-capital",
+      "name": "Deep Sail Capital",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.deepsailcapital.com/_files/ugd/50dba3_c810864736534433b88f4eab0ae8cd75.pdf",
+      "letters": [
+        {
+          "id": "deep-sail-capital-2026-q3",
+          "title": "Deep Sail Capital Partners Q3 2026 Letter",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.deepsailcapital.com/_files/ugd/50dba3_c810864736534433b88f4eab0ae8cd75.pdf"
+        }
+      ],
+      "index_url": "https://www.deepsailcapital.com/investor-letters"
+    },
+    {
+      "id": "distillate-capital",
+      "name": "Distillate Capital",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://distillatecapital.com/wp-content/uploads/2026/10/Q3-2026-letter.pdf",
+      "letters": [
+        {
+          "id": "distillate-capital-2026-q3",
+          "title": "2026 Q3 Letter to Investors: AI and Interest Rate Risk",
+          "date": "2026-09-30",
+          "pdf_url": "https://distillatecapital.com/wp-content/uploads/2026/10/Q3-2026-letter.pdf"
+        }
+      ],
+      "index_url": "https://distillatecapital.com/"
+    },
+    {
+      "id": "east72",
+      "name": "East72 Holdings",
+      "manager": "Andrew Brown",
+      "region": "Australia",
+      "priority": true,
+      "letter_url": "https://east72.com.au/wp-content/uploads/2026/07/E72DT-QR-June-26.pdf",
+      "letters": [
+        {
+          "id": "east72-2026-q2",
+          "title": "East72 Dynasty Trust Quarterly Report #14 \u2014 Period to 30 June 2026",
+          "date": "2026-06-30",
+          "pdf_url": "https://east72.com.au/wp-content/uploads/2026/07/E72DT-QR-June-26.pdf",
+          "manager": "Andrew Brown"
+        }
+      ],
+      "index_url": "https://east72.com.au/"
+    },
+    {
+      "id": "emeth-value",
+      "name": "Emeth Value Capital",
+      "manager": "Andrew Carreon",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.emethvaluecapital.com/_files/ugd/b2ee4c_1316a576226d400f8b2892ead53fa664.pdf",
+      "letters": [
+        {
+          "id": "emeth-value-2026-h1",
+          "title": "Emeth Value Capital 2026 H1 Letter",
+          "date": "2026-08-12",
+          "pdf_url": "https://www.emethvaluecapital.com/_files/ugd/b2ee4c_1316a576226d400f8b2892ead53fa664.pdf",
+          "manager": "Andrew Carreon"
+        }
+      ],
+      "index_url": "https://www.emethvaluecapital.com/letters-1"
+    },
+    {
+      "id": "fairlight-alpha",
+      "name": "Fairlight Alpha Fund",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.fairlightcapital.com/_files/ugd/a6cb30_fc657409a4a84d429af40edb4b3a18d7.pdf",
+      "letters": [
+        {
+          "id": "fairlight-alpha-2026-q2",
+          "title": "Fairlight Alpha Fund LP Q2 2026 Letter",
+          "date": "2026-06-30",
+          "pdf_url": "https://www.fairlightcapital.com/_files/ugd/a6cb30_fc657409a4a84d429af40edb4b3a18d7.pdf"
+        }
+      ],
+      "index_url": "https://www.fairlightcapital.com/investor-letters"
+    },
+    {
+      "id": "fmi",
+      "name": "FMI",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.fmimgt.com/fmi/corp/Letters/iso_20260930.pdf",
+      "letters": [
+        {
+          "id": "fmi-2026-q3-iso",
+          "title": "Investment Strategy Outlook \u2014 September 30, 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.fmimgt.com/fmi/corp/Letters/iso_20260930.pdf"
+        }
+      ],
+      "index_url": "https://www.fmimgt.com/investment-strategy-letters/"
+    },
+    {
+      "id": "greenhaven-road",
+      "name": "Greenhaven Road Capital",
+      "manager": "Scott Miller",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.greenhavenroad.com/s/Greenhaven-Road-Q2-2026-Final.pdf",
+      "letters": [
+        {
+          "id": "greenhaven-road-2026-q2",
+          "title": "Greenhaven Road Capital Q2 2026 Letter",
+          "date": "2026-06-30",
+          "pdf_url": "https://www.greenhavenroad.com/s/Greenhaven-Road-Q2-2026-Final.pdf",
+          "manager": "Scott Miller"
+        }
+      ],
+      "index_url": "https://www.greenhavenroad.com/investor-letters"
+    },
+    {
+      "id": "greenlight-capital",
+      "name": "Greenlight Capital",
+      "manager": "David Einhorn",
+      "region": "US",
+      "priority": true,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.greenlightcapital.com/"
+    },
+    {
+      "id": "headwaters-capital",
+      "name": "Headwaters Capital",
+      "manager": "Christopher Godfrey",
+      "region": "US",
+      "priority": true,
+      "status": "no_2026_letter",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://headwaterscapmgmt.com/"
+    },
+    {
+      "id": "kernow-am",
+      "name": "Kernow Asset Management",
+      "manager": "",
+      "region": "UK",
+      "priority": true,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "laughing-water-capital",
+      "name": "Laughing Water Capital",
+      "manager": "Matthew Sweeney",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.laughingwatercapital.com/s/LWC-H1-2026-Letter.pdf",
+      "letters": [
+        {
+          "id": "laughing-water-capital-2026-h1",
+          "title": "Laughing Water Capital H1 2026 Letter",
+          "date": "2026-06-30",
+          "pdf_url": "https://www.laughingwatercapital.com/s/LWC-H1-2026-Letter.pdf",
+          "manager": "Matthew Sweeney"
+        }
+      ],
+      "index_url": "https://www.laughingwatercapital.com/letters"
+    },
+    {
+      "id": "leaven-partners",
+      "name": "Leaven Partners",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "long-cast-advisers",
+      "name": "Long Cast Advisers",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.longcastadvisers.com/s/2Q26-Final.pdf",
+      "letters": [
+        {
+          "id": "long-cast-advisers-2026-q2",
+          "title": "Long Cast Advisers 2Q26 Letter",
+          "date": "2026-06-30",
+          "pdf_url": "https://www.longcastadvisers.com/s/2Q26-Final.pdf"
+        }
+      ],
+      "index_url": "https://www.longcastadvisers.com/letters"
+    },
+    {
+      "id": "lrt-capital",
+      "name": "LRT Capital Management",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "maran-capital",
+      "name": "Maran Capital Management",
+      "manager": "Dan Roller",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://marancapital.com/s/Maran-Partners-Fund-LP-2026-2Q-Letter.pdf",
+      "letters": [
+        {
+          "id": "maran-capital-2026-q2",
+          "title": "Maran Partners Fund 2026 2Q Letter",
+          "date": "2026-07-01",
+          "pdf_url": "https://marancapital.com/s/Maran-Partners-Fund-LP-2026-2Q-Letter.pdf",
+          "manager": "Dan Roller"
+        }
+      ],
+      "index_url": "https://marancapital.com/insights"
+    },
+    {
+      "id": "mcintyre-partnerships",
+      "name": "McIntyre Partnerships",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "status": "no_2026_letter",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.mcintyrepartnerships.com/letters"
+    },
+    {
+      "id": "miller-value",
+      "name": "Miller Value Partners",
+      "manager": "Bill Miller IV",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://millervalue.com/higher-rates-higher-returns/",
+      "letters": [
+        {
+          "id": "miller-value-2026-q3",
+          "title": "Higher Rates. Higher Returns.",
+          "date": "2026-10-20",
+          "pdf_url": "https://millervalue.com/higher-rates-higher-returns/",
+          "manager": "Bill Miller IV"
+        }
+      ],
+      "index_url": "https://millervalue.com/category/market-commentary/"
+    },
+    {
+      "id": "oakmark-select",
+      "name": "Oakmark Select Fund",
+      "manager": "William C. Nygren",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://oakmark.com/wp-content/uploads/sites/3/2026/10/Oakmark-Select-Fund-Commentary-09-30-2026.pdf",
+      "letters": [
+        {
+          "id": "oakmark-select-2026-q3",
+          "title": "Oakmark Select Fund Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://oakmark.com/wp-content/uploads/sites/3/2026/10/Oakmark-Select-Fund-Commentary-09-30-2026.pdf",
+          "manager": "William C. Nygren"
+        }
+      ],
+      "index_url": "https://oakmark.com/news-insights/commentary/"
+    },
+    {
+      "id": "patient-capital-management",
+      "name": "Patient Capital Management",
+      "manager": "Samantha McLemore",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://patientcapitalmanagement.com/articles/the_art_of_imagining_conviction_without_prediction",
+      "letters": [
+        {
+          "id": "patient-capital-management-2026-q3",
+          "title": "The Art of Imagining: Conviction without Prediction",
+          "date": "2026-10-09",
+          "pdf_url": "https://patientcapitalmanagement.com/articles/the_art_of_imagining_conviction_without_prediction",
+          "manager": "Samantha McLemore"
+        }
+      ],
+      "index_url": "https://www.patientcapitalmanagement.com/news-and-insights"
+    },
+    {
+      "id": "pernas-research",
+      "name": "Pernas Research",
+      "manager": "Deiya Pernas",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://pernasresearch.com/quarterly/2026-q2-investment-letter/",
+      "letters": [
+        {
+          "id": "pernas-research-2026-q2",
+          "title": "2026 Q2 Investment Letter",
+          "date": "2026-07-15",
+          "pdf_url": "https://pernasresearch.com/quarterly/2026-q2-investment-letter/",
+          "manager": "Deiya Pernas"
+        }
+      ],
+      "index_url": "https://pernasresearch.com/quarterly-letters/"
+    },
+    {
+      "id": "polen-global-growth",
+      "name": "Polen Capital (Global Growth)",
+      "manager": "Damon Ficklin",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.polencapital.com/perspectives/global-growth-commentary",
+      "letters": [
+        {
+          "id": "polen-global-growth-2026-q3",
+          "title": "3Q 2026 Global Growth Commentary",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.polencapital.com/perspectives/global-growth-commentary",
+          "manager": "Damon Ficklin and Stephen Atkins"
+        }
+      ],
+      "index_url": "https://www.polencapital.com/perspectives/global-growth-commentary"
+    },
+    {
+      "id": "praetorian-capital",
+      "name": "Praetorian Capital",
+      "manager": "Harris Kupperman",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://go.pracap.com/hubfs/Quarterly%20Letters/2026/2026%20Q3%20Investor%20Letter%20-%20Approved.pdf",
+      "letters": [
+        {
+          "id": "praetorian-capital-2026-q3",
+          "title": "Q3 2026 Investor Letter",
+          "date": "2026-10-21",
+          "pdf_url": "https://go.pracap.com/hubfs/Quarterly%20Letters/2026/2026%20Q3%20Investor%20Letter%20-%20Approved.pdf",
+          "manager": "Harris Kupperman"
+        }
+      ],
+      "index_url": "https://pracap.com/investor-letters/"
+    },
+    {
+      "id": "qualivian",
+      "name": "Qualivian Investment Partners",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.qualivian.com/insights"
+    },
+    {
+      "id": "rf-capital",
+      "name": "RF Capital Management",
+      "manager": "Roger Fan",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.rfcapitalmanagement.com/s/RF-Capital-July-2026-Investor-Letter.pdf",
+      "letters": [
+        {
+          "id": "rf-capital-2026-07",
+          "title": "RF Capital July 2026 Investor Letter",
+          "date": "2026-07-31",
+          "pdf_url": "https://www.rfcapitalmanagement.com/s/RF-Capital-July-2026-Investor-Letter.pdf",
+          "manager": "Roger Fan"
+        }
+      ],
+      "index_url": "https://www.rfcapitalmanagement.com/lettersandmedia"
+    },
+    {
+      "id": "riverpark-large-growth",
+      "name": "RiverPark Large Growth",
+      "manager": "Conrad van Tienhoven",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.riverparkfunds.com/assets/pdfs/rplgf/commentary/RiverPark_Large_Growth_Fund_1Q26_Investor_Letter.pdf",
+      "letters": [
+        {
+          "id": "riverpark-large-growth-2026-q1",
+          "title": "RiverPark Large Growth Fund 1Q 2026 Investor Letter",
+          "date": "2026-03-31",
+          "pdf_url": "https://www.riverparkfunds.com/assets/pdfs/rplgf/commentary/RiverPark_Large_Growth_Fund_1Q26_Investor_Letter.pdf",
+          "manager": "Conrad van Tienhoven"
+        }
+      ],
+      "index_url": "https://www.riverparkfunds.com/large-growth-fund"
+    },
+    {
+      "id": "roubaix-capital",
+      "name": "Roubaix Capital",
+      "manager": "Christopher Hillary",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.prosperfunds.ch/wp-content/uploads/Prosper-Stars-Stripes-Investors-letter-2026Q2.pdf",
+      "letters": [
+        {
+          "id": "roubaix-capital-2026-q2",
+          "title": "Prosper Stars & Stripes Q2 2026 Investor Letter",
+          "date": "2026-08-11",
+          "pdf_url": "https://www.prosperfunds.ch/wp-content/uploads/Prosper-Stars-Stripes-Investors-letter-2026Q2.pdf",
+          "manager": "Christopher Hillary"
+        }
+      ],
+      "index_url": "https://www.prosperfunds.ch/en/roubaix-capital-en/"
+    },
+    {
+      "id": "rowan-street",
+      "name": "Rowan Street Capital",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "status": "no_2026_letter",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.rowanstreet.com/"
+    },
+    {
+      "id": "rv-capital",
+      "name": "RV Capital",
+      "manager": "Rob Vinall",
+      "region": "EU",
+      "priority": true,
+      "letter_url": "https://www.rvcapital.ch/podcast/episode/413750c4/2026-half-year-letter-to-co-investors",
+      "letters": [
+        {
+          "id": "rv-capital-2026-h1",
+          "title": "2026 Half-Year Letter to Co-Investors",
+          "date": "2026-06-30",
+          "pdf_url": "https://www.rvcapital.ch/podcast/episode/413750c4/2026-half-year-letter-to-co-investors",
+          "manager": "Rob Vinall"
+        }
+      ],
+      "index_url": "https://www.rvcapital.ch/"
+    },
+    {
+      "id": "saga-partners",
+      "name": "Saga Partners",
+      "manager": "Joe Frankenfield",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.sagapartners.com/_files/ugd/3b0d6d_07ee41b5ab5f4496917774595a979845.pdf",
+      "letters": [
+        {
+          "id": "saga-partners-2026-08-knowledge",
+          "title": "The Growth of Knowledge \u2014 August 2026",
+          "date": "2026-08-01",
+          "pdf_url": "https://www.sagapartners.com/_files/ugd/3b0d6d_07ee41b5ab5f4496917774595a979845.pdf",
+          "manager": "Joe Frankenfield"
+        }
+      ],
+      "index_url": "https://www.sagapartners.com/investorletters"
+    },
+    {
+      "id": "sequoia-fund",
+      "name": "Sequoia Fund",
+      "manager": "Ruane Cunniff Investment Committee",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.sequoiaetf.com/wp-content/uploads/2026/10/Sequoia-Fund-Q2-2026-Investor-Letter.pdf",
+      "letters": [
+        {
+          "id": "sequoia-fund-2026-q2",
+          "title": "Sequoia Fund Q2 2026 Investor Letter",
+          "date": "2026-07-14",
+          "pdf_url": "https://www.sequoiaetf.com/wp-content/uploads/2026/10/Sequoia-Fund-Q2-2026-Investor-Letter.pdf"
+        }
+      ],
+      "index_url": "https://www.sequoiaetf.com/resources/"
+    },
+    {
+      "id": "sohra-peak",
+      "name": "Sohra Peak Capital Partners",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "southpoint",
+      "name": "Southpoint Qualified Fund",
+      "manager": "John S. Clark II",
+      "region": "US",
+      "priority": true,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "spear-advisors",
+      "name": "Spear Advisors",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "srk-capital",
+      "name": "SRK Capital",
+      "manager": "Sean Kirkwood",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://srk-capital.com/content_files/2026/09/SRK-H1-2026.pdf",
+      "letters": [
+        {
+          "id": "srk-capital-2026-h1",
+          "title": "SRK Capital 2026 H1 Partnership Letter",
+          "date": "2026-06-30",
+          "pdf_url": "https://srk-capital.com/content_files/2026/09/SRK-H1-2026.pdf",
+          "manager": "Sean Kirkwood"
+        }
+      ],
+      "index_url": "https://srk-capital.com/partnership-letters/"
+    },
+    {
+      "id": "stanphyl-capital",
+      "name": "Stanphyl Capital Management",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "starvine-capital",
+      "name": "Starvine Capital",
+      "manager": "Steven Ko",
+      "region": "Canada",
+      "priority": true,
+      "letter_url": "https://starvinecapital.com/wp-content/uploads/2026/07/H1-2026-Investment-Letter.pdf",
+      "letters": [
+        {
+          "id": "starvine-capital-2026-h1",
+          "title": "H1 2026 Investment Letter",
+          "date": "2026-06-30",
+          "pdf_url": "https://starvinecapital.com/wp-content/uploads/2026/07/H1-2026-Investment-Letter.pdf",
+          "manager": "Steven Ko"
+        }
+      ],
+      "index_url": "https://starvinecapital.com/"
+    },
+    {
+      "id": "stewart-am",
+      "name": "Stewart Asset Management",
+      "manager": "Thomas M. Valenzuela",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://cdn.prod.website-files.com/668ffcd70c83fa0686a325d2/6a6a9a28973445aefe07a83f_CIO%20Letter%202Q%202026%20Website.pdf",
+      "letters": [
+        {
+          "id": "stewart-am-2026-q2",
+          "title": "Stewart Asset Management CIO Letter Q2 2026",
+          "date": "2026-06-30",
+          "pdf_url": "https://cdn.prod.website-files.com/668ffcd70c83fa0686a325d2/6a6a9a28973445aefe07a83f_CIO%20Letter%202Q%202026%20Website.pdf",
+          "manager": "Thomas M. Valenzuela"
+        }
+      ],
+      "index_url": "https://www.stewartassetmgmt.com/performance/quarterly-letters"
+    },
+    {
+      "id": "svn-capital",
+      "name": "SVN Capital Fund",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.svncapital.com/"
+    },
+    {
+      "id": "symmetry-invest",
+      "name": "Symmetry Invest",
+      "manager": "Andreas Aaen",
+      "region": "EU",
+      "priority": true,
+      "letter_url": "https://www.symmetry.dk/nyheder/pdf/bea8497235384251902d310296c04fc2.pdf",
+      "letters": [
+        {
+          "id": "symmetry-invest-2026-h1",
+          "title": "Symmetry Invest H1 2026 Newsletter",
+          "date": "2026-08-14",
+          "pdf_url": "https://www.symmetry.dk/nyheder/pdf/bea8497235384251902d310296c04fc2.pdf",
+          "manager": "Andreas Aaen"
+        }
+      ],
+      "index_url": "https://www.symmetry.dk/nyheder"
+    },
+    {
+      "id": "third-point",
+      "name": "Third Point Partners",
+      "manager": "Daniel S. Loeb",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://assets-malibu-life.s3.us-west-2.amazonaws.com/system/uploads/fae/file/asset/1713/Third_Point_Q2_2026_Investor_Letter_MLHL.pdf",
+      "letters": [
+        {
+          "id": "third-point-2026-q2",
+          "title": "Third Point Q2 2026 Investor Letter",
+          "date": "2026-07-31",
+          "pdf_url": "https://assets-malibu-life.s3.us-west-2.amazonaws.com/system/uploads/fae/file/asset/1713/Third_Point_Q2_2026_Investor_Letter_MLHL.pdf",
+          "manager": "Daniel S. Loeb"
+        }
+      ],
+      "index_url": "https://www.thirdpoint.com/"
+    },
+    {
+      "id": "tidefall-capital",
+      "name": "Tidefall Capital Management",
+      "manager": "Trevor Scott",
+      "region": "Canada",
+      "priority": true,
+      "status": "no_2026_letter",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.tidefallcapital.com/"
+    },
+    {
+      "id": "upslope-capital",
+      "name": "Upslope Capital Management",
+      "manager": "George K. Livadas",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.upslopecapital.com/s/Upslope-2026Q3-Letter.pdf",
+      "letters": [
+        {
+          "id": "upslope-capital-2026-q3",
+          "title": "Upslope Capital 2026 Q3 Letter",
+          "date": "2026-10-20",
+          "pdf_url": "https://www.upslopecapital.com/s/Upslope-2026Q3-Letter.pdf",
+          "manager": "George K. Livadas"
+        }
+      ],
+      "index_url": "https://www.upslopecapital.com/q-letters"
+    },
+    {
+      "id": "voss-capital",
+      "name": "Voss Capital",
+      "manager": "Travis Cocke",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.vosscap.com/s/Q2-2026-Voss-Letter-to-Partners-VVMF.pdf",
+      "letters": [
+        {
+          "id": "voss-capital-2026-q2",
+          "title": "Voss Capital Q2 2026 Letter to Partners",
+          "date": "2026-06-30",
+          "pdf_url": "https://www.vosscap.com/s/Q2-2026-Voss-Letter-to-Partners-VVMF.pdf",
+          "manager": "Travis Cocke"
+        }
+      ],
+      "index_url": "https://www.vosscap.com/quarterly-letters"
+    },
+    {
+      "id": "vulcan-value",
+      "name": "Vulcan Value Partners",
+      "manager": "C.T. Fitzpatrick",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://vulcanvaluepartners.com/core/uploads/2026/10/VVP-Third-Quarter-Letter-09.30.26.pdf",
+      "letters": [
+        {
+          "id": "vulcan-value-2026-q3",
+          "title": "Vulcan Value Partners Third Quarter 2026 Letter",
+          "date": "2026-09-30",
+          "pdf_url": "https://vulcanvaluepartners.com/core/uploads/2026/10/VVP-Third-Quarter-Letter-09.30.26.pdf",
+          "manager": "C.T. Fitzpatrick"
+        }
+      ],
+      "index_url": "https://vulcanvaluepartners.com/letters/"
+    },
+    {
+      "id": "warden-capital",
+      "name": "Warden Capital",
+      "manager": "Hawkins Entrekin",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://warcap.substack.com/p/war-cap-q3-update-93b",
+      "letters": [
+        {
+          "id": "warden-capital-2026-q3",
+          "title": "War Cap Q3 Update",
+          "date": "2026-10-16",
+          "pdf_url": "https://warcap.substack.com/p/war-cap-q3-update-93b",
+          "manager": "Hawkins Entrekin"
+        }
+      ],
+      "index_url": "https://warcap.substack.com/archive"
+    },
+    {
+      "id": "wedgewood-partners",
+      "name": "Wedgewood Partners",
+      "manager": "David A. Rolfe",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://wedgewoodpartners.com/wp-content/uploads/2026/10/Wedgewood-Partners-Third-Quarter-2026-Client-Letter-Bad-Moon-Rising.pdf",
+      "letters": [
+        {
+          "id": "wedgewood-partners-2026-q3",
+          "title": "Wedgewood Partners Third Quarter 2026 Client Letter \u2014 Bad Moon Rising",
+          "date": "2026-10-01",
+          "pdf_url": "https://wedgewoodpartners.com/wp-content/uploads/2026/10/Wedgewood-Partners-Third-Quarter-2026-Client-Letter-Bad-Moon-Rising.pdf",
+          "manager": "David A. Rolfe"
+        }
+      ],
+      "index_url": "https://wedgewoodpartners.com/investor-resources/"
+    },
+    {
+      "id": "weitz-investments",
+      "name": "Weitz Investments",
+      "manager": "Wally Weitz",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://weitzinvestments.com/sitefiles/live/documents/literature-and-publications/ValueMatters/3Q26_VM_Price%20of%20Enthusiasm.pdf",
+      "letters": [
+        {
+          "id": "weitz-2026-q3-value-matters",
+          "title": "The Price of Enthusiasm (Value Matters 3Q 2026)",
+          "date": "2026-10-09",
+          "pdf_url": "https://weitzinvestments.com/sitefiles/live/documents/literature-and-publications/ValueMatters/3Q26_VM_Price%20of%20Enthusiasm.pdf",
+          "manager": "Wally Weitz"
+        }
+      ],
+      "index_url": "https://weitzinvestments.com/"
+    },
+    {
+      "id": "angel-oak-aohy",
+      "name": "Angel Oak High Yield Opportunities ETF",
+      "manager": "Sreeni Prabhu",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://angeloakcapital.com/high-yield-opportunities-etf-commentary/",
+      "letters": [
+        {
+          "id": "angel-oak-aohy-2026-q3",
+          "title": "3Q26 High Yield Opportunities ETF Commentary",
+          "date": "2026-10-20",
+          "pdf_url": "https://angeloakcapital.com/high-yield-opportunities-etf-commentary/",
+          "manager": "Sreeni Prabhu"
+        }
+      ],
+      "index_url": "https://angeloakcapital.com/insights/"
+    },
+    {
+      "id": "angel-oak-multi-strategy-income",
+      "name": "Angel Oak Multi-Strategy Income Fund",
+      "manager": "Sreeni Prabhu",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://angeloakcapital.com/multi-strategy-income-fund-commentary/",
+      "letters": [
+        {
+          "id": "angel-oak-multi-strategy-income-2026-q3",
+          "title": "3Q26 Multi-Strategy Income Fund Commentary",
+          "date": "2026-09-30",
+          "pdf_url": "https://angeloakcapital.com/multi-strategy-income-fund-commentary/",
+          "manager": "Sreeni Prabhu"
+        }
+      ],
+      "index_url": "https://angeloakcapital.com/insights/"
+    },
+    {
+      "id": "london-company-small-cap",
+      "name": "The London Company Small Cap",
+      "manager": "Brian Campbell",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://www.tlcadvisory.com/wp-content/uploads/2026/10/2026Q3-Institutional-Small-Cap-vs-Russell-2000-Portfolio-Commentary-1.pdf",
+      "letters": [
+        {
+          "id": "london-company-small-cap-2026-q3",
+          "title": "London Company Small Cap Portfolio Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.tlcadvisory.com/wp-content/uploads/2026/10/2026Q3-Institutional-Small-Cap-vs-Russell-2000-Portfolio-Commentary-1.pdf",
+          "manager": "Brian Campbell"
+        }
+      ],
+      "index_url": "https://www.tlcadvisory.com/"
+    },
+    {
+      "id": "london-company-large-cap",
+      "name": "The London Company Large Cap",
+      "manager": "Brian Campbell",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://www.tlcadvisory.com/qtd-large-cap-3q2026-vs-r1000/",
+      "letters": [
+        {
+          "id": "london-company-large-cap-2026-q3",
+          "title": "QTD Large Cap \u2013 3Q2026 vs. R1000",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.tlcadvisory.com/qtd-large-cap-3q2026-vs-r1000/",
+          "manager": "Brian Campbell"
+        }
+      ],
+      "index_url": "https://www.tlcadvisory.com/"
+    },
+    {
+      "id": "london-company-income-equity",
+      "name": "The London Company Income Equity",
+      "manager": "Brian Campbell",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://www.tlcadvisory.com/qtd-income-equity-3q2026-vs-r1000/",
+      "letters": [
+        {
+          "id": "london-company-income-equity-2026-q3",
+          "title": "QTD Income Equity \u2013 3Q2026 vs. R1000",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.tlcadvisory.com/qtd-income-equity-3q2026-vs-r1000/",
+          "manager": "Brian Campbell"
+        }
+      ],
+      "index_url": "https://www.tlcadvisory.com/"
+    },
+    {
+      "id": "london-company-smid",
+      "name": "The London Company Small Mid Cap",
+      "manager": "Brian Campbell",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://www.tlcadvisory.com/wp-content/uploads/2026/10/2026Q3-Quarterly-Letter-1.pdf",
+      "letters": [
+        {
+          "id": "london-company-2026-q3-firm",
+          "title": "The London Company Quarterly Letter 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.tlcadvisory.com/wp-content/uploads/2026/10/2026Q3-Quarterly-Letter-1.pdf",
+          "manager": "Brian Campbell"
+        }
+      ],
+      "index_url": "https://www.tlcadvisory.com/"
+    },
+    {
+      "id": "driehaus-smid-growth",
+      "name": "Driehaus Small/Mid Cap Growth Fund",
+      "manager": "Jeffrey James",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://www.driehaus.com/system/uploads/fae/file/asset/2104/Driehaus_Small-Mid_Strategy_Summary_Q326.pdf",
+      "letters": [
+        {
+          "id": "driehaus-smid-growth-2026-q3",
+          "title": "Driehaus Small/Mid Cap Growth Strategy Summary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.driehaus.com/system/uploads/fae/file/asset/2104/Driehaus_Small-Mid_Strategy_Summary_Q326.pdf",
+          "manager": "Jeffrey James"
+        }
+      ],
+      "index_url": "https://www.driehaus.com/"
+    },
+    {
+      "id": "driehaus-micro-cap-growth",
+      "name": "Driehaus Micro Cap Growth Strategy",
+      "manager": "Jeffrey James",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://www.driehaus.com/system/uploads/fae/file/asset/2102/Driehaus_Micro_Cap_Growth_Strategy_Summary_Q326.pdf",
+      "letters": [
+        {
+          "id": "driehaus-micro-cap-growth-2026-q3",
+          "title": "Driehaus Micro Cap Growth Strategy Summary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.driehaus.com/system/uploads/fae/file/asset/2102/Driehaus_Micro_Cap_Growth_Strategy_Summary_Q326.pdf",
+          "manager": "Jeffrey James"
+        }
+      ],
+      "index_url": "https://www.driehaus.com/"
+    },
+    {
+      "id": "driehaus-small-cap-growth",
+      "name": "Driehaus Small Cap Growth Fund",
+      "manager": "Jeffrey James",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://www.driehaus.com/system/uploads/fae/file/asset/2103/Driehaus_Small_Cap_Growth_Strategy_Summary_Q326.pdf",
+      "letters": [
+        {
+          "id": "driehaus-small-cap-growth-2026-q3",
+          "title": "Driehaus Small Cap Growth Strategy Summary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.driehaus.com/system/uploads/fae/file/asset/2103/Driehaus_Small_Cap_Growth_Strategy_Summary_Q326.pdf",
+          "manager": "Jeffrey James"
+        }
+      ],
+      "index_url": "https://www.driehaus.com/"
+    },
+    {
+      "id": "artisan-small-cap",
+      "name": "Artisan Partners Small Cap Fund",
+      "manager": "Craig Cepukenas",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://www.artisanpartners.com/content/dam/documents/quarterly-commentary/vr/2026/3q/ARTSX-APDSX-APHSX-QCommentary-3Q26-vR.pdf",
+      "letters": [
+        {
+          "id": "artisan-small-cap-2026-q3",
+          "title": "Artisan Small Cap Fund Quarterly Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.artisanpartners.com/content/dam/documents/quarterly-commentary/vr/2026/3q/ARTSX-APDSX-APHSX-QCommentary-3Q26-vR.pdf"
+        }
+      ],
+      "index_url": "https://www.artisanpartners.com/"
+    },
+    {
+      "id": "ironvine-capital",
+      "name": "Ironvine Capital Partners",
+      "manager": "The Ironvine Investment Team",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://ironvinecapital.com/wp-content/uploads/2026/10/IVCP-Q3_2026_Protect-Grow.pdf",
+      "letters": [
+        {
+          "id": "ironvine-capital-2026-q3",
+          "title": "Ironvine Q3 2026 Letter \u2014 Protect & Grow",
+          "date": "2026-09-30",
+          "pdf_url": "https://ironvinecapital.com/wp-content/uploads/2026/10/IVCP-Q3_2026_Protect-Grow.pdf"
+        }
+      ],
+      "index_url": "https://ironvinecapital.com/"
+    },
+    {
+      "id": "cambiar-smid",
+      "name": "Cambiar SMID Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://cambiar.com/wp-content/uploads/2026/10/Cambiar-SMID-Fund-Commentary-3Q26.pdf",
+      "letters": [
+        {
+          "id": "cambiar-smid-2026-q3",
+          "title": "Cambiar SMID Fund Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://cambiar.com/wp-content/uploads/2026/10/Cambiar-SMID-Fund-Commentary-3Q26.pdf"
+        }
+      ],
+      "index_url": "https://cambiar.com/"
+    },
+    {
+      "id": "cambiar-international",
+      "name": "Cambiar International Equity Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://cambiar.com/wp-content/uploads/2026/10/Cambiar-Intl-Equity-Commentary-3Q26.pdf",
+      "letters": [
+        {
+          "id": "cambiar-international-2026-q3",
+          "title": "Cambiar International Equity Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://cambiar.com/wp-content/uploads/2026/10/Cambiar-Intl-Equity-Commentary-3Q26.pdf"
+        }
+      ],
+      "index_url": "https://cambiar.com/"
+    },
+    {
+      "id": "harding-loevner-global-small",
+      "name": "Harding Loevner Global Small Companies Equity",
+      "manager": "Christopher Mack",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://media.hardingloevner.com/fileadmin/pdf/GSC/2026/HL-Global-Small-Cos-Equity-Quarterly-Report-3Q26.pdf",
+      "letters": [
+        {
+          "id": "harding-loevner-global-small-2026-q3",
+          "title": "Global Small Companies Equity Third Quarter 2026 Report",
+          "date": "2026-09-30",
+          "pdf_url": "https://media.hardingloevner.com/fileadmin/pdf/GSC/2026/HL-Global-Small-Cos-Equity-Quarterly-Report-3Q26.pdf",
+          "manager": "Christopher Mack"
+        }
+      ],
+      "index_url": "https://www.hardingloevner.com/"
+    },
+    {
+      "id": "harding-loevner-intl-small",
+      "name": "Harding Loevner International Small Companies Equity",
+      "manager": "Jafar Rizvi",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://media.hardingloevner.com/fileadmin/pdf/ISC/2026/HL-Intl-Small-Cos-Equity-Quarterly-Report-3Q26.pdf",
+      "letters": [
+        {
+          "id": "harding-loevner-intl-small-2026-q3",
+          "title": "International Small Companies Equity Third Quarter 2026 Report",
+          "date": "2026-09-30",
+          "pdf_url": "https://media.hardingloevner.com/fileadmin/pdf/ISC/2026/HL-Intl-Small-Cos-Equity-Quarterly-Report-3Q26.pdf",
+          "manager": "Jafar Rizvi"
+        }
+      ],
+      "index_url": "https://www.hardingloevner.com/"
+    },
+    {
+      "id": "third-avenue-small-cap",
+      "name": "Third Avenue Small Cap Value Fund",
+      "manager": "Vic Cunningham",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://www.thirdave.com/shareholder-letters/small-cap-value-fund-q326",
+      "letters": [
+        {
+          "id": "third-avenue-small-cap-2026-q3",
+          "title": "Small-Cap Value Fund Q3 2026 Shareholder Letter",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.thirdave.com/shareholder-letters/small-cap-value-fund-q326",
+          "manager": "Vic Cunningham"
+        }
+      ],
+      "index_url": "https://www.thirdave.com/shareholder-letters"
+    },
+    {
+      "id": "sands-select-growth",
+      "name": "Sands Capital Select Growth Fund",
+      "manager": "Frank M. Sands",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://sandscapital.com/docs/Select%20Growth%20Sands%20Capital%20Quarterly%20Report.PDF",
+      "letters": [
+        {
+          "id": "sands-select-growth-2026-q3",
+          "title": "Sands Capital Select Growth Fund Quarterly Report 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://sandscapital.com/docs/Select%20Growth%20Sands%20Capital%20Quarterly%20Report.PDF",
+          "manager": "Frank M. Sands"
+        }
+      ],
+      "index_url": "https://www.sandscapital.com/"
+    },
+    {
+      "id": "sands-international-growth",
+      "name": "Sands Capital International Growth Fund",
+      "manager": "David E. Levanson",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://sandscapital.com/docs/International%20Growth%20Sands%20Capital%20Quarterly%20Report.PDF",
+      "letters": [
+        {
+          "id": "sands-international-growth-2026-q3",
+          "title": "Sands Capital International Growth Fund Quarterly Report 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://sandscapital.com/docs/International%20Growth%20Sands%20Capital%20Quarterly%20Report.PDF",
+          "manager": "David E. Levanson"
+        }
+      ],
+      "index_url": "https://www.sandscapital.com/"
+    },
+    {
+      "id": "sands-global-growth",
+      "name": "Sands Capital Global Growth Fund",
+      "manager": "Brian A. Christiansen",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://sandscapital.com/docs/Global%20Growth%20Sands%20Capital%20Quarterly%20Report.PDF",
+      "letters": [
+        {
+          "id": "sands-global-growth-2026-q3",
+          "title": "Sands Capital Global Growth Fund Quarterly Report 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://sandscapital.com/docs/Global%20Growth%20Sands%20Capital%20Quarterly%20Report.PDF",
+          "manager": "Brian A. Christiansen"
+        }
+      ],
+      "index_url": "https://www.sandscapital.com/"
+    },
+    {
+      "id": "sands-em-growth",
+      "name": "Sands Capital Emerging Markets Growth Fund",
+      "manager": "Teja Boye",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://sandscapital.com/docs/Emerging%20Markets%20Growth%20Sands%20Capital%20Quarterly%20Report.PDF",
+      "letters": [
+        {
+          "id": "sands-em-growth-2026-q3",
+          "title": "Sands Capital Emerging Markets Growth Fund Quarterly Report 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://sandscapital.com/docs/Emerging%20Markets%20Growth%20Sands%20Capital%20Quarterly%20Report.PDF",
+          "manager": "Teja Boye"
+        }
+      ],
+      "index_url": "https://www.sandscapital.com/"
+    },
+    {
+      "id": "voya-midcap-opportunities",
+      "name": "Voya MidCap Opportunities Strategy",
+      "manager": "Eric Stein",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.voya.com/"
+    },
+    {
+      "id": "westend-capital",
+      "name": "WestEnd Capital",
+      "manager": "George Bolton, Ali, George Elliman",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "bny-core-plus",
+      "name": "BNY Mellon Core Plus Fund",
+      "manager": "Brendan Murphy",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.bny.com/"
+    },
+    {
+      "id": "brandes-small-cap-value",
+      "name": "Brandes Small Cap Value Fund",
+      "manager": "Bryan Barrett",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://www.brandes.com/docs/default-source/default-document-library/publication/strategy-notes/brandes-u-s-small-cap-value-equity-strategy-notes-us.pdf",
+      "letters": [
+        {
+          "id": "brandes-small-cap-value-2026-q3",
+          "title": "Brandes U.S. Small Cap Value Equity Strategy Notes 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.brandes.com/docs/default-source/default-document-library/publication/strategy-notes/brandes-u-s-small-cap-value-equity-strategy-notes-us.pdf",
+          "manager": "Bryan Barrett"
+        }
+      ],
+      "index_url": "https://www.brandes.com/"
+    },
+    {
+      "id": "brandes-international-equity",
+      "name": "Brandes International Equity Fund",
+      "manager": "Jeffrey Germain",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://www.brandes.com/docs/default-source/default-document-library/publication/strategy-notes/brandes-international-equity-strategy-notes-us.pdf",
+      "letters": [
+        {
+          "id": "brandes-international-equity-2026-q3",
+          "title": "Brandes International Equity Strategy Notes 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.brandes.com/docs/default-source/default-document-library/publication/strategy-notes/brandes-international-equity-strategy-notes-us.pdf",
+          "manager": "Jeffrey Germain"
+        }
+      ],
+      "index_url": "https://www.brandes.com/"
+    },
+    {
+      "id": "brandes-core-plus",
+      "name": "Brandes Core Plus Fixed Income Fund",
+      "manager": "Timothy M. Doyle",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://www.brandes.com/docs/default-source/default-document-library/publication/strategy-notes/brandes-core-plus-fixed-income-strategy-notes-us.pdf",
+      "letters": [
+        {
+          "id": "brandes-core-plus-2026-q3",
+          "title": "Brandes Core Plus Fixed Income Strategy Notes 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.brandes.com/docs/default-source/default-document-library/publication/strategy-notes/brandes-core-plus-fixed-income-strategy-notes-us.pdf",
+          "manager": "Timothy M. Doyle"
+        }
+      ],
+      "index_url": "https://www.brandes.com/"
+    },
+    {
+      "id": "starboard-value",
+      "name": "Starboard Value",
+      "manager": "Jeffrey Smith",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.starboardvalue.com/"
+    },
+    {
+      "id": "longriver-partners",
+      "name": "The Longriver Partners Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "magnolia-opportunities-2",
+      "name": "Magnolia Capital Opportunities Fund No. 2",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "pappas-capital",
+      "name": "Pappas Capital Opportunities Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "marshall-fund-income",
+      "name": "Marshall Fund Income Investment Strategy",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "blue-tower",
+      "name": "Blue Tower Asset Management",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "triton-capital",
+      "name": "Triton Capital",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "american-century-small-cap-value",
+      "name": "American Century Small Cap Value Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://res.americancentury.com/docs/SmallCapValue_Commentary.pdf",
+      "letters": [
+        {
+          "id": "american-century-small-cap-value-2026",
+          "title": "American Century Small Cap Value Fund Quarterly Commentary 2026",
+          "date": "2026-06-30",
+          "pdf_url": "https://res.americancentury.com/docs/SmallCapValue_Commentary.pdf"
+        }
+      ],
+      "index_url": "https://www.americancentury.com/"
+    },
+    {
+      "id": "american-century-equity-income",
+      "name": "American Century Equity Income Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://res.americancentury.com/docs/EqIncome_Commentary.pdf",
+      "letters": [
+        {
+          "id": "american-century-equity-income-2026-q2",
+          "title": "American Century Equity Income Fund Quarterly Commentary 2Q 2026",
+          "date": "2026-06-30",
+          "pdf_url": "https://res.americancentury.com/docs/EqIncome_Commentary.pdf"
+        }
+      ],
+      "index_url": "https://www.americancentury.com/"
+    },
+    {
+      "id": "american-century-em",
+      "name": "American Century Emerging Markets Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://res.americancentury.com/docs/EmergMarkets_Commentary.pdf",
+      "letters": [
+        {
+          "id": "american-century-em-2026-q2",
+          "title": "American Century Emerging Markets Fund Quarterly Commentary 2Q 2026",
+          "date": "2026-06-30",
+          "pdf_url": "https://res.americancentury.com/docs/EmergMarkets_Commentary.pdf"
+        }
+      ],
+      "index_url": "https://www.americancentury.com/"
+    },
+    {
+      "id": "american-century-intl-growth",
+      "name": "American Century International Growth Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://res.americancentury.com/docs/IntlGrowth_Commentary.pdf",
+      "letters": [
+        {
+          "id": "american-century-intl-growth-2026-q2",
+          "title": "American Century International Growth Fund Quarterly Commentary 2Q 2026",
+          "date": "2026-06-30",
+          "pdf_url": "https://res.americancentury.com/docs/IntlGrowth_Commentary.pdf"
+        }
+      ],
+      "index_url": "https://www.americancentury.com/"
+    },
+    {
+      "id": "red-rock-management",
+      "name": "Red Rock Management",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "bluerock-growth",
+      "name": "BlueRock Growth Strategy",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "magnolia-opportunities-1",
+      "name": "Magnolia Capital Opportunities Fund No. 1",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "vireo-global-alpha",
+      "name": "Vireo Global Alpha Fund - Active ETF",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "mfs-investment",
+      "name": "MFS Investment",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.mfs.com/"
+    },
+    {
+      "id": "marco-private-wealth",
+      "name": "MARCO Private Wealth",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "cedar",
+      "name": "Cedar",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "baird-small-cap-value",
+      "name": "Baird Small Cap Value Strategy",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.bairdassetmanagement.com/"
+    },
+    {
+      "id": "wellington-management",
+      "name": "Wellington Management",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.wellington.com/"
+    },
+    {
+      "id": "cedar-creek-partners",
+      "name": "Cedar Creek Partners",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "dohmen-equity-income",
+      "name": "Dohmen Equity Income Strategy",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_public_pdf",
+      "letter_url": "",
+      "letters": []
+    },
+    {
+      "id": "crossingbridge",
+      "name": "CrossingBridge Advisors",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://blog.crossingbridgefunds.com/hubfs/Quid%20Nunc%20(What%20Now)%20-%20CrossingBridge%203Q26%20Quarterly%20Commentary.pdf",
+      "letters": [
+        {
+          "id": "crossingbridge-2026-q3",
+          "title": "Quid Nunc (What Now) \u2014 CrossingBridge 3Q26 Quarterly Commentary",
+          "date": "2026-09-30",
+          "pdf_url": "https://blog.crossingbridgefunds.com/hubfs/Quid%20Nunc%20(What%20Now)%20-%20CrossingBridge%203Q26%20Quarterly%20Commentary.pdf"
+        }
+      ],
+      "index_url": "https://blog.crossingbridgefunds.com/blog/tag/Quarterly-Commentary"
     }
   ]
 }
