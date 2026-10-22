@@ -44,12 +44,12 @@ jobs:
 
       - name: Run daily screen
         env:
+          # GitHub Actions env keys are case-insensitive. Do not also set
+          # Google_Sheet_Id here — it collides with GOOGLE_SHEET_ID and the
+          # workflow fails at startup. idea-screener already reads both names.
           FMP_API_KEY: ${{ secrets.FMP_API_KEY }}
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
           GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
-          # Runtime aliases already accepted by idea-screener (Cursor secret names).
-          Google_Account_Json: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
-          Google_Sheet_Id: ${{ secrets.GOOGLE_SHEET_ID }}
         run: |
           set -euo pipefail
           missing=()
