@@ -26,7 +26,6 @@ export type LetterRecord = {
   cap: string;
   tickers: string[];
   themes: string[];
-  quick_take: string;
   pitches: LetterPitch[];
   pdf_url: string;
   pdf_local: string;

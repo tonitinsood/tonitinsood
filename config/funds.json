@@ -1,5 +1,5 @@
 {
-  "comment": "Public IR / memo PDFs only. Add a fund by name + letter PDF or index URL. Do not scrape BuySideDigest or other paid archives.",
+  "comment": "Public IR / memo PDFs only. One row per letter: unique id and unique canonical pdf_url (no query clones). Add a fund by name + letter PDF or index URL. Do not scrape BuySideDigest or other paid archives.",
   "blocked_hosts": [
     "buysidedigest.com",
     "www.buysidedigest.com",

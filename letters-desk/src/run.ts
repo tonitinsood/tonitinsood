@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { writeSite } from "./build-site.js";
-import { ingestAll, loadFunds } from "./ingest.js";
+import { ingestAll, loadExistingLetters, loadFunds } from "./ingest.js";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, "../..");
@@ -20,11 +20,13 @@ async function main(): Promise<void> {
   const fmpKey = process.env.FMP_API_KEY?.trim();
 
   const fundsFile = loadFunds(configPath);
+  const existingLetters = loadExistingLetters(path.join(siteDir, "letters.json"));
   const { letters, failures } = await ingestAll({
     fundsFile,
     pdfDir,
     fmpKey,
     discover,
+    existingLetters,
   });
   if (letters.length === 0) {
     throw new Error(

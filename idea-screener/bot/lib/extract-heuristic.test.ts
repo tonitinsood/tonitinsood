@@ -31,6 +31,18 @@ test("junk PDF tokens are not tickers", () => {
   assert.equal(isJunkTicker("PDF"), true);
   assert.equal(isJunkTicker("GTM"), true);
   assert.equal(isJunkTicker("AAPL"), false);
+  assert.equal(isJunkTicker("DOJ"), true);
+  assert.equal(isJunkTicker("FTC"), true);
+  assert.equal(isJunkTicker("FAQ"), true);
+});
+
+test("one-letter suffix abbreviations are not tickers", () => {
+  const found = findTickers("C.V. A.L. P.V. versus Toyota 7203.T and Ocado RMV.L");
+  assert.ok(found.includes("7203.T"));
+  assert.ok(found.includes("RMV.L"));
+  assert.ok(!found.includes("C.V"));
+  assert.ok(!found.includes("A.L"));
+  assert.ok(!found.includes("P.V"));
 });
 
 test("bare words are not tickers; marked and suffixed names are", () => {

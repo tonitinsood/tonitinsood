@@ -4,7 +4,7 @@ Personal monorepo.
 
 ## Letters desk (primary)
 
-Public hedge-fund letters table on **GitHub Pages** — date, fund, manager, tickers, themes, quick take, long/short pitches, geo, View PDF, Analysis.
+Public hedge-fund letters table on **GitHub Pages** — date, fund, manager, tickers, themes, long/short pitches, geo, Shortlist, Archive, View PDF, Analysis.
 
 - Config: [`config/funds.json`](config/funds.json)
 - Builder: [`letters-desk/`](letters-desk/)

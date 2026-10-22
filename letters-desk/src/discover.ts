@@ -1,4 +1,5 @@
 import { fetchBytes } from "../../idea-screener/bot/lib/ingest/fetch.js";
+import { canonicalPdfUrl, isKnownPdf } from "./dedupe.js";
 import type { FundConfig } from "./types.js";
 
 const DEFAULT_BLOCKED = new Set([
@@ -43,8 +44,8 @@ export function pdfLinksFromHtml(
       continue;
     }
     if (includeRe && !includeRe.test(abs)) continue;
-    const key = abs.split("?")[0]!.toLowerCase();
-    if (seen.has(key)) continue;
+    const key = canonicalPdfUrl(abs);
+    if (!key || seen.has(key)) continue;
     seen.add(key);
     found.push(abs);
   }
@@ -70,20 +71,30 @@ export async function discoverNewPdfs(
   const links = pdfLinksFromHtml(html, fund.index_url, fund.pdf_url_include, blocked);
   const fresh: string[] = [];
   for (const url of links) {
-    const key = url.split("?")[0]!.toLowerCase();
-    if (knownUrls.has(key) || knownUrls.has(url)) continue;
+    if (isKnownPdf(url, knownUrls)) continue;
     fresh.push(url);
     if (fresh.length >= limit) break;
   }
   return fresh;
 }
 
-export function slugId(fundId: string, url: string, date: string): string {
-  const file = (url.split("/").pop() ?? "letter")
+export function titleFromPdfUrl(url: string): string {
+  const file = (url.split("?")[0]!.split("/").pop() ?? "")
+    .replace(/\.pdf$/i, "")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (file.length < 8) return "";
+  return file.replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+export function slugId(fundId: string, url: string, date = ""): string {
+  const file = (url.split("?")[0]!.split("/").pop() ?? "letter")
     .replace(/\.pdf(\?.*)?$/i, "")
     .replace(/[^a-z0-9]+/gi, "-")
     .replace(/^-|-$/g, "")
     .toLowerCase()
     .slice(0, 60);
-  return `${fundId}-${date || "undated"}-${file}`.replace(/-+/g, "-");
+  const prefix = date ? `${fundId}-${date}` : fundId;
+  return `${prefix}-${file}`.replace(/-+/g, "-");
 }
