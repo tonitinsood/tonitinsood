@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>It's Probably a Bubble (4Q 2025) — GMO</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <p class="brand">Letters desk</p>
+    <h1>GMO</h1>
+    <nav class="nav">
+      <a href="../index.html">Letters</a>
+      <a href="../pdfs/gmo-2025-4q.pdf" target="_blank" rel="noopener">View PDF</a>
+    </nav>
+  </div>
+</header>
+<main class="letter-page">
+  <p class="kicker">2025-12-31 · Q4 2025 · US</p>
+  <h1>It's Probably a Bubble (4Q 2025)</h1>
+  <p class="subhead">Ben Inker · mega-cap · extract: heuristic</p>
+  <div class="toggles">
+    <label><input type="checkbox" id="shortlist"> Shortlist</label>
+    <label><input type="checkbox" id="archive"> Archive</label>
+  </div>
+  <section class="cards">
+    <div class="card"><h2>Tickers</h2><span class="muted">—</span></div>
+    <div class="card"><h2>Themes</h2><div class="pills"><span class="theme">value</span><span class="theme">growth</span><span class="theme">AI</span><span class="theme">bubble</span><span class="theme">China</span><span class="theme">Japan</span><span class="theme">emerging markets</span><span class="theme">rates</span></div></div>
+    <div class="card span-2"><h2>Quick take</h2><p class="take">Executive Summary AI looks like a classic investment bubble to us, with very high valuations and signs of rampant speculation. But we recognize that while many investors harbor fears that AI might be a bubble, they are far from sure of that fact and tend to assume the market is appropriately priced as a fairly strong prior. In many bubbles, such a scenario would make building a strong portfolio close to impossible since the portfolio you’d hold if you believe in the bubble is a portfolio that would be crazy to hold if times were normal. The 2007-8 Everything Bubble and the 2021 Duration Bubble, for instance, were both bubbles in which the right portfolio to own if you believed there was a bubble was a portfolio that would have an unacceptably low expected return if mark</p></div>
+  </section>
+  <h2>Pitches</h2>
+  <p class="subhead">No named long/short write-up extracted. That is intentional — the whole letter is not treated as a pitch. Read the PDF.</p>
+  <h2>PDF</h2>
+  <p class="subhead"><a href="../pdfs/gmo-2025-4q.pdf">PDF on this site</a> · <a href="https://www.gmo.com/globalassets/articles/quarterly-letter/2025/gmo-quarterly-letter_4q-2025.pdf">Issuer original</a></p>
+  <iframe class="pdf-frame" title="Letter PDF" src="../pdfs/gmo-2025-4q.pdf"></iframe>
+</main>
+<script>
+(function () {
+  const id = "gmo-2025-4q";
+  function key(kind) { return "letters-desk:" + kind; }
+  function load(kind) {
+    try { return JSON.parse(localStorage.getItem(key(kind)) || "[]"); } catch { return []; }
+  }
+  function save(kind, ids) { localStorage.setItem(key(kind), JSON.stringify(ids)); }
+  function bind(kind, el) {
+    if (!el) return;
+    el.checked = load(kind).includes(id);
+    el.addEventListener("change", function () {
+      const ids = new Set(load(kind));
+      if (el.checked) ids.add(id); else ids.delete(id);
+      save(kind, [...ids]);
+    });
+  }
+  bind("shortlist", document.getElementById("shortlist"));
+  bind("archive", document.getElementById("archive"));
+})();
+</script>
+</body>
+</html>

@@ -5,7 +5,8 @@
   "description": "agent project: idea-screener",
   "scripts": {
     "check": "tsc --noEmit",
-    "test": "npx tsx --test bot/lib/ingest/readable.test.ts bot/lib/extract-heuristic.test.ts bot/lib/sheet-cells.test.ts",
+    "test": "npx tsx --test bot/lib/ingest/readable.test.ts bot/lib/extract-heuristic.test.ts bot/lib/sheet-cells.test.ts ../letters-desk/src/extract-letter.test.ts",
+    "letters": "npx tsx ../letters-desk/src/run.ts",
     "dev": "bdk dev",
     "postinstall": "node -e \"console.log('Install Python deps: pip install -r requirements.txt')\"",
     "validate": "npx --yes @cursor/bdk@0.2.27 validate",
