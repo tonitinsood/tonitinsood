@@ -1,0 +1,96 @@
+# 08:00 Asia/Dubai on the 1st of every other month = 04:00 UTC (UAE has no DST).
+# Not daily. Not the 1st and 15th.
+name: Letters desk
+
+on:
+  schedule:
+    - cron: "0 4 1 */2 *"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "config/funds.json"
+      - "letters-desk/**"
+      - ".github/workflows/letters-desk.yml"
+      - "idea-screener/scripts/pdf_text.py"
+      - "idea-screener/bot/lib/ingest/pdf.ts"
+      - "idea-screener/bot/lib/extract-heuristic.ts"
+      - "idea-screener/bot/lib/metrics.ts"
+  push:
+    branches: [main]
+    paths:
+      - "config/funds.json"
+      - "letters-desk/**"
+      - ".github/workflows/letters-desk.yml"
+      - "idea-screener/scripts/pdf_text.py"
+
+concurrency:
+  group: letters-desk
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: idea-screener/package-lock.json
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install npm packages
+        working-directory: idea-screener
+        run: npm install
+
+      - name: Install Python packages
+        run: python -m pip install -r idea-screener/requirements.txt
+
+      - name: Typecheck and unit tests
+        working-directory: idea-screener
+        run: |
+          npm run check
+          npx tsx --test bot/lib/ingest/readable.test.ts bot/lib/extract-heuristic.test.ts bot/lib/sheet-cells.test.ts ../letters-desk/src/extract-letter.test.ts
+
+      - name: Ingest letters and build site
+        working-directory: idea-screener
+        env:
+          FMP_API_KEY: ${{ secrets.FMP_API_KEY }}
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+        run: |
+          extra=()
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            extra+=(--no-discover)
+          fi
+          npx tsx ../letters-desk/src/run.ts "${extra[@]}"
+
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

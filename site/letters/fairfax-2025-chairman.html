@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chairman's Letter to Shareholders 2025 — Fairfax Financial</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <p class="brand">Letters desk</p>
+    <h1>Fairfax Financial</h1>
+    <nav class="nav">
+      <a href="../index.html">Letters</a>
+      <a href="../pdfs/fairfax-2025-chairman.pdf" target="_blank" rel="noopener">View PDF</a>
+    </nav>
+  </div>
+</header>
+<main class="letter-page">
+  <p class="kicker">2026-03-01 · Q1 2026 · Canada</p>
+  <h1>Chairman's Letter to Shareholders 2025</h1>
+  <p class="subhead">Prem Watsa · extract: heuristic</p>
+  <div class="toggles">
+    <label><input type="checkbox" id="shortlist"> Shortlist</label>
+    <label><input type="checkbox" id="archive"> Archive</label>
+  </div>
+  <section class="cards">
+    <div class="card"><h2>Tickers</h2><span class="muted">—</span></div>
+    <div class="card"><h2>Themes</h2><div class="pills"><span class="theme">value</span><span class="theme">AI</span><span class="theme">bubble</span><span class="theme">China</span><span class="theme">Japan</span><span class="theme">Europe</span><span class="theme">buybacks</span><span class="theme">capital allocation</span></div></div>
+    <div class="card span-2"><h2>Quick take</h2><p class="take">To our Shareholders, We celebrated our fortieth anniversary since we began in 1985 by having the best year in our history (again) as our net income increased to a record $4.8 billion.1 We first mentioned that our company was transformed in 2022 and in the last four years gross premiums are up 40%, underwriting profit is up 127%, interest and dividend income is up 302% and book value per share is up 100%! In 2025, book value increased by 21% (adjusted for our $15 dividend) to $1,260 per share and our stock price increased by 31% to Cdn$2,616 per share.The drivers included record underwriting profit of $1.8 billion, record interest and dividend income of $2.6 billion, and net gains on investments of $3.2 billion. Since we began in 1985 our book value per share has compoun</p></div>
+  </section>
+  <h2>Pitches</h2>
+  <p class="subhead">No named long/short write-up extracted. That is intentional — the whole letter is not treated as a pitch. Read the PDF.</p>
+  <h2>PDF</h2>
+  <p class="subhead"><a href="../pdfs/fairfax-2025-chairman.pdf">PDF on this site</a> · <a href="https://www.fairfax.ca/wp-content/uploads/2026/03/FFH_Fairfax-Financials-Shareholders-Letter-2025-with-attachments-092704.pdf">Issuer original</a></p>
+  <iframe class="pdf-frame" title="Letter PDF" src="../pdfs/fairfax-2025-chairman.pdf"></iframe>
+</main>
+<script>
+(function () {
+  const id = "fairfax-2025-chairman";
+  function key(kind) { return "letters-desk:" + kind; }
+  function load(kind) {
+    try { return JSON.parse(localStorage.getItem(key(kind)) || "[]"); } catch { return []; }
+  }
+  function save(kind, ids) { localStorage.setItem(key(kind), JSON.stringify(ids)); }
+  function bind(kind, el) {
+    if (!el) return;
+    el.checked = load(kind).includes(id);
+    el.addEventListener("change", function () {
+      const ids = new Set(load(kind));
+      if (el.checked) ids.add(id); else ids.delete(id);
+      save(kind, [...ids]);
+    });
+  }
+  bind("shortlist", document.getElementById("shortlist"));
+  bind("archive", document.getElementById("archive"));
+})();
+</script>
+</body>
+</html>

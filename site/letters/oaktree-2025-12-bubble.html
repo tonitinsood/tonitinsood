@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Is It a Bubble? — Oaktree Capital</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <p class="brand">Letters desk</p>
+    <h1>Oaktree Capital</h1>
+    <nav class="nav">
+      <a href="../index.html">Letters</a>
+      <a href="../pdfs/oaktree-2025-12-bubble.pdf" target="_blank" rel="noopener">View PDF</a>
+    </nav>
+  </div>
+</header>
+<main class="letter-page">
+  <p class="kicker">2025-12-09 · Q4 2025 · US</p>
+  <h1>Is It a Bubble?</h1>
+  <p class="subhead">Howard Marks · extract: heuristic</p>
+  <div class="toggles">
+    <label><input type="checkbox" id="shortlist"> Shortlist</label>
+    <label><input type="checkbox" id="archive"> Archive</label>
+  </div>
+  <section class="cards">
+    <div class="card"><h2>Tickers</h2><span class="muted">—</span></div>
+    <div class="card"><h2>Themes</h2><div class="pills"><span class="theme">value</span><span class="theme">AI</span><span class="theme">bubble</span><span class="theme">China</span><span class="theme">rates</span><span class="theme">US exceptionalism</span></div></div>
+    <div class="card span-2"><h2>Quick take</h2><p class="take">Ours is a remarkable moment in world history. A transformative technology is ascending, and its supporters claim it will forever change the world. To build it requires companies to invest a sum of money unlike anything in living memory. News reports are filled with widespread fears that America’s biggest corporations are propping up a bubble that will soon pop.</p></div>
+  </section>
+  <h2>Pitches</h2>
+  <p class="subhead">No named long/short write-up extracted. That is intentional — the whole letter is not treated as a pitch. Read the PDF.</p>
+  <h2>PDF</h2>
+  <p class="subhead"><a href="../pdfs/oaktree-2025-12-bubble.pdf">PDF on this site</a> · <a href="https://www.oaktreecapital.com/docs/default-source/memos/is-it-a-bubble.pdf">Issuer original</a></p>
+  <iframe class="pdf-frame" title="Letter PDF" src="../pdfs/oaktree-2025-12-bubble.pdf"></iframe>
+</main>
+<script>
+(function () {
+  const id = "oaktree-2025-12-bubble";
+  function key(kind) { return "letters-desk:" + kind; }
+  function load(kind) {
+    try { return JSON.parse(localStorage.getItem(key(kind)) || "[]"); } catch { return []; }
+  }
+  function save(kind, ids) { localStorage.setItem(key(kind), JSON.stringify(ids)); }
+  function bind(kind, el) {
+    if (!el) return;
+    el.checked = load(kind).includes(id);
+    el.addEventListener("change", function () {
+      const ids = new Set(load(kind));
+      if (el.checked) ids.add(id); else ids.delete(id);
+      save(kind, [...ids]);
+    });
+  }
+  bind("shortlist", document.getElementById("shortlist"));
+  bind("archive", document.getElementById("archive"));
+})();
+</script>
+</body>
+</html>

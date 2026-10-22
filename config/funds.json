@@ -1,0 +1,139 @@
+{
+  "comment": "Public IR / memo PDFs only. Add a fund by name + letter PDF or index URL. Do not scrape BuySideDigest or other paid archives.",
+  "blocked_hosts": [
+    "buysidedigest.com",
+    "www.buysidedigest.com",
+    "bsdpdfapi-production.up.railway.app"
+  ],
+  "funds": [
+    {
+      "id": "fundsmith-equity",
+      "name": "Fundsmith Equity Fund",
+      "manager": "Terry Smith",
+      "region": "UK",
+      "index_url": "https://www.fundsmith.co.uk/documents/",
+      "pdf_url_include": "letter",
+      "letters": [
+        {
+          "id": "fundsmith-equity-2025-annual",
+          "title": "Annual Letter to Shareholders 2025",
+          "date": "2026-01-01",
+          "pdf_url": "https://www.fundsmith.co.uk/media/4hcfd1pg/2025-fef-annual-letter-web.pdf"
+        },
+        {
+          "id": "fundsmith-equity-2024-annual",
+          "title": "Annual Letter to Shareholders 2024",
+          "date": "2025-01-01",
+          "pdf_url": "https://www.fundsmith.co.uk/media/pirmvyly/annual-letter-to-shareholders-2024.pdf"
+        }
+      ]
+    },
+    {
+      "id": "fundsmith-stewardship",
+      "name": "Fundsmith Stewardship Fund",
+      "manager": "Terry Smith",
+      "region": "UK",
+      "index_url": "https://www.fundsmith.co.uk/fsf/documents/",
+      "pdf_url_include": "letter",
+      "letters": [
+        {
+          "id": "fundsmith-stewardship-2026-semi",
+          "title": "Semi Annual Letter to Shareholders 2026",
+          "date": "2026-06-30",
+          "pdf_url": "https://www.fundsmith.co.uk/media/2zddb3q5/2026-fsf-semi-annual-letter-to-shareholders-web.pdf"
+        }
+      ]
+    },
+    {
+      "id": "fairfax",
+      "name": "Fairfax Financial",
+      "manager": "Prem Watsa",
+      "region": "Canada",
+      "index_url": "https://www.fairfax.ca/investors/",
+      "pdf_url_include": "Shareholders-Letter",
+      "letters": [
+        {
+          "id": "fairfax-2025-chairman",
+          "title": "Chairman's Letter to Shareholders 2025",
+          "date": "2026-03-01",
+          "pdf_url": "https://www.fairfax.ca/wp-content/uploads/2026/03/FFH_Fairfax-Financials-Shareholders-Letter-2025-with-attachments-092704.pdf"
+        },
+        {
+          "id": "fairfax-2024-chairman",
+          "title": "Chairman's Letter to Shareholders 2024",
+          "date": "2025-03-01",
+          "pdf_url": "https://www.fairfax.ca/wp-content/uploads/2025/03/FFH_Fairfax-Financials-Shareholders-Letter-2024-with-attachments.pdf"
+        }
+      ]
+    },
+    {
+      "id": "lindsell-train",
+      "name": "Lindsell Train",
+      "manager": "James Bullock",
+      "region": "UK",
+      "index_url": "https://www.lindselltrain.com/insights-events/investment-insights/",
+      "pdf_url_include": "application/files",
+      "letters": [
+        {
+          "id": "lindsell-train-2024-04-very-long-hill",
+          "title": "A Very Long Hill",
+          "date": "2024-04-29",
+          "pdf_url": "https://www.lindselltrain.com/application/files/7417/5500/9876/A_Very_Long_Hill_-_April_2024.pdf",
+          "manager": "James Bullock"
+        }
+      ]
+    },
+    {
+      "id": "gmo",
+      "name": "GMO",
+      "manager": "Ben Inker",
+      "region": "US",
+      "index_url": "https://www.gmo.com/americas/research-library/",
+      "pdf_url_include": "quarterly-letter",
+      "letters": [
+        {
+          "id": "gmo-2025-4q",
+          "title": "It's Probably a Bubble (4Q 2025)",
+          "date": "2025-12-31",
+          "pdf_url": "https://www.gmo.com/globalassets/articles/quarterly-letter/2025/gmo-quarterly-letter_4q-2025.pdf",
+          "manager": "Ben Inker"
+        },
+        {
+          "id": "gmo-2025-3q",
+          "title": "American Unexceptionalism (3Q 2025)",
+          "date": "2025-09-30",
+          "pdf_url": "https://www.gmo.com/globalassets/articles/quarterly-letter/2025/gmo-quarterly-letter_3q-2025.pdf",
+          "manager": "Ben Inker and John Pease"
+        }
+      ]
+    },
+    {
+      "id": "oaktree",
+      "name": "Oaktree Capital",
+      "manager": "Howard Marks",
+      "region": "US",
+      "index_url": "https://www.oaktreecapital.com/insights",
+      "pdf_url_include": "/memos/",
+      "letters": [
+        {
+          "id": "oaktree-2025-12-bubble",
+          "title": "Is It a Bubble?",
+          "date": "2025-12-09",
+          "pdf_url": "https://www.oaktreecapital.com/docs/default-source/memos/is-it-a-bubble.pdf"
+        },
+        {
+          "id": "oaktree-2025-08-calculus",
+          "title": "The Calculus of Value",
+          "date": "2025-08-13",
+          "pdf_url": "https://www.oaktreecapital.com/docs/default-source/memos/the-calculus-of-value.pdf"
+        },
+        {
+          "id": "oaktree-2025-04-nobody-knows",
+          "title": "Nobody Knows (Yet Again)",
+          "date": "2025-04-09",
+          "pdf_url": "https://www.oaktreecapital.com/docs/default-source/memos/nobody-knows-yet-again.pdf"
+        }
+      ]
+    }
+  ]
+}
