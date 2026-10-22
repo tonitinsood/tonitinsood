@@ -41,11 +41,17 @@ export type SeedLetter = {
   manager?: string;
 };
 
+export type FundStatus = "no_public_pdf" | "no_2026_letter";
+
 export type FundConfig = {
   id: string;
   name: string;
   manager: string;
   region: string;
+  priority?: boolean;
+  status?: FundStatus;
+  /** Latest 2026 letter URL (PDF or HTML). Empty when status is set. */
+  letter_url?: string;
   index_url?: string;
   pdf_url_include?: string;
   letters: SeedLetter[];

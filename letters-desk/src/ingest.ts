@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fetchBytes } from "../../idea-screener/bot/lib/ingest/fetch.js";
+import { extractArticleText } from "../../idea-screener/bot/lib/ingest/html.js";
 import { extractPdfText, isPdfMagic } from "../../idea-screener/bot/lib/ingest/pdf.js";
 import { looksUnreadable, sanitizeText } from "../../idea-screener/bot/lib/ingest/readable.js";
 import { enrichTickerMetrics } from "../../idea-screener/bot/lib/metrics.js";
@@ -19,6 +20,7 @@ import {
 } from "./extract-letter.js";
 import { llmExtractLetter } from "./llm.js";
 import type { FundConfig, FundsFile, LetterRecord, SeedLetter } from "./types.js";
+import { isCalendar2026Letter, isRejectedPre2026 } from "./year.js";
 
 const MAX_PDF_BYTES = 12_000_000;
 
@@ -53,6 +55,34 @@ export async function fetchPdf(url: string): Promise<Buffer> {
     throw new Error(`Not a PDF: ${url} (${fetched.contentType || "unknown type"})`);
   }
   return fetched.bytes;
+}
+
+function isHtmlPayload(contentType: string, bytes: Buffer): boolean {
+  if (/text\/html|application\/xhtml/i.test(contentType)) return true;
+  const head = bytes.subarray(0, 200).toString("utf8").trimStart();
+  return head.startsWith("<!") || /^<html/i.test(head);
+}
+
+export async function fetchLetterText(
+  url: string,
+): Promise<{ text: string; kind: "pdf" | "html"; bytes: Buffer }> {
+  const fetched = await fetchBytes(url, MAX_PDF_BYTES);
+  if (isPdfMagic(fetched.bytes) || /application\/pdf/i.test(fetched.contentType)) {
+    return {
+      text: sanitizeText(await extractPdfText(fetched.bytes)),
+      kind: "pdf",
+      bytes: fetched.bytes,
+    };
+  }
+  if (isHtmlPayload(fetched.contentType, fetched.bytes)) {
+    const html = fetched.bytes.toString("utf8");
+    return {
+      text: sanitizeText(extractArticleText(html, "")),
+      kind: "html",
+      bytes: fetched.bytes,
+    };
+  }
+  throw new Error(`Not a PDF or HTML letter: ${url} (${fetched.contentType || "unknown type"})`);
 }
 
 async function enrichPitches(letter: LetterRecord, fmpKey: string | undefined): Promise<void> {
@@ -90,13 +120,15 @@ export async function ingestOne(
   pdfDir: string,
   fmpKey: string | undefined,
 ): Promise<LetterRecord> {
-  const bytes = await fetchPdf(seed.pdf_url);
-  const text = sanitizeText(await extractPdfText(bytes));
+  if (!seed.pdf_url) {
+    throw new Error(`No letter URL for ${seed.id}`);
+  }
+  const { text, kind, bytes } = await fetchLetterText(seed.pdf_url);
   if (!text || looksUnreadable(text) || text.length < 80) {
-    throw new Error(`Unreadable PDF text for ${seed.id} (${seed.pdf_url})`);
+    throw new Error(`Unreadable ${kind} text for ${seed.id} (${seed.pdf_url})`);
   }
   fs.mkdirSync(pdfDir, { recursive: true });
-  const localName = `${seed.id}.pdf`;
+  const localName = `${seed.id}.${kind === "html" ? "html" : "pdf"}`;
   fs.writeFileSync(path.join(pdfDir, localName), bytes);
 
   const base = heuristicLetter(text, fund, seed);
@@ -111,6 +143,9 @@ export async function ingestOne(
   letter.pdf_local = `pdfs/${localName}`;
   letter.pdf_url = seed.pdf_url;
   letter.source_url = seed.pdf_url;
+  if (isRejectedPre2026(letter) || !isCalendar2026Letter(letter)) {
+    throw new Error(`Not a 2026 letter: ${letter.id} (${letter.title} ${letter.date})`);
+  }
   await enrichPitches(letter, fmpKey);
   return letter;
 }
@@ -164,6 +199,7 @@ export async function ingestAll(opts: {
 
     const seenSeeds = new Set<string>();
     for (const seed of [...fund.letters, ...extras]) {
+      if (!seed.pdf_url || isRejectedPre2026(seed)) continue;
       const key = canonicalPdfUrl(seed.pdf_url) || seed.id;
       if (seenSeeds.has(key)) continue;
       seenSeeds.add(key);

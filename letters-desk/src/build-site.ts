@@ -284,6 +284,15 @@ export function writeSite(opts: {
       fs.unlinkSync(path.join(lettersDir, name));
     }
   }
+  const pdfDir = path.join(opts.siteDir, "pdfs");
+  const keepPdf = new Set(
+    opts.letters.map((l) => path.basename(l.pdf_local || "")).filter(Boolean),
+  );
+  if (fs.existsSync(pdfDir)) {
+    for (const name of fs.readdirSync(pdfDir)) {
+      if (!keepPdf.has(name)) fs.unlinkSync(path.join(pdfDir, name));
+    }
+  }
   for (const letter of opts.letters) {
     fs.writeFileSync(
       path.join(opts.siteDir, "letters", `${letter.id}.html`),
