@@ -63,7 +63,7 @@ jobs:
         working-directory: idea-screener
         run: |
           npm run check
-          npx tsx --test bot/lib/ingest/readable.test.ts bot/lib/extract-heuristic.test.ts bot/lib/sheet-cells.test.ts ../letters-desk/src/extract-letter.test.ts
+          npx tsx --test bot/lib/ingest/readable.test.ts bot/lib/extract-heuristic.test.ts bot/lib/sheet-cells.test.ts ../letters-desk/src/*.test.ts
 
       - name: Ingest letters and build site
         working-directory: idea-screener

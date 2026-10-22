@@ -4,9 +4,16 @@ import { fetchBytes } from "../../idea-screener/bot/lib/ingest/fetch.js";
 import { extractPdfText, isPdfMagic } from "../../idea-screener/bot/lib/ingest/pdf.js";
 import { looksUnreadable, sanitizeText } from "../../idea-screener/bot/lib/ingest/readable.js";
 import { enrichTickerMetrics } from "../../idea-screener/bot/lib/metrics.js";
-import { discoverNewPdfs, slugId } from "./discover.js";
+import {
+  canonicalPdfUrl,
+  dedupeLetters,
+  dedupeSeedLetters,
+  knownPdfKeys,
+} from "./dedupe.js";
+import { discoverNewPdfs, slugId, titleFromPdfUrl } from "./discover.js";
 import {
   heuristicLetter,
+  isGenericLetterTitle,
   mergeLlmIntoHeuristic,
   parseLetterDate,
 } from "./extract-letter.js";
@@ -21,7 +28,23 @@ export function loadFunds(configPath: string): FundsFile {
   if (!Array.isArray(parsed.funds) || parsed.funds.length === 0) {
     throw new Error(`No funds in ${configPath}`);
   }
+  parsed.funds = parsed.funds.map((fund) => ({
+    ...fund,
+    letters: dedupeSeedLetters(fund.letters ?? []),
+  }));
   return parsed;
+}
+
+export function loadExistingLetters(lettersJsonPath: string): LetterRecord[] {
+  if (!fs.existsSync(lettersJsonPath)) return [];
+  try {
+    const parsed = JSON.parse(fs.readFileSync(lettersJsonPath, "utf8")) as {
+      letters?: LetterRecord[];
+    };
+    return Array.isArray(parsed.letters) ? parsed.letters : [];
+  } catch {
+    return [];
+  }
 }
 
 export async function fetchPdf(url: string): Promise<Buffer> {
@@ -86,6 +109,8 @@ export async function ingestOne(
   );
   const letter = mergeLlmIntoHeuristic(base, llm);
   letter.pdf_local = `pdfs/${localName}`;
+  letter.pdf_url = seed.pdf_url;
+  letter.source_url = seed.pdf_url;
   await enrichPitches(letter, fmpKey);
   return letter;
 }
@@ -95,30 +120,53 @@ export async function ingestAll(opts: {
   pdfDir: string;
   fmpKey: string | undefined;
   discover: boolean;
+  existingLetters?: LetterRecord[];
 }): Promise<{ letters: LetterRecord[]; failures: { id: string; error: string }[] }> {
   const letters: LetterRecord[] = [];
   const failures: { id: string; error: string }[] = [];
   const blocked = opts.fundsFile.blocked_hosts ?? [];
+  const existing = opts.existingLetters ?? [];
 
   for (const fund of opts.fundsFile.funds) {
-    const known = new Set(
-      fund.letters.map((l) => l.pdf_url.split("?")[0]!.toLowerCase()),
+    const prior = existing.filter((l) => l.fund_id === fund.id);
+    const known = knownPdfKeys(
+      fund,
+      prior.map((l) => l.pdf_url),
     );
     const extras: SeedLetter[] = [];
+    const seedUrls = new Set(fund.letters.map((l) => canonicalPdfUrl(l.pdf_url)));
+    for (const letter of prior) {
+      const url = canonicalPdfUrl(letter.pdf_url);
+      if (!url || seedUrls.has(url)) continue;
+      extras.push({
+        id: letter.id,
+        title: isGenericLetterTitle(letter.title, letter.fund) ? "" : letter.title,
+        date: isGenericLetterTitle(letter.title, letter.fund) ? "" : letter.date,
+        pdf_url: letter.pdf_url,
+        manager: letter.manager,
+      });
+    }
     if (opts.discover) {
       const found = await discoverNewPdfs(fund, known, blocked);
       for (const url of found) {
+        const canon = canonicalPdfUrl(url);
+        if (!canon || known.has(canon)) continue;
         const guessDate = parseLetterDate(url, "");
         extras.push({
-          id: slugId(fund.id, url, guessDate || "new"),
-          title: `${fund.name} letter`,
-          date: guessDate || new Date().toISOString().slice(0, 10),
+          id: slugId(fund.id, url, guessDate),
+          title: titleFromPdfUrl(url) || `${fund.name} letter`,
+          date: guessDate,
           pdf_url: url,
         });
+        known.add(canon);
       }
     }
 
+    const seenSeeds = new Set<string>();
     for (const seed of [...fund.letters, ...extras]) {
+      const key = canonicalPdfUrl(seed.pdf_url) || seed.id;
+      if (seenSeeds.has(key)) continue;
+      seenSeeds.add(key);
       try {
         const letter = await ingestOne(fund, seed, opts.pdfDir, opts.fmpKey);
         letters.push(letter);
@@ -133,6 +181,7 @@ export async function ingestAll(opts: {
     }
   }
 
-  letters.sort((a, b) => b.date.localeCompare(a.date) || a.fund.localeCompare(b.fund));
-  return { letters, failures };
+  const unique = dedupeLetters(letters);
+  unique.sort((a, b) => b.date.localeCompare(a.date) || a.fund.localeCompare(b.fund));
+  return { letters: unique, failures };
 }

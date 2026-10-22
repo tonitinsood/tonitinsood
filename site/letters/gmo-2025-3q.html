@@ -22,13 +22,12 @@
   <h1>American Unexceptionalism (3Q 2025)</h1>
   <p class="subhead">Ben Inker and John Pease · mega-cap · extract: heuristic</p>
   <div class="toggles">
-    <label><input type="checkbox" id="shortlist"> Shortlist</label>
-    <label><input type="checkbox" id="archive"> Archive</label>
+    <label><input type="checkbox" data-flag="shortlist" data-id="gmo-2025-3q"> Shortlist</label>
+    <label><input type="checkbox" data-flag="archive" data-id="gmo-2025-3q"> Archive</label>
   </div>
   <section class="cards">
     <div class="card"><h2>Tickers</h2><span class="muted">—</span></div>
     <div class="card"><h2>Themes</h2><div class="pills"><span class="theme">value</span><span class="theme">AI</span><span class="theme">bubble</span><span class="theme">China</span><span class="theme">Japan</span><span class="theme">Europe</span><span class="theme">emerging markets</span><span class="theme">buybacks</span></div></div>
-    <div class="card span-2"><h2>Quick take</h2><p class="take">Introduction Most investors believe that the U.S. economy is superior to the rest of the world and that the S&amp;P 500 is better than all other groups of stocks. 1 The common wisdom is that if you invest in U.S. equities “for the long term,” you’ll compound capital at somewhere between 9% and 12%. Going outside the U.S., by contrast, is generally seen as needlessly risky: returns in the rest of the world have been somewhere between awful (China) and uninspiring (Europe) since the GFC, and it is a fact that no economy today can boast of the resilience we have seen in post-pandemic America. The reason people are bulled up on the U.S. stock market is therefore quite straightforward: the U.S. has had a rip-roaring economy, and domestic equities have massively outperformed ever</p></div>
   </section>
   <h2>Pitches</h2>
   <p class="subhead">No named long/short write-up extracted. That is intentional — the whole letter is not treated as a pitch. Read the PDF.</p>
@@ -36,26 +35,6 @@
   <p class="subhead"><a href="../pdfs/gmo-2025-3q.pdf">PDF on this site</a> · <a href="https://www.gmo.com/globalassets/articles/quarterly-letter/2025/gmo-quarterly-letter_3q-2025.pdf">Issuer original</a></p>
   <iframe class="pdf-frame" title="Letter PDF" src="../pdfs/gmo-2025-3q.pdf"></iframe>
 </main>
-<script>
-(function () {
-  const id = "gmo-2025-3q";
-  function key(kind) { return "letters-desk:" + kind; }
-  function load(kind) {
-    try { return JSON.parse(localStorage.getItem(key(kind)) || "[]"); } catch { return []; }
-  }
-  function save(kind, ids) { localStorage.setItem(key(kind), JSON.stringify(ids)); }
-  function bind(kind, el) {
-    if (!el) return;
-    el.checked = load(kind).includes(id);
-    el.addEventListener("change", function () {
-      const ids = new Set(load(kind));
-      if (el.checked) ids.add(id); else ids.delete(id);
-      save(kind, [...ids]);
-    });
-  }
-  bind("shortlist", document.getElementById("shortlist"));
-  bind("archive", document.getElementById("archive"));
-})();
-</script>
+<script src="../app.js"></script>
 </body>
 </html>

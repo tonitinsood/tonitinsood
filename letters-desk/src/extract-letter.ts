@@ -1,10 +1,9 @@
 import {
   extractPitchesHeuristic,
-  findTickers,
-  isJunkTicker,
 } from "../../idea-screener/bot/lib/extract-heuristic.js";
 import { inferRegion } from "../../idea-screener/bot/lib/markets.js";
 import { looksUnreadable, sanitizeText } from "../../idea-screener/bot/lib/ingest/readable.js";
+import { extractEquityTickers, isDeniedTicker, isEquityTicker } from "./tickers.js";
 import type { FundConfig, LetterPitch, LetterRecord, SeedLetter, Stance } from "./types.js";
 
 const MONTHS: Record<string, string> = {
@@ -52,42 +51,7 @@ const CAP_RULES: { cap: string; re: RegExp }[] = [
   { cap: "small", re: /\b(small-?cap|smaller compan(?:y|ies))\b/i },
 ];
 
-const MAX_QUICK = 780;
 const MAX_PITCH = 3200;
-
-/** Extra junk that parenthetical extract treats as tickers in letters. */
-const LETTER_TICKER_STOP = new Set([
-  "GICS",
-  "IBES",
-  "ESG",
-  "CAGR",
-  "GFC",
-  "SSI",
-  "FDI",
-  "CTV",
-  "OBBA",
-  "NET",
-  "TO",
-  "MC",
-  "PA",
-  "HFP",
-  "BIAC",
-  "CEE",
-  "CIB",
-  "CPI",
-  "PPI",
-  "YOY",
-  "QOQ",
-  "DCF",
-  "SOTP",
-  "WACC",
-  "CAPM",
-  "MSCI",
-  "FTSE",
-  "S&P",
-  "SPX",
-  "NDX",
-]);
 
 export function quarterFromDate(iso: string): string {
   const m = iso.match(/^(\d{4})-(\d{2})/);
@@ -141,69 +105,35 @@ export function inferCap(text: string): string {
   return "";
 }
 
-function splitSentences(text: string): string[] {
-  return text
-    .replace(/\s+/g, " ")
-    .split(/(?<=[.?!])\s+(?=[A-Z“"'])/)
-    .map((s) => s.trim())
-    .filter((s) => s.length >= 30);
+export function isGenericLetterTitle(title: string, fundName?: string): boolean {
+  const t = title.trim().toLowerCase();
+  if (!t) return true;
+  if (fundName && t === `${fundName.trim().toLowerCase()} letter`) return true;
+  return /^(letter|memo|pdf|document|untitled)$/i.test(t);
 }
 
-export function extractQuickTake(text: string): string {
-  if (looksUnreadable(text)) return "";
-  const body = sanitizeText(text).replace(/^[\s\S]{0,1200}?(Dear [^\n.]{0,80}[,.])/i, "$1");
-  const picked: string[] = [];
-  for (const sentence of splitSentences(body)) {
-    if (
-      /dear (?:fellow )?(?:investor|shareholder)|table below|% total return|past performance|not a (?:recommendation|offer)|copyright|all rights reserved|confidential|authorised and regulated|issued and approved|©\s*\d{4}|oaktree capital management/i.test(
-        sentence,
-      )
-    ) {
+export function extractLetterTitle(text: string, fallback: string, fundName?: string): string {
+  if (fallback && !isGenericLetterTitle(fallback, fundName)) return fallback;
+  const lines = sanitizeText(text)
+    .split(/\n+/)
+    .map((l) => l.trim())
+    .filter((l) => l.length >= 8 && l.length <= 120);
+  for (const line of lines.slice(0, 40)) {
+    if (/^dear |^to (?:our |the )?(?:fellow )?(?:shareholders|investors)/i.test(line)) continue;
+    if (/page \d+|copyright|confidential|authorised and regulated|all rights reserved/i.test(line)) {
       continue;
     }
-    if (/page \d+ of \d+|click here|unsubscribe/i.test(sentence)) continue;
-    picked.push(sentence);
-    if (picked.length >= 4 || picked.join(" ").length >= MAX_QUICK) break;
+    if (/%PDF|http|:\/\//i.test(line)) continue;
+    if (/[.]$/.test(line) && line.split(/\s+/).length >= 6) continue;
+    if (/^[A-Z0-9][A-Za-z0-9 ,:'’&().?!\-]{7,90}$/.test(line)) {
+      return line;
+    }
   }
-  const take = picked.join(" ").trim();
-  if (take.length >= 80) return take.slice(0, MAX_QUICK);
-  const fallback = sanitizeText(text)
-    .split("\n")
-    .map((l) => l.trim())
-    .filter((l) => l.length > 60 && !/^dear /i.test(l))
-    .slice(0, 4)
-    .join(" ");
-  return fallback.slice(0, MAX_QUICK);
+  return fallback;
 }
 
 export function isLetterJunkTicker(ticker: string): boolean {
-  const t = ticker.trim().toUpperCase();
-  if (!t || isJunkTicker(t) || LETTER_TICKER_STOP.has(t)) return true;
-  if (t.length <= 2 && !t.includes(".")) return true;
-  return false;
-}
-
-function strictTickers(text: string): string[] {
-  const seen = new Set<string>();
-  const out: string[] = [];
-  const push = (raw: string | undefined) => {
-    const t = raw?.toUpperCase();
-    if (!t || isLetterJunkTicker(t) || seen.has(t)) return;
-    seen.add(t);
-    out.push(t);
-  };
-  for (const m of text.matchAll(/\$([A-Z]{1,5}(?:\.[A-Z]{1,3})?)\b/g)) push(m[1]);
-  for (const m of text.matchAll(
-    /\b(?:NYSE|NASDAQ|AMEX|TSX|LSE|TSE|ASX|NSE|BSE|HKEX|TYO|EPA|FRA)[:\s-]+([A-Z]{1,5}(?:\.[A-Z]{1,3})?)\b/g,
-  )) {
-    push(m[1]);
-  }
-  for (const m of text.matchAll(
-    /\b([A-Z0-9]{1,5}\.(?:T|L|PA|DE|F|NS|BO|AX|TO|V|CN|SA|MX|HK|SW|AS|MI|BR|ST|CO|HE|OL|LS|MC|IR|TW|TWO|KS|KQ|SS|SZ|SI|NZ|JK|KL|JO))\b/g,
-  )) {
-    push(m[1]);
-  }
-  return out.slice(0, 12);
+  return isDeniedTicker(ticker);
 }
 
 function inferStance(text: string): Stance {
@@ -254,18 +184,24 @@ export function pitchesFromLetter(
     if (!writeup || writeup.length < 80) continue;
     if (writeup.length > letterLen * 0.8 && letterLen > 4000) continue;
     const ticker = p.ticker.toUpperCase();
-    if (ticker && isLetterJunkTicker(ticker)) continue;
+    if (ticker && !isEquityTicker(ticker, { kind: ticker.includes(".") ? "suffix" : "bare", text })) {
+      if (!p.company.trim()) continue;
+    }
     const company = p.company.trim();
     if (!ticker && (!company || company.toLowerCase() === seed.title.toLowerCase())) continue;
     if (!ticker && company.length > 60) continue;
     if (!ticker && writeup.length >= MAX_PITCH - 20) continue;
-    const key = `${ticker}|${company.toLowerCase()}`;
+    const cleanTicker =
+      ticker && isEquityTicker(ticker, { kind: ticker.includes(".") ? "suffix" : "paren", text })
+        ? ticker
+        : "";
+    const key = `${cleanTicker}|${company.toLowerCase()}`;
     if (seen.has(key)) continue;
     seen.add(key);
     const stance = inferStance(`${p.thesis_short}\n${writeup}`);
     out.push({
       stance: stance === "unknown" ? "long" : stance,
-      ticker: p.ticker,
+      ticker: cleanTicker,
       company: p.company,
       country: p.exchange_country,
       writeup,
@@ -281,18 +217,15 @@ export function pitchesFromLetter(
 }
 
 export function collectTickers(text: string, pitches: LetterPitch[]): string[] {
-  const fromText = [
-    ...strictTickers(text),
-    ...findTickers(text).filter((t) => !isLetterJunkTicker(t) && t.length >= 3),
-  ];
+  const fromText = extractEquityTickers(text, 12);
   const fromPitches = pitches
     .map((p) => p.ticker)
-    .filter((t) => t && !isLetterJunkTicker(t));
+    .filter((t) => t && isEquityTicker(t, { kind: t.includes(".") ? "suffix" : "bare", text }));
   const seen = new Set<string>();
   const out: string[] = [];
   for (const t of [...fromPitches, ...fromText]) {
     const up = t.toUpperCase();
-    if (!up || seen.has(up) || isLetterJunkTicker(up)) continue;
+    if (!up || seen.has(up) || isDeniedTicker(up)) continue;
     seen.add(up);
     out.push(up);
     if (out.length >= 12) break;
@@ -322,7 +255,8 @@ export function heuristicLetter(
   const date = /^\d{4}-\d{2}-\d{2}$/.test(seed.date)
     ? seed.date
     : parseLetterDate(clean, seed.date);
-  const pitches = pitchesFromLetter(clean, fund, seed);
+  const title = extractLetterTitle(clean, seed.title, fund.name);
+  const pitches = pitchesFromLetter(clean, fund, { ...seed, title, date });
   const tickers = collectTickers(clean, pitches);
   return {
     id: seed.id,
@@ -331,13 +265,12 @@ export function heuristicLetter(
     fund_id: fund.id,
     fund: fund.name,
     manager: seed.manager || fund.manager,
-    title: seed.title,
+    title,
     region: fund.region,
     geo: geosFor(fund, tickers, pitches),
     cap: inferCap(clean),
     tickers,
     themes: extractThemes(clean),
-    quick_take: extractQuickTake(clean),
     pitches,
     pdf_url: seed.pdf_url,
     pdf_local: `pdfs/${seed.id}.pdf`,
@@ -353,11 +286,15 @@ export function mergeLlmIntoHeuristic(
   if (!llm) return base;
   const tickers = (llm.tickers ?? [])
     .map((t) => t.trim().toUpperCase())
-    .filter((t) => t && !isJunkTicker(t));
+    .filter((t) => isEquityTicker(t, { kind: t.includes(".") ? "suffix" : "bare" }));
   const pitches = (llm.pitches ?? [])
     .map((p) => ({
       ...p,
-      ticker: (p.ticker || "").toUpperCase(),
+      ticker: isEquityTicker((p.ticker || "").toUpperCase(), {
+        kind: (p.ticker || "").includes(".") ? "suffix" : "bare",
+      })
+        ? (p.ticker || "").toUpperCase()
+        : "",
       writeup: clipPitch(p.writeup || "", 20_000),
       pe: p.pe ?? "",
       ev_ebit: p.ev_ebit ?? "",
@@ -366,21 +303,19 @@ export function mergeLlmIntoHeuristic(
       metrics_source: p.metrics_source ?? "",
     }))
     .filter((p) => p.writeup.length >= 80 && p.writeup.length < 12_000);
+  const date = llm.date && /^\d{4}-\d{2}-\d{2}$/.test(llm.date) ? llm.date : base.date;
+  const title =
+    llm.title?.trim() && !isGenericLetterTitle(llm.title, base.fund)
+      ? llm.title.trim()
+      : base.title;
   return {
     ...base,
     manager: llm.manager?.trim() || base.manager,
-    title: llm.title?.trim() || base.title,
-    date: llm.date && /^\d{4}-\d{2}-\d{2}$/.test(llm.date) ? llm.date : base.date,
-    quarter:
-      llm.date && /^\d{4}-\d{2}-\d{2}$/.test(llm.date)
-        ? quarterFromDate(llm.date)
-        : base.quarter,
+    title,
+    date,
+    quarter: quarterFromDate(date),
     tickers: tickers.length ? tickers.slice(0, 12) : base.tickers,
     themes: llm.themes?.length ? llm.themes.slice(0, 8) : base.themes,
-    quick_take:
-      llm.quick_take && llm.quick_take.length >= 60
-        ? llm.quick_take.slice(0, MAX_QUICK)
-        : base.quick_take,
     geo: llm.geo?.trim() || base.geo,
     cap: llm.cap?.trim() || base.cap,
     pitches: pitches.length ? pitches.slice(0, 8) : base.pitches,

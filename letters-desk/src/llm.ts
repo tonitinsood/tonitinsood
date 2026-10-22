@@ -6,7 +6,6 @@ type LlmLetter = {
   title?: string;
   tickers?: string[];
   themes?: string[];
-  quick_take?: string;
   geo?: string;
   cap?: string;
   pitches?: {
@@ -80,11 +79,21 @@ export async function llmExtractLetter(
   const excerpt = text.slice(0, 24_000);
   const prompt = `Extract structured metadata from this hedge-fund / investor letter.
 Return JSON only with keys:
-date (YYYY-MM-DD), manager, title, tickers (array of symbols), themes (short keywords),
-quick_take (2-4 sentences, never the whole letter), geo, cap (mega|large|mid|small or ""),
+date (YYYY-MM-DD), manager, title,
+tickers (array of listed equity symbols only),
+themes (short keywords), geo, cap (mega|large|mid|small or ""),
 pitches: array of {stance: long|short, ticker, company, country, writeup}.
 Each pitch writeup must be a readable thesis for THAT name (a few paragraphs), not the entire letter.
 If the letter is commentary with no stock pitch, pitches may be [].
+
+TICKERS — strict:
+- Emit only real listed equities. Prefer $TICKER, NYSE:/NASDAQ:/LSE:/TSX: prefixes, or exchange suffixes (.L .T .PA .TO .HK .AX .DE).
+- Do not emit agencies, people titles, products, currencies, periods, file types, or jargon.
+- Never emit: DOJ, CEO, ETF, USD, GDP, AI, FAQ, PDF, LLC, INC, LTD, Q1, Q2, Q3, Q4, FTC, SEC, FBI, ESG, GHG, MENA, WWF, LSE, NYSE, CPI, YOY.
+- Unmarked 2–4 letter ALL CAPS words are not tickers unless clearly a listed stock (e.g. LSEG, AAPL). If unsure, omit.
+- Empty tickers array is correct when the letter names no stocks.
+
+Do not include a quick_take or any long summary field.
 Fund: ${fundName}. Stated manager: ${manager}. Title: ${title}. URL: ${pdfUrl}.
 
 LETTER TEXT:
@@ -106,7 +115,7 @@ ${excerpt}`;
             {
               role: "system",
               content:
-                "You extract investment-letter metadata. Never copy an entire letter into a pitch field.",
+                "You extract investment-letter metadata. Tickers must be real listed equities only. Never copy an entire letter into a pitch field. Never invent tickers from acronyms.",
             },
             { role: "user", content: prompt },
           ],
@@ -138,7 +147,6 @@ ${excerpt}`;
         title: parsed.title,
         tickers: parsed.tickers,
         themes: parsed.themes,
-        quick_take: parsed.quick_take,
         geo: parsed.geo,
         cap: parsed.cap,
         pitches,

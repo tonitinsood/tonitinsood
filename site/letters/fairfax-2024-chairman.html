@@ -22,13 +22,12 @@
   <h1>Chairman's Letter to Shareholders 2024</h1>
   <p class="subhead">Prem Watsa · mega-cap · extract: heuristic</p>
   <div class="toggles">
-    <label><input type="checkbox" id="shortlist"> Shortlist</label>
-    <label><input type="checkbox" id="archive"> Archive</label>
+    <label><input type="checkbox" data-flag="shortlist" data-id="fairfax-2024-chairman"> Shortlist</label>
+    <label><input type="checkbox" data-flag="archive" data-id="fairfax-2024-chairman"> Archive</label>
   </div>
   <section class="cards">
     <div class="card"><h2>Tickers</h2><div class="pills"><span class="pill">JKH</span></div></div>
     <div class="card"><h2>Themes</h2><div class="pills"><span class="theme">value</span><span class="theme">quality</span><span class="theme">AI</span><span class="theme">bubble</span><span class="theme">Japan</span><span class="theme">Europe</span><span class="theme">buybacks</span><span class="theme">insurance</span></div></div>
-    <div class="card span-2"><h2>Quick take</h2><p class="take">To Our Shareholders: After doubling over a blistering three years, our book value growth slowed its pace a bit and advanced another 14.5% in 2024.As milestones go, 2023 saw the stock cross Cdn$1,000 for the first time and December of 2024 saw it pass the Cdn$2,000 level. The 64% surge in share value in 2024 has long-term shareholders sitting on a gain of 600x from our very humble beginnings in 1985 when the stock debuted at Cdn$3.25. We had another year of strong performance, with record underwriting profits of $1.8 billion1 on record gross premiums of $33 billion, record interest and dividend income of $2.5 billion and net earnings of $3.9 billion or $161 per share. In 2022, we told you we had moved into an unprecedented position of strength in underwriting profits, in</p></div>
   </section>
   <h2>Pitches</h2>
   <p class="subhead">No named long/short write-up extracted. That is intentional — the whole letter is not treated as a pitch. Read the PDF.</p>
@@ -36,26 +35,6 @@
   <p class="subhead"><a href="../pdfs/fairfax-2024-chairman.pdf">PDF on this site</a> · <a href="https://www.fairfax.ca/wp-content/uploads/2025/03/FFH_Fairfax-Financials-Shareholders-Letter-2024-with-attachments.pdf">Issuer original</a></p>
   <iframe class="pdf-frame" title="Letter PDF" src="../pdfs/fairfax-2024-chairman.pdf"></iframe>
 </main>
-<script>
-(function () {
-  const id = "fairfax-2024-chairman";
-  function key(kind) { return "letters-desk:" + kind; }
-  function load(kind) {
-    try { return JSON.parse(localStorage.getItem(key(kind)) || "[]"); } catch { return []; }
-  }
-  function save(kind, ids) { localStorage.setItem(key(kind), JSON.stringify(ids)); }
-  function bind(kind, el) {
-    if (!el) return;
-    el.checked = load(kind).includes(id);
-    el.addEventListener("change", function () {
-      const ids = new Set(load(kind));
-      if (el.checked) ids.add(id); else ids.delete(id);
-      save(kind, [...ids]);
-    });
-  }
-  bind("shortlist", document.getElementById("shortlist"));
-  bind("archive", document.getElementById("archive"));
-})();
-</script>
+<script src="../app.js"></script>
 </body>
 </html>

@@ -113,6 +113,33 @@ export const TICKER_STOPLIST = new Set([
   "GAAP",
   "FASB",
   "AMEX",
+  "DOJ",
+  "FBI",
+  "CIA",
+  "FDA",
+  "FTC",
+  "ECB",
+  "IMF",
+  "OECD",
+  "NATO",
+  "WHO",
+  "CDC",
+  "IRS",
+  "FAQ",
+  "HMRC",
+  "GHG",
+  "EAC",
+  "PPA",
+  "MENA",
+  "WWF",
+  "NGO",
+  "LSE",
+  "CSR",
+  "VAT",
+  "GST",
+  "IFRS",
+  "TCFD",
+  "SASB",
   "UTC",
   "CPA",
   "SLURM",
@@ -168,7 +195,7 @@ const TICKER_MARKED_RE =
   /(?:(\$)|(NYSE|NASDAQ|AMEX|TSX|LSE|TSE|ASX|NSE|BSE|HKEX|TYO|EPA|FRA)[:\s-]*)([A-Z]{1,5}(?:\.[A-Z]{1,3})?)\b/g;
 
 const TICKER_SUFFIX_RE =
-  /\b([A-Z0-9]{1,5}\.(?:T|L|PA|DE|F|NS|BO|AX|TO|V|CN|SA|MX|HK|SW|AS|MI|BR|ST|CO|HE|OL|LS|MC|IR|TW|TWO|KS|KQ|SS|SZ|SI|NZ|JK|KL|JO))\b/g;
+  /\b([A-Z0-9]{2,5}\.(?:T|L|PA|DE|F|NS|BO|AX|TO|V|CN|SA|MX|HK|SW|AS|MI|BR|ST|CO|HE|OL|LS|MC|IR|TW|TWO|KS|KQ|SS|SZ|SI|NZ|JK|KL|JO))\b/g;
 
 const TICKER_PAREN_RE =
   /\(\s*([A-Z]{1,5}(?:\.[A-Z]{1,3})?)\s*\)/g;

@@ -1,12 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
-  extractQuickTake,
+  collectTickers,
+  extractLetterTitle,
   extractThemes,
   heuristicLetter,
   parseLetterDate,
   quarterFromDate,
 } from "./extract-letter.js";
+import { isDeniedTicker, isEquityTicker } from "./tickers.js";
 import type { FundConfig } from "./types.js";
 
 const fund: FundConfig = {
@@ -24,15 +26,6 @@ test("parses month-year and quarter dates", () => {
   assert.equal(quarterFromDate("2026-01-01"), "Q1 2026");
 });
 
-test("quick take is a few sentences, never the whole letter", () => {
-  const paras = Array.from({ length: 40 }, (_, i) => `This is sentence number ${i + 1} about the portfolio and why the business is cheap relative to intrinsic value.`).join(" ");
-  const letter = `Demo Fund\nJanuary 2026\nDear Fellow Investor,\nThe table below shows performance.\n${paras}`;
-  const take = extractQuickTake(letter);
-  assert.ok(take.length >= 80);
-  assert.ok(take.length < 900);
-  assert.equal(take.includes("%PDF"), false);
-});
-
 test("heuristic letter never dumps the full PDF as the only pitch", () => {
   const body = `January 2026
 Dear Fellow Investor,
@@ -46,17 +39,13 @@ ${"More commentary. ".repeat(800)}`;
     pdf_url: "https://example.com/letter.pdf",
   });
   assert.equal(letter.fund, "Demo Fund");
-  assert.ok(letter.quick_take.length < body.length / 4);
+  assert.equal("quick_take" in letter, false);
   for (const pitch of letter.pitches) {
     assert.ok(pitch.writeup.length < 4000);
     assert.equal(pitch.writeup.includes("%PDF"), false);
   }
   assert.ok(extractThemes(body).includes("value"));
-});
-
-test("raw PDF bytes are not treated as a quick take", () => {
-  const take = extractQuickTake("%PDF-1.7\n1 0 obj<<>>stream binary");
-  assert.ok(!take.startsWith("%PDF"));
+  assert.ok(letter.tickers.includes("MC.PA"));
 });
 
 test("seed date wins over historical dates in the memo body", () => {
@@ -72,4 +61,49 @@ test("seed date wins over historical dates in the memo body", () => {
   );
   assert.equal(letter.date, "2025-04-09");
   assert.equal(letter.quarter, "Q2 2025");
+});
+
+test("discovered letters with no seed date parse the date from the PDF text", () => {
+  const letter = heuristicLetter(
+    "Chairman's Letter to Shareholders\nMarch 2024\nTo our Shareholders, book value compounded.",
+    fund,
+    {
+      id: "demo-discovered",
+      title: "Demo Fund letter",
+      date: "",
+      pdf_url: "https://example.com/other.pdf",
+    },
+  );
+  assert.equal(letter.date, "2024-03-01");
+  assert.match(letter.title, /Chairman|Shareholders/i);
+});
+
+test("DOJ and other jargon are not tickers; $MSFT and NYSE:BAC are", () => {
+  const text =
+    "The DOJ and FTC opened a case. CEO of the ETF cited US GDP. See the FAQ PDF. " +
+    "We added $MSFT and NYSE:BAC. Toyota 7203.T is cheap. C.V. filings mention Q1.";
+  const tickers = collectTickers(text, []);
+  assert.ok(tickers.includes("MSFT"));
+  assert.ok(tickers.includes("BAC"));
+  assert.ok(tickers.includes("7203.T"));
+  for (const bad of ["DOJ", "FTC", "CEO", "ETF", "GDP", "FAQ", "PDF", "Q1", "C.V", "AI", "LLC", "INC"]) {
+    assert.equal(tickers.includes(bad), false, bad);
+    assert.equal(isDeniedTicker(bad) || !isEquityTicker(bad, { kind: "bare" }), true, bad);
+  }
+});
+
+test("parenthetical 3-letter agencies drop; Holdings (JKH) can stay", () => {
+  const junk = collectTickers("The Department of Justice (DOJ) and the Commission (FTC) investigated.", []);
+  assert.deepEqual(junk, []);
+  const keep = collectTickers("We added to John Keells Holdings (JKH) during the year.", []);
+  assert.ok(keep.includes("JKH"));
+});
+
+test("extractLetterTitle skips a generic fund letter fallback", () => {
+  const title = extractLetterTitle(
+    "Is It a Bubble?\n\nOurs is a remarkable moment in world history.",
+    "Oaktree Capital letter",
+    "Oaktree Capital",
+  );
+  assert.equal(title, "Is It a Bubble?");
 });
