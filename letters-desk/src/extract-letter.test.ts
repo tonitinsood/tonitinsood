@@ -23,7 +23,8 @@ test("parses month-year and quarter dates", () => {
   assert.equal(parseLetterDate("January 2026\nDear Fellow Investor", "1999-01-01"), "2026-01-01");
   assert.equal(parseLetterDate("April 9, 2025 memo", ""), "2025-04-09");
   assert.equal(parseLetterDate("4Q 2025 quarterly letter", ""), "2025-12-31");
-  assert.equal(quarterFromDate("2026-01-01"), "Q1 2026");
+  assert.equal(quarterFromDate("2026-01-01"), "Q4 2025");
+  assert.equal(quarterFromDate("2026-10-23"), "Q3 2026");
 });
 
 test("heuristic letter never dumps the full PDF as the only pitch", () => {
@@ -60,7 +61,7 @@ test("seed date wins over historical dates in the memo body", () => {
     },
   );
   assert.equal(letter.date, "2025-04-09");
-  assert.equal(letter.quarter, "Q2 2025");
+  assert.equal(letter.quarter, "Q1 2025");
 });
 
 test("discovered letters with no seed date parse the date from the PDF text", () => {

@@ -69,6 +69,22 @@ test("writeSite drops Quick take and adds independent Shortlist/Archive columns"
   fs.rmSync(siteDir, { recursive: true, force: true });
 });
 
+test("index table truncates tickers with + N more", () => {
+  const siteDir = fs.mkdtempSync(path.join(os.tmpdir(), "letters-desk-"));
+  const staticDir = path.resolve(HERE, "../static");
+  const manyTickers = ["AAA", "BBB", "CCC", "DDD", "EEE", "FFF", "GGG", "HHH"];
+  writeSite({
+    siteDir,
+    staticDir,
+    letters: [{ ...sample, tickers: manyTickers }],
+    cadence: "test",
+  });
+  const index = fs.readFileSync(path.join(siteDir, "index.html"), "utf8");
+  assert.match(index, /\+ 2 more/);
+  assert.equal((index.match(/class="pill"/g) ?? []).length, 6);
+  fs.rmSync(siteDir, { recursive: true, force: true });
+});
+
 test("writeSite deletes unused PDFs and letter HTML", () => {
   const siteDir = fs.mkdtempSync(path.join(os.tmpdir(), "letters-desk-"));
   const staticDir = path.resolve(HERE, "../static");

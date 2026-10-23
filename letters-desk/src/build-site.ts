@@ -7,9 +7,23 @@ function uniqueSorted(values: string[]): string[] {
   return [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b));
 }
 
+const TICKER_INLINE_MAX = 6;
+
 function pills(items: string[], cls: string): string {
   if (!items.length) return '<span class="muted">—</span>';
   return `<div class="pills">${items.map((t) => `<span class="${cls}">${esc(t)}</span>`).join("")}</div>`;
+}
+
+function tickerPills(items: string[]): string {
+  if (!items.length) return '<span class="muted">—</span>';
+  const shown = items.slice(0, TICKER_INLINE_MAX);
+  const rest = items.length - shown.length;
+  const chips = shown.map((t) => `<span class="pill">${esc(t)}</span>`).join("");
+  const more =
+    rest > 0
+      ? `<span class="pill pill-more" title="${esc(items.join(", "))}">+ ${rest} more</span>`
+      : "";
+  return `<div class="pills">${chips}${more}</div>`;
 }
 
 function stancePills(pitches: LetterPitch[]): string {
@@ -104,7 +118,7 @@ function indexHtml(payload: SitePayload): string {
   <td>${esc(l.date)}</td>
   <td><div class="fund">${esc(l.fund)}</div><div>${esc(l.title)}</div></td>
   <td>${esc(l.manager)}</td>
-  <td>${pills(l.tickers, "pill")}</td>
+  <td>${tickerPills(l.tickers)}</td>
   <td>${pills(l.themes, "theme")}</td>
   <td>${stancePills(l.pitches)}</td>
   <td>${esc(l.geo || l.region || "—")}</td>

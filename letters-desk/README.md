@@ -22,7 +22,7 @@ npx tsx ../letters-desk/src/run.ts --no-discover
 
 Writes `site/` (HTML + `letters.json` + `site/pdfs/`). Optional `FMP_API_KEY` fills P/E, EV/EBIT, ROIC, net debt/EBITDA on resolved tickers. Optional `CURSOR_API_KEY` / `OPENAI_API_KEY` / `LLM_BASE_URL` for LLM metadata; otherwise heuristic extract.
 
-The table has independent **Shortlist** and **Archive** checkboxes (letter rows and pitch rows). They persist in the browser as `localStorage` key `letters-desk:v1`. Tickers are listed equities only (`$TICKER`, `NYSE:`, `.L` / `.T`, or a small allow/heuristic) — acronyms like DOJ are dropped. Ingest dedupes by canonical PDF URL, then fund+date+title, so a re-run does not append clones.
+The table has independent **Shortlist** and **Archive** checkboxes (letter rows and pitch rows). They persist in the browser as `localStorage` key `letters-desk:v1`. The **Quarter** column is the period the letter covers (quarter ending): explicit `Q3 2026` / `3Q26` in title, URL, or PDF text wins; otherwise publication-date lag (e.g. an October 2026 letter → **Q3 2026**, not Q4). Semi-annual letters may show **H1** / **H2**. Tickers are listed equities only (`$TICKER`, `NYSE:`, `.L` / `.T`, holdings blocks, or a small allow/heuristic) — acronyms like DOJ are dropped; the index table shows the first six tickers plus “+ N more”. Ingest dedupes by canonical PDF URL, then fund+date+title, so a re-run does not append clones.
 
 ## Add a fund
 
