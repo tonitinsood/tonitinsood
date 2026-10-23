@@ -90,7 +90,7 @@
       "letters": [
         {
           "id": "oaktree-2026-09-repeal-iii",
-          "title": "Shall We Repeal the Laws of Economics \u2013 Part III",
+          "title": "Shall We Repeal the Laws of Economics – Part III",
           "date": "2026-09-22",
           "pdf_url": "https://www.oaktreecapital.com/docs/default-source/memos/shall-we-repeal-the-laws-of-economics-part-iii.pdf",
           "manager": "Howard Marks"
@@ -226,7 +226,7 @@
       "letters": [
         {
           "id": "asia-frontier-capital-2026-09",
-          "title": "Asia Frontier Capital Monthly Newsletter \u2014 September 2026",
+          "title": "Asia Frontier Capital Monthly Newsletter — September 2026",
           "date": "2026-09-30",
           "pdf_url": "https://www.asiafrontiercapital.com/newsletter-2026/september-2026.html",
           "manager": "Thomas Hugger"
@@ -398,7 +398,7 @@
       "letters": [
         {
           "id": "east72-2026-q2",
-          "title": "East72 Dynasty Trust Quarterly Report #14 \u2014 Period to 30 June 2026",
+          "title": "East72 Dynasty Trust Quarterly Report #14 — Period to 30 June 2026",
           "date": "2026-06-30",
           "pdf_url": "https://east72.com.au/wp-content/uploads/2026/07/E72DT-QR-June-26.pdf",
           "manager": "Andrew Brown"
@@ -451,7 +451,7 @@
       "letters": [
         {
           "id": "fmi-2026-q3-iso",
-          "title": "Investment Strategy Outlook \u2014 September 30, 2026",
+          "title": "Investment Strategy Outlook — September 30, 2026",
           "date": "2026-09-30",
           "pdf_url": "https://www.fmimgt.com/fmi/corp/Letters/iso_20260930.pdf"
         }
@@ -804,7 +804,7 @@
       "letters": [
         {
           "id": "saga-partners-2026-08-knowledge",
-          "title": "The Growth of Knowledge \u2014 August 2026",
+          "title": "The Growth of Knowledge — August 2026",
           "date": "2026-08-01",
           "pdf_url": "https://www.sagapartners.com/_files/ugd/3b0d6d_07ee41b5ab5f4496917774595a979845.pdf",
           "manager": "Joe Frankenfield"
@@ -1063,7 +1063,7 @@
       "letters": [
         {
           "id": "wedgewood-partners-2026-q3",
-          "title": "Wedgewood Partners Third Quarter 2026 Client Letter \u2014 Bad Moon Rising",
+          "title": "Wedgewood Partners Third Quarter 2026 Client Letter — Bad Moon Rising",
           "date": "2026-10-01",
           "pdf_url": "https://wedgewoodpartners.com/wp-content/uploads/2026/10/Wedgewood-Partners-Third-Quarter-2026-Client-Letter-Bad-Moon-Rising.pdf",
           "manager": "David A. Rolfe"
@@ -1153,7 +1153,7 @@
       "letters": [
         {
           "id": "london-company-large-cap-2026-q3",
-          "title": "QTD Large Cap \u2013 3Q2026 vs. R1000",
+          "title": "QTD Large Cap – 3Q2026 vs. R1000",
           "date": "2026-09-30",
           "pdf_url": "https://www.tlcadvisory.com/qtd-large-cap-3q2026-vs-r1000/",
           "manager": "Brian Campbell"
@@ -1171,7 +1171,7 @@
       "letters": [
         {
           "id": "london-company-income-equity-2026-q3",
-          "title": "QTD Income Equity \u2013 3Q2026 vs. R1000",
+          "title": "QTD Income Equity – 3Q2026 vs. R1000",
           "date": "2026-09-30",
           "pdf_url": "https://www.tlcadvisory.com/qtd-income-equity-3q2026-vs-r1000/",
           "manager": "Brian Campbell"
@@ -1278,7 +1278,7 @@
       "letters": [
         {
           "id": "ironvine-capital-2026-q3",
-          "title": "Ironvine Q3 2026 Letter \u2014 Protect & Grow",
+          "title": "Ironvine Q3 2026 Letter — Protect & Grow",
           "date": "2026-09-30",
           "pdf_url": "https://ironvinecapital.com/wp-content/uploads/2026/10/IVCP-Q3_2026_Protect-Grow.pdf"
         }
@@ -1793,12 +1793,940 @@
       "letters": [
         {
           "id": "crossingbridge-2026-q3",
-          "title": "Quid Nunc (What Now) \u2014 CrossingBridge 3Q26 Quarterly Commentary",
+          "title": "Quid Nunc (What Now) — CrossingBridge 3Q26 Quarterly Commentary",
           "date": "2026-09-30",
           "pdf_url": "https://blog.crossingbridgefunds.com/hubfs/Quid%20Nunc%20(What%20Now)%20-%20CrossingBridge%203Q26%20Quarterly%20Commentary.pdf"
         }
       ],
       "index_url": "https://blog.crossingbridgefunds.com/blog/tag/Quarterly-Commentary"
+    },
+    {
+      "id": "open-insights-capital",
+      "name": "Open Insights Capital",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "janus-henderson-forty-fund",
+      "name": "Janus Henderson Forty Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "status": "no_2026_letter",
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.janushenderson.com/en-us/advisor/product/shareholder-reports/"
+    },
+    {
+      "id": "bytetree",
+      "name": "Bytetree",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "49-financial",
+      "name": "49 Financial",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "avenue-investment-management",
+      "name": "Avenue Investment Management",
+      "manager": "",
+      "region": "Canada",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "hosking-partners",
+      "name": "Hosking Partners",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "rozendal-global-fund",
+      "name": "Rozendal Global Fund",
+      "manager": "",
+      "region": "South Africa",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "pender-small-cap-opportunities-fund",
+      "name": "Pender Small Cap Opportunities Fund",
+      "manager": "",
+      "region": "Canada",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "rozendal-worldwide-flexible-prescient-qihf",
+      "name": "Rozendal Worldwide Flexible Prescient QIHF",
+      "manager": "",
+      "region": "South Africa",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "mayar-capital",
+      "name": "Mayar Capital",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "bny-mellon-appreciation-fund",
+      "name": "BNY Mellon Appreciation Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.bnymellon.com/us/en/intermediary/products/fund-commentary.html",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "dodge-and-cox-stock-fund",
+      "name": "Dodge & Cox Stock Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://www.dodgeandcox.com/content/dam/dc/us/en/pdf/investment-commentary/Dodge_Cox_Stock_Fund_Investment_Commentary.pdf",
+      "letters": [
+        {
+          "id": "dodge-cox-stock-2026-q3",
+          "title": "Dodge & Cox Stock Fund Investment Commentary Q3 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.dodgeandcox.com/content/dam/dc/us/en/pdf/investment-commentary/Dodge_Cox_Stock_Fund_Investment_Commentary.pdf"
+        }
+      ],
+      "index_url": "https://www.dodgeandcox.com/individual/insights/commentaries/"
+    },
+    {
+      "id": "minot-light-capital-partners",
+      "name": "Minot Light Capital Partners",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "riverwater-sustainable-value-strategy",
+      "name": "Riverwater Sustainable Value Strategy",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "capicraft-investment-partners",
+      "name": "Capicraft Investment Partners",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "penn-davis-mcfarland",
+      "name": "Penn Davis McFarland",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "ariel-small-cap-value-tax-exempt-composite",
+      "name": "Ariel Small Cap Value Tax-Exempt Composite",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.arielinvestments.com/insights",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "ariel-fund",
+      "name": "Ariel Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.arielinvestments.com/insights",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "ariel-focus-fund",
+      "name": "Ariel Focus Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.arielinvestments.com/insights",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "ariel-appreciation-fund",
+      "name": "Ariel Appreciation Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.arielinvestments.com/insights",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "ariel-international-fund",
+      "name": "Ariel International Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.arielinvestments.com/insights",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "ariel-global-fund",
+      "name": "Ariel Global Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.arielinvestments.com/insights",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "third-avenue-value-fund",
+      "name": "Third Avenue Value Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.thirdave.com/shareholder-letters/",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "aristotle-small-mid-cap-equity",
+      "name": "Aristotle Small/Mid Cap Equity",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.aristotlefunds.com/resources/fund-literature",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "clearbridge-all-cap-growth",
+      "name": "ClearBridge All Cap Growth",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.clearbridge.com/dam/content/uj8btvvw1s/pdf/StrategyCommentary-ClearBridgeAllCapGrowth3Q26-US-en-US.pdf",
+      "letters": [
+        {
+          "id": "clearbridge-all-cap-growth-2026-q3",
+          "title": "ClearBridge All Cap Growth Strategy Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.clearbridge.com/dam/content/uj8btvvw1s/pdf/StrategyCommentary-ClearBridgeAllCapGrowth3Q26-US-en-US.pdf"
+        }
+      ],
+      "index_url": "https://www.clearbridge.com/insights"
+    },
+    {
+      "id": "clearbridge-mid-cap-growth-strategy",
+      "name": "ClearBridge Mid Cap Growth Strategy",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://www.clearbridge.com/dam/content/uj8btvvw1s/pdf/StrategyCommentary-ClearBridgeMidCapGrowth3Q26-US-en-US.pdf",
+      "letters": [
+        {
+          "id": "clearbridge-mid-cap-growth-2026-q3",
+          "title": "ClearBridge Mid Cap Growth Strategy Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.clearbridge.com/dam/content/uj8btvvw1s/pdf/StrategyCommentary-ClearBridgeMidCapGrowth3Q26-US-en-US.pdf"
+        }
+      ],
+      "index_url": "https://www.clearbridge.com/insights"
+    },
+    {
+      "id": "distillate-capital-long-short-equity",
+      "name": "Distillate Capital Long/Short Equity",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://distillatecapital.com/",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "distillate-u-s-small-mid-cap-qandv",
+      "name": "Distillate U.S. Small/Mid Cap Q&V",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://distillatecapital.com/",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "distillate-international",
+      "name": "Distillate International",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://distillatecapital.com/",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "distillate-fundamental-stability-and-value",
+      "name": "Distillate Fundamental Stability & Value",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://distillatecapital.com/",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "nixon-capital",
+      "name": "Nixon Capital",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "westfield-capital-management",
+      "name": "Westfield Capital Management",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "ws-ekinsguinness-dynamic-growth-fund",
+      "name": "WS EkinsGuinness Dynamic Growth Fund",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "ws-ekinsguinness-global-sector-rotation-fund",
+      "name": "WS EkinsGuinness Global Sector Rotation Fund",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "focus-wealth-management",
+      "name": "Focus Wealth Management",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "artisan-mid-cap-fund",
+      "name": "Artisan Mid Cap Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://www.artisanpartners.com/content/dam/documents/quarterly-commentary/vr/2026/3q/ARTMX-APDMX-APHMX-QCommentary-3Q26-vR.pdf",
+      "letters": [
+        {
+          "id": "artisan-mid-cap-2026-q3",
+          "title": "Artisan Mid Cap Fund Quarterly Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://www.artisanpartners.com/content/dam/documents/quarterly-commentary/vr/2026/3q/ARTMX-APDMX-APHMX-QCommentary-3Q26-vR.pdf"
+        }
+      ],
+      "index_url": "https://www.artisanpartners.com/"
+    },
+    {
+      "id": "avi-japan-opportunity-trust",
+      "name": "AVI Japan Opportunity Trust",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "avi-worldwide-opportunities-fund",
+      "name": "AVI Worldwide Opportunities Fund",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "brown-advisory-large-cap-growth-strategy",
+      "name": "Brown Advisory Large-Cap Growth Strategy",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "smead-international-value-fund",
+      "name": "Smead International Value Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "parnassus-growth-equity-fund",
+      "name": "Parnassus Growth Equity Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "parnassus-value-equity-fund",
+      "name": "Parnassus Value Equity Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "harding-loevner-global-equity",
+      "name": "Harding Loevner Global Equity",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://media.hardingloevner.com/fileadmin/pdf/GE/2026/HL-Global-Equity-Quarterly-Report-3Q26.pdf",
+      "letters": [
+        {
+          "id": "harding-loevner-global-equity-2026-q3",
+          "title": "Harding Loevner Global Equity Quarterly Report 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://media.hardingloevner.com/fileadmin/pdf/GE/2026/HL-Global-Equity-Quarterly-Report-3Q26.pdf"
+        }
+      ],
+      "index_url": "https://www.hardingloevner.com/insights/"
+    },
+    {
+      "id": "harding-loevner-international-equity",
+      "name": "Harding Loevner International Equity",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.hardingloevner.com/insights/",
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "jemekk-hedge-fund",
+      "name": "Jemekk Hedge Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "first-eagle-global-fund",
+      "name": "First Eagle Global Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "janus-uk-smaller-companies-fund",
+      "name": "Janus UK Smaller Companies Fund",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "columbia-strategic-income-fund",
+      "name": "Columbia Strategic Income Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "janus-henderson-fixed-interest-monthly-income-fund",
+      "name": "Janus Henderson Fixed Interest Monthly Income Fund",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "janus-henderson-strategic-bond-fund",
+      "name": "Janus Henderson Strategic Bond Fund",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "equity-management-associates",
+      "name": "Equity Management Associates",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "titan-wealth",
+      "name": "Titan Wealth",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "alpha-wealth-funds-the-insiders-fund",
+      "name": "Alpha Wealth Funds The Insiders Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "diamond-hill-large-cap-strategy",
+      "name": "Diamond Hill Large Cap Strategy",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "bell-global-equities-fund",
+      "name": "Bell Global Equities Fund",
+      "manager": "",
+      "region": "Australia",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "bell-global-emerging-companies-fund",
+      "name": "Bell Global Emerging Companies Fund",
+      "manager": "",
+      "region": "Australia",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "mawer-international-equity-fund",
+      "name": "Mawer International Equity Fund",
+      "manager": "",
+      "region": "Canada",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "castlebay-investments",
+      "name": "Castlebay Investments",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "stonehearth-capital-management",
+      "name": "Stonehearth Capital Management",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "janus-henderson-global-sustainable-equity-fund",
+      "name": "Janus Henderson Global Sustainable Equity Fund",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "japan-opportunities-fund",
+      "name": "Japan Opportunities Fund",
+      "manager": "",
+      "region": "Japan",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "robinson-opportunistic-income-fund",
+      "name": "Robinson Opportunistic Income Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "moneta-group",
+      "name": "Moneta Group",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "guinness-global-energy",
+      "name": "Guinness Global Energy",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "ameliora-wealth-management",
+      "name": "Ameliora Wealth Management",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "green-ash-partners",
+      "name": "Green Ash Partners",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "polen-perspectives-small-mid-growth",
+      "name": "Polen Perspectives Small-Mid Growth",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.polencapital.com/insights",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "polen-capital-focus-growth",
+      "name": "Polen Capital Focus Growth",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "",
+      "letters": [],
+      "index_url": "https://www.polencapital.com/insights",
+      "status": "no_2026_letter"
+    },
+    {
+      "id": "ws-ruffer-total-return-fund",
+      "name": "WS Ruffer Total Return Fund",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "longleaf-partners-fund",
+      "name": "Longleaf Partners Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://southeasternasset.com/commentary/3q26-partners-fund-commentary/",
+      "letters": [
+        {
+          "id": "longleaf-partners-fund-2026-q3",
+          "title": "3Q26 Partners Fund Commentary",
+          "date": "2026-09-30",
+          "pdf_url": "https://southeasternasset.com/commentary/3q26-partners-fund-commentary/"
+        }
+      ],
+      "index_url": "https://southeasternasset.com/mutual-fund-commentaries/"
+    },
+    {
+      "id": "longleaf-partners-small-cap-fund",
+      "name": "Longleaf Partners Small-Cap Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://southeasternasset.com/commentary/3q26-small-cap-fund-commentary/",
+      "letters": [
+        {
+          "id": "longleaf-small-cap-2026-q3",
+          "title": "3Q26 Small-Cap Fund Commentary",
+          "date": "2026-09-30",
+          "pdf_url": "https://southeasternasset.com/commentary/3q26-small-cap-fund-commentary/"
+        }
+      ],
+      "index_url": "https://southeasternasset.com/mutual-fund-commentaries/"
+    },
+    {
+      "id": "longleaf-partners-global-fund",
+      "name": "Longleaf Partners Global Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://southeasternasset.com/commentary/3q26-global-fund-commentary/",
+      "letters": [
+        {
+          "id": "longleaf-global-2026-q3",
+          "title": "3Q26 Global Fund Commentary",
+          "date": "2026-09-30",
+          "pdf_url": "https://southeasternasset.com/commentary/3q26-global-fund-commentary/"
+        }
+      ],
+      "index_url": "https://southeasternasset.com/mutual-fund-commentaries/"
+    },
+    {
+      "id": "oakmark-global-fund",
+      "name": "Oakmark Global Fund",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://oakmark.com/wp-content/uploads/sites/3/2026/10/Oakmark-Global-Fund-Commentary-09-30-2026.pdf",
+      "letters": [
+        {
+          "id": "oakmark-global-2026-q3",
+          "title": "Oakmark Global Fund Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://oakmark.com/wp-content/uploads/sites/3/2026/10/Oakmark-Global-Fund-Commentary-09-30-2026.pdf"
+        }
+      ],
+      "index_url": "https://oakmark.com/news-insights/commentary/"
+    },
+    {
+      "id": "oakmark-fund-international-small-cap",
+      "name": "Oakmark Fund International Small Cap",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://oakmark.com/wp-content/uploads/sites/3/2026/10/Oakmark-International-Small-Cap-Fund-Commentary-09-30-2026.pdf",
+      "letters": [
+        {
+          "id": "oakmark-intl-small-cap-2026-q3",
+          "title": "Oakmark International Small Cap Fund Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://oakmark.com/wp-content/uploads/sites/3/2026/10/Oakmark-International-Small-Cap-Fund-Commentary-09-30-2026.pdf"
+        }
+      ],
+      "index_url": "https://oakmark.com/news-insights/commentary/"
+    },
+    {
+      "id": "oakmark-international-fund",
+      "name": "Oakmark International Fund",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://oakmark.com/wp-content/uploads/sites/3/2026/10/Oakmark-International-Fund-Commentary-09-30-2026.pdf",
+      "letters": [
+        {
+          "id": "oakmark-international-2026-q3",
+          "title": "Oakmark International Fund Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://oakmark.com/wp-content/uploads/sites/3/2026/10/Oakmark-International-Fund-Commentary-09-30-2026.pdf"
+        }
+      ],
+      "index_url": "https://oakmark.com/news-insights/commentary/"
+    },
+    {
+      "id": "oakmark-fund",
+      "name": "Oakmark Fund",
+      "manager": "",
+      "region": "US",
+      "priority": true,
+      "letter_url": "https://oakmark.com/wp-content/uploads/sites/3/2026/10/Oakmark-Fund-Commentary-09-30-2026.pdf",
+      "letters": [
+        {
+          "id": "oakmark-fund-2026-q3",
+          "title": "Oakmark Fund Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://oakmark.com/wp-content/uploads/sites/3/2026/10/Oakmark-Fund-Commentary-09-30-2026.pdf"
+        }
+      ],
+      "index_url": "https://oakmark.com/news-insights/commentary/"
+    },
+    {
+      "id": "oakmark-global-select-fund",
+      "name": "Oakmark Global Select Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "https://oakmark.com/wp-content/uploads/sites/3/2026/10/Oakmark-Global-Select-Fund-Commentary-09-30-2026.pdf",
+      "letters": [
+        {
+          "id": "oakmark-global-select-2026-q3",
+          "title": "Oakmark Global Select Fund Commentary 3Q 2026",
+          "date": "2026-09-30",
+          "pdf_url": "https://oakmark.com/wp-content/uploads/sites/3/2026/10/Oakmark-Global-Select-Fund-Commentary-09-30-2026.pdf"
+        }
+      ],
+      "index_url": "https://oakmark.com/news-insights/commentary/"
+    },
+    {
+      "id": "rit-capital-partners-plc",
+      "name": "RIT Capital Partners plc",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "avi-global-trust",
+      "name": "AVI Global Trust",
+      "manager": "",
+      "region": "UK",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "logica-capital",
+      "name": "Logica Capital",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "bison-energy-opportunity-fund",
+      "name": "Bison Energy Opportunity Fund",
+      "manager": "",
+      "region": "US",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
+    },
+    {
+      "id": "l1-capital-international-fund",
+      "name": "L1 Capital International Fund",
+      "manager": "",
+      "region": "Australia",
+      "priority": false,
+      "letter_url": "",
+      "letters": [],
+      "status": "no_public_pdf"
     }
   ]
 }

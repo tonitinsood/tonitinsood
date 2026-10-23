@@ -163,6 +163,11 @@ tr.archived-row td {
   font-size: 11px;
   line-height: 1.6;
 }
+.pill-more {
+  color: var(--muted);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  cursor: default;
+}
 .stance.long { background: var(--long-bg); color: var(--long); }
 .stance.short { background: var(--short-bg); color: var(--short); }
 .actions { white-space: nowrap; }

@@ -3,8 +3,11 @@ import {
 } from "../../idea-screener/bot/lib/extract-heuristic.js";
 import { inferRegion } from "../../idea-screener/bot/lib/markets.js";
 import { looksUnreadable, sanitizeText } from "../../idea-screener/bot/lib/ingest/readable.js";
+import { letterQuarter } from "./quarter.js";
 import { extractEquityTickers, isDeniedTicker, isEquityTicker } from "./tickers.js";
 import type { FundConfig, LetterPitch, LetterRecord, SeedLetter, Stance } from "./types.js";
+
+export { letterQuarter, parseExplicitQuarter, quarterFromPublicationDate, quarterFromDate } from "./quarter.js";
 
 const MONTHS: Record<string, string> = {
   january: "01",
@@ -52,15 +55,6 @@ const CAP_RULES: { cap: string; re: RegExp }[] = [
 ];
 
 const MAX_PITCH = 3200;
-
-export function quarterFromDate(iso: string): string {
-  const m = iso.match(/^(\d{4})-(\d{2})/);
-  if (!m) return "";
-  const year = m[1]!;
-  const month = Number(m[2]);
-  const q = month <= 3 ? 1 : month <= 6 ? 2 : month <= 9 ? 3 : 4;
-  return `Q${q} ${year}`;
-}
 
 export function parseLetterDate(text: string, fallback: string): string {
   const head = text.slice(0, 2500);
@@ -217,7 +211,7 @@ export function pitchesFromLetter(
 }
 
 export function collectTickers(text: string, pitches: LetterPitch[]): string[] {
-  const fromText = extractEquityTickers(text, 12);
+  const fromText = extractEquityTickers(text, 24);
   const fromPitches = pitches
     .map((p) => p.ticker)
     .filter((t) => t && isEquityTicker(t, { kind: t.includes(".") ? "suffix" : "bare", text }));
@@ -228,7 +222,7 @@ export function collectTickers(text: string, pitches: LetterPitch[]): string[] {
     if (!up || seen.has(up) || isDeniedTicker(up)) continue;
     seen.add(up);
     out.push(up);
-    if (out.length >= 12) break;
+    if (out.length >= 24) break;
   }
   return out;
 }
@@ -261,7 +255,7 @@ export function heuristicLetter(
   return {
     id: seed.id,
     date,
-    quarter: quarterFromDate(date),
+    quarter: letterQuarter({ date, title, text: clean, pdf_url: seed.pdf_url }),
     fund_id: fund.id,
     fund: fund.name,
     manager: seed.manager || fund.manager,
@@ -313,8 +307,8 @@ export function mergeLlmIntoHeuristic(
     manager: llm.manager?.trim() || base.manager,
     title,
     date,
-    quarter: quarterFromDate(date),
-    tickers: tickers.length ? tickers.slice(0, 12) : base.tickers,
+    quarter: letterQuarter({ date, title, pdf_url: base.pdf_url }),
+    tickers: tickers.length ? tickers.slice(0, 24) : base.tickers,
     themes: llm.themes?.length ? llm.themes.slice(0, 8) : base.themes,
     geo: llm.geo?.trim() || base.geo,
     cap: llm.cap?.trim() || base.cap,

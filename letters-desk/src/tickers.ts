@@ -1,4 +1,4 @@
-import { isJunkTicker } from "../../idea-screener/bot/lib/extract-heuristic.js";
+import { findTickers, isJunkTicker } from "../../idea-screener/bot/lib/extract-heuristic.js";
 
 /** Agencies, jargon, doc types, currencies, periods — never equities. */
 export const TICKER_DENY = new Set([
@@ -278,7 +278,40 @@ export function isEquityTicker(
   return false;
 }
 
-export function extractEquityTickers(text: string, limit = 12): string[] {
+const HOLDINGS_SECTION_RE =
+  /(?:top\s+(?:\d+\s+)?holdings?|portfolio\s+(?:holdings|composition|activity)|(?:new|final)\s+(?:purchases|sales)|largest\s+positions?|contributors?\s+(?:and|&)\s+detractors?)[\s\S]{0,12000}/gi;
+
+const COMMA_TICKER_LINE =
+  /^[\s•\-–—*]*((?:[A-Z]{1,5}(?:\.[A-Z]{1,3})?|[A-Z0-9]{2,5}\.(?:T|L|TO|DE|HK|KS|PA|AX|SW|MI))(?:\s*[,;|]\s*(?:[A-Z]{1,5}(?:\.[A-Z]{1,3})?|[A-Z0-9]{2,5}\.(?:T|L|TO|DE|HK|KS|PA|AX|SW|MI))){2,})\s*$/gm;
+
+function extractHoldingsBlockTickers(text: string): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  const push = (raw: string, kind: TickerKind) => {
+    const t = raw.toUpperCase();
+    if (!t || seen.has(t) || !isEquityTicker(t, { kind, text })) return;
+    seen.add(t);
+    out.push(t);
+  };
+  for (const block of text.matchAll(HOLDINGS_SECTION_RE)) {
+    const slice = block[0] ?? "";
+    for (const m of slice.matchAll(COMMA_TICKER_LINE)) {
+      const parts = (m[1] ?? "").split(/\s*[,;|]\s*/);
+      for (const p of parts) push(p.trim(), "bare");
+    }
+    for (const m of slice.matchAll(/\$([A-Z]{1,5}(?:\.[A-Z]{1,3})?)\b/g)) {
+      push(m[1]!, "dollar");
+    }
+    for (const m of slice.matchAll(
+      /\b([A-Z0-9]{2,5}\.(?:T|L|PA|DE|F|NS|BO|AX|TO|V|CN|SA|MX|HK|SW|AS|MI|BR|ST|CO|HE|OL|LS|MC|IR|TW|TWO|KS|KQ|SS|SZ|SI|NZ|JK|KL|JO))\b/g,
+    )) {
+      push(m[1]!, "suffix");
+    }
+  }
+  return out;
+}
+
+export function extractEquityTickers(text: string, limit = 24): string[] {
   const seen = new Set<string>();
   const out: string[] = [];
   const push = (raw: string | undefined, kind: TickerKind) => {
@@ -287,11 +320,20 @@ export function extractEquityTickers(text: string, limit = 12): string[] {
     seen.add(t);
     out.push(t);
   };
+  for (const t of extractHoldingsBlockTickers(text)) {
+    if (!seen.has(t)) {
+      seen.add(t);
+      out.push(t);
+    }
+  }
+  for (const t of findTickers(text)) {
+    push(t, t.includes(".") ? "suffix" : "bare");
+  }
   for (const m of text.matchAll(/\$([A-Z]{1,5}(?:\.[A-Z]{1,3})?)\b/g)) {
     push(m[1], "dollar");
   }
   for (const m of text.matchAll(
-    /\b(?:NYSE|NASDAQ|AMEX|TSX|LSE|TSE|ASX|NSE|BSE|HKEX|TYO|EPA|FRA)[:\s-]+([A-Z]{1,5}(?:\.[A-Z]{1,3})?)\b/g,
+    /\b(?:NYSE|NASDAQ|AMEX|TSX|LSE|TSE|ASX|NSE|BSE|HKEX|TYO|EPA|FRA|SWX|SGX|KRX|OSE)[:\s-]+([A-Z]{1,5}(?:\.[A-Z]{1,3})?)\b/g,
   )) {
     push(m[1], "exchange");
   }
