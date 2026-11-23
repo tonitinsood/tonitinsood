@@ -30,7 +30,12 @@ import {
 import { rowsEligibleForPurge } from "./purge.js";
 import { rewriteUnreadablePitchText } from "./rewrite-text.js";
 import { enrichTickerMetrics } from "./metrics.js";
+import { fmpThrottleMs, ingestCaps, isExhaustiveScreen } from "./screener-mode.js";
 import type { MetricSnapshot, PitchRow } from "./types.js";
+
+function sleep(ms: number): Promise<void> {
+  return ms > 0 ? new Promise((r) => setTimeout(r, ms)) : Promise.resolve();
+}
 
 export type DailyScreenResult = {
   spreadsheetId: string;
@@ -43,15 +48,17 @@ export type DailyScreenResult = {
   nonUsAppended: number;
   rewritten: number;
   dryRun: boolean;
+  exhaustive: boolean;
   sourcesUsed: { source_type: string; source_name: string; docs: number }[];
   samples: { ticker: string; company: string; thesis_short: string; exchange_country: string }[];
 };
 
 export async function runDailyScreenPipeline(
   ctx: ToolContext,
-  opts: { dryRun?: boolean } = {},
+  opts: { dryRun?: boolean; exhaustive?: boolean } = {},
 ): Promise<DailyScreenResult> {
   const dryRun = opts.dryRun ?? false;
+  const exhaustive = isExhaustiveScreen(opts.exhaustive);
   let spreadsheetId = await resolveOrCreateSpreadsheetId(ctx, dryRun);
   if (!spreadsheetId) {
     spreadsheetId = "dry-run-no-sheet";
@@ -93,7 +100,7 @@ export async function runDailyScreenPipeline(
     }
   }
 
-  const docs = await ingestAllSources();
+  const docs = await ingestAllSources(exhaustive);
   const nowIso = new Date().toISOString();
   const day = nowIso.slice(0, 10);
   const fmpKey = process.env.FMP_API_KEY;
@@ -102,7 +109,7 @@ export async function runDailyScreenPipeline(
   const extractedAll = docs.flatMap((doc) => extractPitchesHeuristic(doc));
   const concrete = extractedAll.filter((p) => isConcretePitch(p));
   const skippedNotPitch = extractedAll.length - concrete.length;
-  const ranked = rankAndCapPitches(concrete);
+  const ranked = rankAndCapPitches(concrete, ingestCaps(exhaustive).maxUsPitches);
 
   const newRows: PitchRow[] = [];
   let skippedDedupe = 0;
@@ -136,6 +143,7 @@ export async function runDailyScreenPipeline(
       if (!metrics) {
         metrics = await enrichTickerMetrics(pitch.ticker, fmpKey);
         metricCache[mKey] = metrics;
+        await sleep(fmpThrottleMs(exhaustive));
       }
     }
     const row: PitchRow = {
@@ -249,6 +257,7 @@ export async function runDailyScreenPipeline(
     nonUsAppended,
     rewritten,
     dryRun,
+    exhaustive,
     sourcesUsed,
     samples,
   };

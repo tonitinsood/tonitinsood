@@ -5,6 +5,12 @@ on:
   schedule:
     - cron: "0 4 * * *"
   workflow_dispatch:
+    inputs:
+      exhaustive:
+        description: "Exhaustive ingest (~4× caps, SCREENER_EXHAUSTIVE)"
+        type: boolean
+        default: false
+        required: false
 
 concurrency:
   group: idea-screener-daily
@@ -50,6 +56,7 @@ jobs:
           FMP_API_KEY: ${{ secrets.FMP_API_KEY }}
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
           GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+          SCREENER_EXHAUSTIVE: ${{ github.event_name == 'workflow_dispatch' && inputs.exhaustive && '1' || '' }}
         run: |
           set -euo pipefail
           missing=()
@@ -63,7 +70,11 @@ jobs:
           fi
           # Server-side extractPitchesHeuristic — no CURSOR_API_KEY / model turn.
           # bdk call exits 1 unless the response has ok: true (tool throw → fail).
-          npx --yes "@cursor/bdk@0.2.27" call runDailyScreen --dir idea-screener --input '{}' | tee "${RUNNER_TEMP}/runDailyScreen.json"
+          EXHAUSTIVE_INPUT='false'
+          if [ "${SCREENER_EXHAUSTIVE:-}" = '1' ]; then
+            EXHAUSTIVE_INPUT='true'
+          fi
+          npx --yes "@cursor/bdk@0.2.27" call runDailyScreen --dir idea-screener --input "{\"exhaustive\":${EXHAUSTIVE_INPUT}}" | tee "${RUNNER_TEMP}/runDailyScreen.json"
           node -e '
             const fs = require("node:fs");
             const raw = fs.readFileSync(process.env.RUNNER_TEMP + "/runDailyScreen.json", "utf8").trim();
