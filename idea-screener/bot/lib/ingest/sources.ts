@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import Parser from "rss-parser";
 import type { IngestDocument, SourceType } from "../types.js";
+import { ingestCaps, scaledMaxItems } from "../screener-mode.js";
 import { readableDocsFromUrl } from "./fetch.js";
 import { extractArticleText } from "./html.js";
 
@@ -93,14 +94,15 @@ async function docsFromRssItem(opts: {
   };
 }
 
-export async function ingestLetters(): Promise<IngestDocument[]> {
+export async function ingestLetters(exhaustive?: boolean): Promise<IngestDocument[]> {
+  const caps = ingestCaps(exhaustive);
   const cfg = await loadJson<LettersConfig>("config/letters.json");
   const out: IngestDocument[] = [];
   for (const letter of cfg.letters) {
     try {
       if (letter.type === "rss" || /\/feed\/?$/i.test(letter.url)) {
         const feed = await rss.parseURL(letter.url);
-        const max = letter.max_items ?? 6;
+        const max = scaledMaxItems(letter.max_items, caps.letterRssDefault, exhaustive);
         for (const item of feed.items.slice(0, max)) {
           const link = item.link ?? letter.url;
           out.push(
@@ -141,13 +143,14 @@ export async function ingestLetters(): Promise<IngestDocument[]> {
   return out;
 }
 
-export async function ingestSubstack(): Promise<IngestDocument[]> {
+export async function ingestSubstack(exhaustive?: boolean): Promise<IngestDocument[]> {
+  const caps = ingestCaps(exhaustive);
   const cfg = await loadJson<SubstackConfig>("config/substack.json");
   const out: IngestDocument[] = [];
   for (const pub of cfg.substacks) {
     try {
       const feed = await rss.parseURL(pub.feed_url);
-      const max = pub.max_items ?? 5;
+      const max = scaledMaxItems(pub.max_items, caps.substackDefault, exhaustive);
       for (const item of feed.items.slice(0, max)) {
         const link = item.link ?? pub.feed_url;
         const author = item.creator ?? item.author ?? pub.pitched_by ?? pub.name;
@@ -196,13 +199,17 @@ async function ingestSecFeed(
   cfg: SecConfig,
   pitchedByHint?: string,
   sourceNameHint?: string,
+  exhaustive?: boolean,
 ): Promise<IngestDocument[]> {
+  const caps = ingestCaps(exhaustive);
   const out: IngestDocument[] = [];
-  const maxAge = cfg.max_age_days ?? 14;
+  const maxAge = exhaustive
+    ? Math.max(cfg.max_age_days ?? caps.secMaxAgeDays, caps.secMaxAgeDays)
+  : (cfg.max_age_days ?? caps.secMaxAgeDays);
   const keywords8k = (cfg.keywords_8k ?? cfg.keywords ?? []).map((k) => k.toLowerCase());
   try {
     const feed = await secRss.parseURL(url);
-    for (const item of feed.items.slice(0, 20)) {
+    for (const item of feed.items.slice(0, caps.secFeedItems)) {
       const title = item.title ?? "";
       const term = String((item as { categories?: string[] }).categories?.[0] ?? "");
       const form = classifySecForm(title, term);
@@ -244,16 +251,16 @@ async function ingestSecFeed(
   return out;
 }
 
-export async function ingestSec(): Promise<IngestDocument[]> {
+export async function ingestSec(exhaustive?: boolean): Promise<IngestDocument[]> {
   const cfg = await loadJson<SecConfig>("config/sec.json");
   const urls = [
     ...(cfg.edgar_atom_urls ?? []),
     ...(cfg.edgar_atom_url ? [cfg.edgar_atom_url] : []),
   ];
   const batches = await Promise.all([
-    ...urls.map((u) => ingestSecFeed(u, cfg)),
+    ...urls.map((u) => ingestSecFeed(u, cfg, undefined, undefined, exhaustive)),
     ...(cfg.activist_ciks ?? []).map((a) =>
-      ingestSecFeed(cikAtomUrl(a.cik), cfg, a.pitched_by, a.name),
+      ingestSecFeed(cikAtomUrl(a.cik), cfg, a.pitched_by, a.name, exhaustive),
     ),
   ]);
   const seen = new Set<string>();
@@ -267,7 +274,8 @@ export async function ingestSec(): Promise<IngestDocument[]> {
   return out;
 }
 
-export async function ingestX(): Promise<IngestDocument[]> {
+export async function ingestX(exhaustive?: boolean): Promise<IngestDocument[]> {
+  const caps = ingestCaps(exhaustive);
   const cfg = await loadJson<XConfig>("config/x-watchlist.json");
   const out: IngestDocument[] = [];
   for (const acct of cfg.accounts) {
@@ -277,7 +285,7 @@ export async function ingestX(): Promise<IngestDocument[]> {
       `https://nitter.net/${handle}/rss`;
     try {
       const feed = await rss.parseURL(feedUrl);
-      for (const item of feed.items.slice(0, 3)) {
+      for (const item of feed.items.slice(0, caps.xPerAccount)) {
         const link = item.link ?? feedUrl;
         const display = acct.display_name ?? acct.handle;
         out.push({
@@ -300,12 +308,12 @@ export async function ingestX(): Promise<IngestDocument[]> {
   return out;
 }
 
-export async function ingestAllSources(): Promise<IngestDocument[]> {
+export async function ingestAllSources(exhaustive?: boolean): Promise<IngestDocument[]> {
   const batches = await Promise.all([
-    ingestLetters(),
-    ingestSubstack(),
-    ingestSec(),
-    ingestX(),
+    ingestLetters(exhaustive),
+    ingestSubstack(exhaustive),
+    ingestSec(exhaustive),
+    ingestX(exhaustive),
   ]);
   return batches.flat();
 }

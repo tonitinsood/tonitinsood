@@ -11,9 +11,18 @@ export default defineTool({
       .boolean()
       .optional()
       .describe("If true, ingest and extract but do not write Google Sheet or KV dedupe."),
+    exhaustive: z
+      .boolean()
+      .optional()
+      .describe(
+        "Raise ingest caps (~4×) for letters, Substack, SEC, X, and US pitch cap. Also honors SCREENER_EXHAUSTIVE=1.",
+      ),
   }),
-  async execute({ dryRun }, ctx) {
-    const result = await runDailyScreenPipeline(ctx, { dryRun: dryRun ?? false });
+  async execute({ dryRun, exhaustive }, ctx) {
+    const result = await runDailyScreenPipeline(ctx, {
+      dryRun: dryRun ?? false,
+      exhaustive: exhaustive ?? false,
+    });
     return result;
   },
 });
